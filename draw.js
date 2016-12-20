@@ -1,6 +1,7 @@
-var stats, controls;
-var camera, scene, renderer;
-var octree;
+var stats, controls, camera, renderer;
+var scene, octree, clock;
+var asteroids = [];
+var planets = [];
 
 const WORLD_SIZE = 10000;
 const V3_ZERO   = new THREE.Vector3( 0, 0, 0 );
@@ -23,8 +24,28 @@ paintGL();
 
 function update() {
 
+    var dt = clock.getDelta();//its in seconds
+    clock.start();
+
     controls.update(); // required if controls.enableDamping = true, or if controls.autoRotate = true
     stats.update();
+
+    asteroids.forEach( function(asteroid) {
+
+        var f = V3_ZERO;
+
+        planets.forEach( function(planet) {
+
+            f.add( asteroid.gravity( planet ) );
+        });
+
+
+
+        asteroid.mov.lerp( f, 0.01 );
+        asteroid.update( dt );
+    });
+
+
     octree.rebuild();
 }
 
@@ -54,7 +75,7 @@ function initializeGL() {
 
     document.body.appendChild( renderer.domElement );
 
-    scene.background = new THREE.Color( 0xD0E0F0 );
+    scene.background = new THREE.Color( 0x383838 );
 }
 /*
  function resizeGL(canvas) {
@@ -106,22 +127,42 @@ function initOctree() {
     } );
 }
 
+function initObj( array, obj ) {
+
+    obj.init();
+
+    scene.add( obj.mesh );
+    octree.add( obj.mesh );
+
+    array.push( obj );
+}
+
 function initScene() {
 
     for ( var i = 0; i < 100; i++ ) {
 
-        var asteroid = new Asteroid( v3Random( WORLD_SIZE ), Math.random() * 300 );
+        var asteroid = new Asteroid( v3Random( WORLD_SIZE ), Math.random() * 30, 0x803000 );
 
-        scene.add( asteroid.mesh );
-        octree.add( asteroid.mesh );
+        asteroid.mov = v3Random( 100 );
+
+        initObj( asteroids, asteroid );
     }
 
-    var sun = new Sun( V3_ZERO, 800, 0xffffff );
-    scene.add( sun.mesh );
+    for ( var i = 0; i < 0; i++ ) {
+
+        var planet = new Planet( v3Random( WORLD_SIZE ), Math.random() * 300, 0x1155BB );
+
+        initObj( planets, planet );
+    }
+
+    var sun = new Sun( V3_ZERO, 800, 0x505050 );
+
+    initObj( planets, sun );
+
     scene.add( sun.light );
-    octree.add( sun.mesh );
 
     octree.update();
+    clock = new THREE.Clock();
 }
 
 function init() {
@@ -134,7 +175,9 @@ function init() {
 }
 
 function paintGL() {
-    update();
+
+    update();//TODO: сделать не синхронным с прорисовкой
+
     requestAnimationFrame(paintGL);
     renderer.render(scene, camera);
 }

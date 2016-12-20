@@ -1,52 +1,91 @@
-function Obj() {
+function MatObj(pos) {
 
+    this.pos = pos;
+    this.mov = null;
+    this.mesh = null;
+    this.mass = 0;
 }
 
-Obj.nextId = 0;
+MatObj.prototype = {
 
-function MatObj( ) {
+    geometry : null,
 
-    this.id = Obj.nextId++;
-    this.mov = new THREE.Vector3();
+    init : function() {
 
+        this.mesh = new THREE.Mesh(
+            this.geometry,
+            this.material
+        );
 
-    this.update = function() {
+        this.mesh.position.copy( this.pos );
+    },
 
+    update : function(dt) {
+
+        this.pos.add( this.mov.clone().multiplyScalar( dt ) );
+
+        this.mesh.position.copy( this.pos );
+    },
+
+    gravity : function(obj) {
+
+        var r = obj.pos.clone().sub( this.pos );
+        var rSq = r.lengthSq();
+
+        return r.normalize().multiplyScalar( 0.0001 * this.mass * obj.mass / rSq );
     }
+};
+
+function Celestial(pos, radius, color) {
+
+    MatObj.apply( this, arguments );
+
+    this.color = color;
+    this.material = new THREE.MeshLambertMaterial( {color: color, side: 2, shading: THREE.FlatShading} );
+
+    this.geometry = new THREE.SphereGeometry( radius, 32, 32 );
+
+    this.mass = radius * radius * radius;
 }
 
-MatObj.prototype = Obj;
+extend( Celestial, MatObj );
+//Celestial.prototype = Object.create( MatObj.prototype );
 
-function Asteroid( pos, radius ) {
+function Asteroid(pos, radius, color) {
 
-    this.pos = pos;
-
-    this.mesh = new THREE.Mesh(
-        new THREE.SphereGeometry( radius, 32, 32 ),
-        new THREE.MeshLambertMaterial( {color: 0x20AA20, side: 2, shading: THREE.FlatShading} )
-    );
-
-    this.mesh.position.copy( this.pos );
+    Celestial.apply( this, arguments );
 }
 
-Asteroid.prototype = MatObj;
+extend( Asteroid, Celestial );
 
-function Sun( pos, radius, color ) {
+function Planet(pos, radius, color) {
 
-    this.pos = pos;
+    Celestial.apply( this, arguments );
+}
 
-    this.mesh = new THREE.Mesh(
-        new THREE.SphereGeometry( radius, 32, 32 ),
-        new THREE.MeshBasicMaterial( {color: color} )
-    );
+extend( Planet, Celestial );
 
-    this.mesh.position.copy( this.pos );
+function Sun(pos, radius, color) {
+
+    Celestial.apply( this, arguments );
+
+    this.material = new THREE.MeshBasicMaterial( {color: color} );
 
     this.light = new THREE.PointLight( color, 1, 0 );
     this.light.position.copy( this.pos );
 }
 
-Sun.prototype = MatObj;
+extend( Sun, Celestial );
+
+function extend(Child, Parent) {
+
+    var F = function() { };
+    F.prototype = Parent.prototype;
+    Child.prototype = new F();
+    Child.prototype.constructor = Child;
+    Child.superclass = Parent.prototype;
+}
+
 
 
 
