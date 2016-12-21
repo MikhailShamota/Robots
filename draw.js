@@ -3,7 +3,7 @@ var scene, octree, clock;
 var asteroids = [];
 var planets = [];
 
-const WORLD_SIZE = 10000;
+const WORLD_SIZE = 1000;
 const V3_ZERO   = new THREE.Vector3( 0, 0, 0 );
 const V3_UNIT_X = new THREE.Vector3( 1, 0, 0 );
 const V3_UNIT_Y = new THREE.Vector3( 0, 1, 0 );
@@ -32,16 +32,14 @@ function update() {
 
     asteroids.forEach( function(asteroid) {
 
-        var f = V3_ZERO;
+        var f = V3_ZERO.clone();
 
         planets.forEach( function(planet) {
 
             f.add( asteroid.gravity( planet ) );
         });
 
-
-
-        asteroid.mov.lerp( f, 0.01 );
+        asteroid.f = f;
         asteroid.update( dt );
     });
 
@@ -141,21 +139,21 @@ function initScene() {
 
     for ( var i = 0; i < 100; i++ ) {
 
-        var asteroid = new Asteroid( v3Random( WORLD_SIZE ), Math.random() * 30, 0x803000 );
+        var asteroid = new Asteroid( v3Random( WORLD_SIZE ), Math.random() * 10, 0x803000 );
 
-        asteroid.mov = v3Random( 100 );
+        asteroid.mov = v3Random( 10 );
 
         initObj( asteroids, asteroid );
     }
 
     for ( var i = 0; i < 0; i++ ) {
 
-        var planet = new Planet( v3Random( WORLD_SIZE ), Math.random() * 300, 0x1155BB );
+        var planet = new Planet( v3Random( WORLD_SIZE ), Math.random() * 30, 0x1155BB );
 
         initObj( planets, planet );
     }
 
-    var sun = new Sun( V3_ZERO, 800, 0x505050 );
+    var sun = new Sun( V3_ZERO.clone(), 80, 0x505050 );
 
     initObj( planets, sun );
 

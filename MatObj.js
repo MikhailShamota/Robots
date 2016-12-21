@@ -1,9 +1,10 @@
 function MatObj(pos) {
 
-    this.pos = pos;
+    this.pos = pos.clone();
     this.mov = null;
     this.mesh = null;
     this.mass = 0;
+    this.f = null;
 }
 
 MatObj.prototype = {
@@ -22,6 +23,9 @@ MatObj.prototype = {
 
     update : function(dt) {
 
+        var v = this.f.clone().multiplyScalar( dt / this.mass );
+
+        this.mov.add( v );
         this.pos.add( this.mov.clone().multiplyScalar( dt ) );
 
         this.mesh.position.copy( this.pos );
@@ -32,7 +36,7 @@ MatObj.prototype = {
         var r = obj.pos.clone().sub( this.pos );
         var rSq = r.lengthSq();
 
-        return r.normalize().multiplyScalar( 0.0001 * this.mass * obj.mass / rSq );
+        return r.normalize().multiplyScalar( 1.0 * this.mass * obj.mass / rSq );
     }
 };
 
