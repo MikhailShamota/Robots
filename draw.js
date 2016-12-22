@@ -1,7 +1,10 @@
 var stats, controls, camera, renderer;
 var scene, octree, clock;
-var asteroids = [];
-var planets = [];
+var gravities = [];
+gravities.f = function(obj) {
+
+
+}
 
 const WORLD_SIZE = 1000;
 const V3_ZERO   = new THREE.Vector3( 0, 0, 0 );
@@ -22,6 +25,37 @@ function v3Random( length ) {
 init();
 paintGL();
 
+function updateObjs( dt ) {
+
+    octree.objectsData.forEach( function(octreeObj) {
+
+        var mesh = octreeObj.object;
+        var matObj = mesh.userData;
+
+        /*var neighbours = octree.search( obj.position, obj.radius );
+        neighbours.forEach( function(obj2) {
+
+            if ( obj.object.id == obj2.object.id )
+                return;
+
+            var v = obj.position.clone().sub( obj2.position );
+
+
+        })
+        */
+        var f = V3_ZERO.clone();
+
+        gravities.forEach( function(grav) {
+
+            f.add( matObj.gravity( grav ) );
+        });
+
+        matObj.f = f;
+        matObj.update( dt );
+        mesh.position.copy( matObj.pos );
+    });
+}
+
 function update() {
 
     var dt = clock.getDelta();//its in seconds
@@ -30,19 +64,7 @@ function update() {
     controls.update(); // required if controls.enableDamping = true, or if controls.autoRotate = true
     stats.update();
 
-    asteroids.forEach( function(asteroid) {
-
-        var f = V3_ZERO.clone();
-
-        planets.forEach( function(planet) {
-
-            f.add( asteroid.gravity( planet ) );
-        });
-
-        asteroid.f = f;
-        asteroid.update( dt );
-    });
-
+    updateObjs( dt )
 
     octree.rebuild();
 }
@@ -125,39 +147,61 @@ function initOctree() {
     } );
 }
 
-function initObj( array, obj ) {
+function addMesh( mesh ) {
 
-    obj.init();
+    scene.add( mesh );
+    octree.add( mesh );
+}
 
-    scene.add( obj.mesh );
-    octree.add( obj.mesh );
+function initAsteroid() {
 
-    array.push( obj );
+    var p = v3Random( WORLD_SIZE );
+    p.y = 0;
+
+    var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 100 );
+    var r = Math.random() * 10;
+    var m = r * r * r;
+
+    var asteroid = new Asteroid( p, m );
+    asteroid.velocity = v3Random( 10 ).add( v );
+
+    var mesh = asteroid.mesh( r, 0x8030F0 );
+
+    addMesh( mesh );
+}
+
+function initPlanets( q ) {
+
+    /*for ( var i = 0; i < q; i++ ) {
+
+        var planet = new Planet( v3Random( WORLD_SIZE ), Math.random() * 30, 0x1155BB );
+
+        initMesh( planets, planet );
+    }*/
+}
+
+function initSun() {
+
+    var p = V3_ZERO.clone();
+    var r = 80;
+    var m = r * r * r;
+
+    var sun = new Sun( p, m, 0xAAAAAA );
+
+    var mesh = sun.mesh( r, 0xAAAA00 );
+
+    addMesh( mesh );
+
+    scene.add( sun.light );
+    gravities.push( sun );
 }
 
 function initScene() {
 
-    for ( var i = 0; i < 100; i++ ) {
+    for ( var i = 0; i < 80; i++ )
+        initAsteroid();
 
-        var asteroid = new Asteroid( v3Random( WORLD_SIZE ), Math.random() * 10, 0x803000 );
-
-        asteroid.mov = v3Random( 10 );
-
-        initObj( asteroids, asteroid );
-    }
-
-    for ( var i = 0; i < 0; i++ ) {
-
-        var planet = new Planet( v3Random( WORLD_SIZE ), Math.random() * 30, 0x1155BB );
-
-        initObj( planets, planet );
-    }
-
-    var sun = new Sun( V3_ZERO.clone(), 80, 0x505050 );
-
-    initObj( planets, sun );
-
-    scene.add( sun.light );
+    initSun();
 
     octree.update();
     clock = new THREE.Clock();
