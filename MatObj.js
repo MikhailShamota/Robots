@@ -3,27 +3,28 @@ function MatObj(pos, mass) {
     this.pos = pos;
     this.mass = mass;
     this.velocity = null;
-    this.f = null;
+    //this.mesh = null;
 }
 
-MatObj.prototype.update = function( dt ) {
+MatObj.prototype.velocityDelta = function( f, dt ) {
 
-        if ( !this.velocity )//if it is unmovable
-            return;
+    var v = f.clone().multiplyScalar( dt / this.mass );
 
-        var v = this.f.clone().multiplyScalar( dt / this.mass );
+    return v;
+};
 
-        this.velocity.add( v );
-        this.pos.add( this.velocity.clone().multiplyScalar( dt ) );
-}
+MatObj.prototype.posDelta = function( dt ) {
+
+    return this.velocity.clone().multiplyScalar( dt );
+};
 
 MatObj.prototype.gravity = function(obj) {
 
-        var r = obj.pos.clone().sub( this.pos );
-        var rSq = r.lengthSq();
+    var r = obj.pos.clone().sub( this.pos );
+    var rSq = r.lengthSq();
 
-        return r.normalize().multiplyScalar( 30.0 * this.mass * obj.mass / rSq );
-}
+    return r.normalize().multiplyScalar( 30.0 * this.mass * obj.mass / rSq );
+};
 
 function Celestial(pos, mass) {
 
