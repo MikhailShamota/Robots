@@ -13,29 +13,6 @@ gravities.f = function(obj) {
     return f;
 }
 
-THREE.Octree.prototype.bounce = function(octreeObj) {
-
-    var fBounce = new THREE.Vector3();
-    var neighbours = this.search( octreeObj.position, octreeObj.radius );
-
-    neighbours.forEach( function(octreeObj2) {
-
-        if ( octreeObj.object.id == octreeObj2.object.id )
-            return;
-
-        var dist = octreeObj.position.distanceTo( octreeObj2.position );
-        var depth = octreeObj2.radius + octreeObj.radius - dist;
-
-        if ( depth > 0 ) {//bounce
-
-            var v = new THREE.Vector3().subVectors( octreeObj.position, octreeObj2.position ).normalize();//from obj to this
-
-            fBounce.add( v.multiplyScalar( depth / octreeObj.radius ) );
-        }
-    });
-
-    return fBounce;
-}
 
 const WORLD_SIZE = 1000;
 const V3_ZERO   = new THREE.Vector3( 0, 0, 0 );
@@ -56,7 +33,9 @@ function v3Random( length ) {
 init();
 paintGL();
 
-function updateObjs( dt ) {
+function updateCollision() {
+
+    var setter = [];
 
     octree.objectsData.forEach( function(octreeObj) {
 
@@ -66,8 +45,45 @@ function updateObjs( dt ) {
         if ( !matObj.velocity )//immovable
             return;
 
-        var f = octree.bounce( octreeObj ).multiplyScalar( 100000000 );
-        f.add( gravities.f( matObj ) );
+        octree.search( octreeObj.position, octreeObj.radius ).forEach( function(octreeObj2) {
+
+            var mesh2 = octreeObj2.object;
+            var matObj2 =  mesh2.userData;
+
+            if ( mesh.id == mesh2.id )
+                return;
+
+            var depth = octreeObj2.radius + octreeObj.radius - mesh.position.distanceTo( mesh2.position );
+
+            if ( depth > 0 ) {//bounce
+
+                matObj.pos.add( matObj.dive( matObj2, depth ) );
+
+                setter.push({
+                    obj : matObj,
+                    velocity : matObj.bounce( matObj2 )
+                });
+            }
+        });
+    });
+
+    setter.forEach( function(obj) {
+
+        obj.obj.velocity.copy( obj.velocity );
+    });
+}
+
+function updateMove(dt) {
+
+    octree.objectsData.forEach( function(octreeObj) {
+
+        var mesh = octreeObj.object;
+        var matObj = mesh.userData;
+
+        if ( !matObj.velocity )//immovable
+            return;
+
+        var f = gravities.f( matObj );
 
         matObj.velocity.add( matObj.velocityDelta( f, dt ) );
         matObj.pos.add( matObj.posDelta( dt ) );
@@ -83,9 +99,13 @@ function update() {
     controls.update(); // required if controls.enableDamping = true, or if controls.autoRotate = true
     stats.update();
 
-    updateObjs( dt )
+    ////
+
+    updateMove( dt )
 
     octree.rebuild();
+
+    updateCollision( );
 }
 
 function initializeGL() {
@@ -178,7 +198,7 @@ function initAsteroid() {
     p.y = 0;
 
     var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 100 );
-    var r = Math.random() * 90;
+    var r = Math.random() * 50;
     var m = r * r * r;
 
     var asteroid = new Asteroid( p, m );
@@ -218,10 +238,22 @@ function initSun() {
 
 function initScene() {
 
-    for ( var i = 0; i < 80; i++ )
-        initAsteroid();
+    //for ( var i = 0; i < 10; i++ )
+        //initAsteroid();
 
-    initSun();
+    //initSun();
+
+    var asteroid1 = new Asteroid( new THREE.Vector3( 0, 0, -1000), 900 );
+    asteroid1.velocity = new THREE.Vector3(0,-5,100);
+    addMesh( asteroid1.mesh( 30, 0x8030F0 ) );
+
+    var asteroid2 = new Asteroid( new THREE.Vector3( 0, 0, 1000), 150*150*150 );
+    asteroid2.velocity =new THREE.Vector3(0,5,-50);
+    addMesh( asteroid2.mesh( 150, 0x8030F0 ) );
+
+    scene.add(new THREE.PointLight(0xffffff,1,0,0));
+
+    gravities.push( asteroid2 );
 
     octree.update();
     clock = new THREE.Clock();
