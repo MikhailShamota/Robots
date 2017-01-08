@@ -95,9 +95,6 @@ function Sun(pos, mass, color) {
 
     Celestial.apply( this, arguments );
 
-    this.light = new THREE.PointLight( color, 1, 0 );
-    this.light.position = this.pos;
-
     //this.mesh.material = new THREE.MeshBasicMaterial( {color: color} );
 }
 

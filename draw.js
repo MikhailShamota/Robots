@@ -1,5 +1,8 @@
 var stats, controls, camera, renderer;
-var scene, octree, clock;
+var scene, octree;
+
+var clock = new THREE.Clock();
+
 var gravities = [];
 gravities.f = function(obj) {
 
@@ -184,81 +187,6 @@ function initOctree() {
         // helps insert objects that lie over more than one node
         overlapPct: 0.15
     } );
-}
-
-function addMesh( mesh ) {
-
-    scene.add( mesh );
-    octree.add( mesh );
-}
-
-function initAsteroid() {
-
-    var p = v3Random( WORLD_SIZE );
-    p.y = 0;
-
-    var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 100 );
-    var r = Math.random() * 50;
-    var m = r * r * r;
-
-    var asteroid = new Asteroid( p, m );
-    asteroid.velocity = v3Random( 10 ).add( v );
-
-    var mesh = asteroid.mesh( r, 0x8030F0 );
-
-    addMesh( mesh );
-}
-
-function initPlanets( q ) {
-
-    /*for ( var i = 0; i < q; i++ ) {
-
-        var planet = new Planet( v3Random( WORLD_SIZE ), Math.random() * 30, 0x1155BB );
-
-        initMesh( planets, planet );
-    }*/
-}
-
-function initSun() {
-
-    var p = V3_ZERO.clone();
-    var r = 80;
-    var m = r * r * r;
-
-    var sun = new Sun( p, m, 0xAAAAAA );
-
-    var mesh = sun.mesh( r, 0xAAAA00 );
-    //sun.mesh = mesh;
-
-    addMesh( mesh );
-
-    scene.add( sun.light );
-    gravities.push( sun );
-}
-
-function initScene() {
-
-    for ( var i = 0; i < 100; i++ )
-        initAsteroid();
-
-    initSun();
-
-    /*
-    var asteroid1 = new Asteroid( new THREE.Vector3( 0, 0, -1000), 900 );
-    asteroid1.velocity = new THREE.Vector3(0,-15,100);
-    addMesh( asteroid1.mesh( 30, 0x8030F0 ) );
-
-    var asteroid2 = new Asteroid( new THREE.Vector3( 0, 0, 1000), 150*150*150 );
-    asteroid2.velocity =new THREE.Vector3(0,15,-50);
-    addMesh( asteroid2.mesh( 150, 0x8030F0 ) );
-
-    scene.add(new THREE.PointLight(0xffffff,1,0,0));
-
-    gravities.push( asteroid2 );
-    */
-
-    octree.update();
-    clock = new THREE.Clock();
 }
 
 function init() {
