@@ -7,10 +7,8 @@ function MatObj(pos, mass) {
 }
 
 MatObj.prototype.velocityDelta = function( f, dt ) {
-
-    var v = f.clone().multiplyScalar( dt / this.mass );
-
-    return v;
+    
+    return f.clone().multiplyScalar( dt / this.mass );
 };
 
 MatObj.prototype.posDelta = function( dt ) {
@@ -36,14 +34,14 @@ MatObj.prototype.dive = function(obj2, depth) {
     var d = obj2.velocity ? depth * obj2.mass / (this.mass + obj2.mass) : depth;
 
     return vNorm.multiplyScalar( -d );
-}
+};
 
 MatObj.prototype.bounce = function(obj2) {
 
     var vNorm = obj2.pos.clone().sub( this.pos ).normalize();//from this to obj2
 
-    var v1n = vNorm.dot( this.velocity );//scalar value = velocity 1 projected on normal vector
-    var v2n = vNorm.dot( obj2.velocity );//scalar value = velocity 2 projected on normal vector
+    var v1n = vNorm.dot( this.velocity || V3_ZERO );//scalar value = velocity 1 projected on normal vector
+    var v2n = vNorm.dot( obj2.velocity || V3_ZERO );//scalar value = velocity 2 projected on normal vector
 
     var v1Norm = vNorm.clone().multiplyScalar( v1n );//project velocity before collision onto normal
     var v1Tangent = this.velocity.clone().sub( v1Norm );//tangent velocity
@@ -53,7 +51,7 @@ MatObj.prototype.bounce = function(obj2) {
     var newVelocity = vNorm.multiplyScalar( v );
 
     return newVelocity.add( v1Tangent );
-}
+};
 
 function Celestial(pos, mass) {
 
@@ -75,7 +73,7 @@ Celestial.prototype.mesh = function(radius, color) {
         m.userData = this;
 
         return m;
-}
+};
 
 //Celestial.prototype = Object.create( MatObj.prototype );
 

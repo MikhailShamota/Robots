@@ -11,7 +11,7 @@ gravities.f = function(obj) {
     });
 
     return f;
-}
+};
 
 
 const WORLD_SIZE = 1000;
@@ -101,11 +101,11 @@ function update() {
 
     ////
 
-    updateMove( dt )
+    updateMove( dt );
 
     octree.rebuild();
 
-    updateCollision( );
+    updateCollision();
 }
 
 function initializeGL() {
@@ -238,22 +238,24 @@ function initSun() {
 
 function initScene() {
 
-    //for ( var i = 0; i < 10; i++ )
-        //initAsteroid();
+    for ( var i = 0; i < 100; i++ )
+        initAsteroid();
 
-    //initSun();
+    initSun();
 
+    /*
     var asteroid1 = new Asteroid( new THREE.Vector3( 0, 0, -1000), 900 );
-    asteroid1.velocity = new THREE.Vector3(0,-5,100);
+    asteroid1.velocity = new THREE.Vector3(0,-15,100);
     addMesh( asteroid1.mesh( 30, 0x8030F0 ) );
 
     var asteroid2 = new Asteroid( new THREE.Vector3( 0, 0, 1000), 150*150*150 );
-    asteroid2.velocity =new THREE.Vector3(0,5,-50);
+    asteroid2.velocity =new THREE.Vector3(0,15,-50);
     addMesh( asteroid2.mesh( 150, 0x8030F0 ) );
 
     scene.add(new THREE.PointLight(0xffffff,1,0,0));
 
     gravities.push( asteroid2 );
+    */
 
     octree.update();
     clock = new THREE.Clock();
