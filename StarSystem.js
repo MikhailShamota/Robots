@@ -12,29 +12,32 @@ function initAsteroid() {
     p.y = 0;
 
     var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 100 );
-    var r = Math.random() * 50;
+    var r = Math.random() * 10;
     var m = r * r * r;
 
     var asteroid = new Asteroid( p, m );
-    asteroid.velocity = v3Random( 10 ).add( v );
+    asteroid.velocity = v3Random( 100 ).add( v );
 
     return asteroid.mesh( r, 0x8030F0 );
 }
 
-function initPlanets( q ) {
+function initPlanet() {
 
-    /*for ( var i = 0; i < q; i++ ) {
+    var p = v3Random( WORLD_SIZE );
+    p.y = 0;
 
-     var planet = new Planet( v3Random( WORLD_SIZE ), Math.random() * 30, 0x1155BB );
+    var r = Math.random() * 50;
+    var m = r * r * r;
 
-     initMesh( planets, planet );
-     }*/
+    var planet = new Planet( p, m );
+
+    return planet.mesh( r, 0x80FFF0 );
 }
 
 function initSun() {
 
     var p = V3_ZERO.clone();
-    var r = 80;
+    var r = 100;
     var m = r * r * r;
 
     var sun = new Sun( p, m, 0xAAAAAA );
@@ -50,6 +53,9 @@ function initScene() {
 
     for ( var i = 0; i < 100; i++ )
         addMesh( initAsteroid() );
+
+    for ( var i = 0; i < 10; i++ )
+        addMesh( initPlanet(), gravities );
 
     var sun = initSun();
     addMesh ( sun, gravities );

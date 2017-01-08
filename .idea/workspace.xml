@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="510eed05-ed6a-4361-9ef3-ef26ad0cd624" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/StarSystem.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MatObj.js" afterPath="$PROJECT_DIR$/MatObj.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/draw.js" afterPath="$PROJECT_DIR$/draw.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.html" afterPath="$PROJECT_DIR$/main.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StarSystem.js" afterPath="$PROJECT_DIR$/StarSystem.js" />
     </list>
     <ignored path="Robots.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -40,8 +37,8 @@
       <file leaf-file-name="StarSystem.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/StarSystem.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="41" column="54" selection-start-line="41" selection-start-column="54" selection-end-line="41" selection-end-column="54" />
+            <state relative-caret-position="187">
+              <caret line="23" column="20" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -233,7 +230,7 @@
       <workItem from="1482947517686" duration="2428000" />
       <workItem from="1483040499861" duration="204000" />
       <workItem from="1483808321278" duration="830000" />
-      <workItem from="1483883140725" duration="6820000" />
+      <workItem from="1483883140725" duration="7448000" />
     </task>
     <task id="LOCAL-00001" summary="dot fix">
       <created>1483885655001</created>
@@ -242,11 +239,18 @@
       <option name="project" value="LOCAL" />
       <updated>1483885655001</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="new js starsystem">
+      <created>1483893164112</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1483893164112</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35721000" />
+    <option name="totallyTimeSpent" value="36349000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1378" height="780" extended-state="0" />
@@ -289,7 +293,8 @@
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="false" />
     <MESSAGE value="dot fix" />
-    <option name="LAST_COMMIT_MESSAGE" value="dot fix" />
+    <MESSAGE value="new js starsystem" />
+    <option name="LAST_COMMIT_MESSAGE" value="new js starsystem" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -474,8 +479,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/StarSystem.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="41" column="54" selection-start-line="41" selection-start-column="54" selection-end-line="41" selection-end-column="54" />
+        <state relative-caret-position="187">
+          <caret line="23" column="20" selection-start-line="23" selection-start-column="20" selection-end-line="23" selection-end-column="20" />
           <folding />
         </state>
       </provider>
