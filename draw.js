@@ -4,11 +4,11 @@ var scene, octree;
 var clock = new THREE.Clock();
 
 var gravities = [];
-gravities.f = obj => {
+gravities.f = function(obj) {
 
     var f = V3_ZERO.clone();
 
-    gravities.forEach( function(grav) {
+    this.forEach( function(grav) {
 
         f.add( obj.gravity( grav ) );
     });
@@ -195,7 +195,7 @@ function init() {
     initStats();
     initControls();
     initOctree();
-    initScene();
+    starSystem.init();
 }
 
 function paintGL() {

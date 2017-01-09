@@ -1,16 +1,61 @@
-function addMesh( mesh, grav ) {
+var starSystem = [
+    {
+        f : SunBlack,
+        g : true,
+        l : LightWhite
+    },
+    {
+        f : PlanetArid
+    },
+    {
+        f : PlanetArid
+    },
+    {
+        f : PlanetArid
+    },
+    {
+        f : PlanetArid
+    },
+    {
+        f : AsteroidPlain,
+        q : 100
+    },
+    {
+        f : PlanetArid
+    }
+];
 
-    scene.add( mesh );
-    octree.add( mesh );
-    
-    grav && grav.push( mesh.userData );
+starSystem.orbitPos = orbit => {
+
+    var p = v3Random( 1.0 );
+
+    p.multiply( new THREE.Vector3(1,0,1) ).normalize().multiplyScalar( orbit * WORLD_SIZE );//p.Y = 0
+
+    return p;
+};
+
+starSystem.init = function() {
+
+    var q = this.length;
+
+    starSystem.forEach( (item, i) => {
+
+        for ( var x = 0; x < (item.q || 1); x++ ) {
+
+            var objMesh = item.f( starSystem.orbitPos( i / q ) );
+
+            scene.add( objMesh );
+            octree.add( objMesh );
+
+            item.g && gravities.push( objMesh.userData );//add to gravity field
+            item.l && scene.add( item.l( objMesh.position ) );
+        }
+    });
+
+    octree.update();
 }
 
-function initAsteroid( orbit ) {
-
-    var p = v3Random( WORLD_SIZE );
-    //p.y = 0;
-    p.multiply(new THREE.Vector3(1,0,1)).normalize().multiplyScalar( orbit );
+function AsteroidPlain(p) {
 
     var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 100 );
     var r = Math.random() * 10;
@@ -22,10 +67,7 @@ function initAsteroid( orbit ) {
     return asteroid.mesh( r, 0x8030F0 );
 }
 
-function initPlanet() {
-
-    var p = v3Random( WORLD_SIZE );
-    p.y = 0;
+function PlanetArid(p) {
 
     var r = Math.random() * 50;
     var m = r * r * r;
@@ -35,52 +77,20 @@ function initPlanet() {
     return planet.mesh( r, 0x80FFF0 );
 }
 
-function initSun() {
+function SunBlack(p) {
 
-    var p = V3_ZERO.clone();
     var r = 100;
     var m = r * r * r;
 
     var sun = new Sun( p, m, 0xAAAAAA );
 
-
-
     return sun.mesh( r, 0xAAAA00 );
 }
 
-function initLight() {
+function LightWhite( pos ) {
 
     var light = new THREE.PointLight( 0xFFFFFF, 1, 0 );
-    light.position = this.pos;
+    light.position = pos;
 
     return light;
-}
-
-function initScene() {
-
-    for ( var i = 0; i < 100; i++ )
-        addMesh( initAsteroid( WORLD_SIZE * 0.8 ) );
-
-    //for ( var i = 0; i < 10; i++ )
-    //    addMesh( initPlanet(), gravities );
-
-    addMesh ( initSun(), gravities );
-
-    scene.add( initLight() );
-    /*
-     var asteroid1 = new Asteroid( new THREE.Vector3( 0, 0, -1000), 900 );
-     asteroid1.velocity = new THREE.Vector3(0,-15,100);
-     addMesh( asteroid1.mesh( 30, 0x8030F0 ) );
-
-     var asteroid2 = new Asteroid( new THREE.Vector3( 0, 0, 1000), 150*150*150 );
-     asteroid2.velocity =new THREE.Vector3(0,15,-50);
-     addMesh( asteroid2.mesh( 150, 0x8030F0 ) );
-
-     scene.add(new THREE.PointLight(0xffffff,1,0,0));
-
-     gravities.push( asteroid2 );
-     */
-
-    octree.update();
-
 }
