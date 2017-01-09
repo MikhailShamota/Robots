@@ -6,17 +6,18 @@ function addMesh( mesh, grav ) {
     grav && grav.push( mesh.userData );
 }
 
-function initAsteroid() {
+function initAsteroid( orbit ) {
 
     var p = v3Random( WORLD_SIZE );
-    p.y = 0;
+    //p.y = 0;
+    p.multiply(new THREE.Vector3(1,0,1)).normalize().multiplyScalar( orbit );
 
     var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 100 );
     var r = Math.random() * 10;
     var m = r * r * r;
 
     var asteroid = new Asteroid( p, m );
-    asteroid.velocity = v3Random( 100 ).add( v );
+    asteroid.velocity = v3Random( 10 ).add( v );
 
     return asteroid.mesh( r, 0x8030F0 );
 }
@@ -42,25 +43,30 @@ function initSun() {
 
     var sun = new Sun( p, m, 0xAAAAAA );
 
-    var light = new THREE.PointLight( sun.color, 1, 0 );
-    light.position = this.pos;
-    scene.add( light );
+
 
     return sun.mesh( r, 0xAAAA00 );
+}
+
+function initLight() {
+
+    var light = new THREE.PointLight( 0xFFFFFF, 1, 0 );
+    light.position = this.pos;
+
+    return light;
 }
 
 function initScene() {
 
     for ( var i = 0; i < 100; i++ )
-        addMesh( initAsteroid() );
+        addMesh( initAsteroid( WORLD_SIZE * 0.8 ) );
 
-    for ( var i = 0; i < 10; i++ )
-        addMesh( initPlanet(), gravities );
+    //for ( var i = 0; i < 10; i++ )
+    //    addMesh( initPlanet(), gravities );
 
-    var sun = initSun();
-    addMesh ( sun, gravities );
+    addMesh ( initSun(), gravities );
 
-
+    scene.add( initLight() );
     /*
      var asteroid1 = new Asteroid( new THREE.Vector3( 0, 0, -1000), 900 );
      asteroid1.velocity = new THREE.Vector3(0,-15,100);

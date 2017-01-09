@@ -4,7 +4,7 @@ var scene, octree;
 var clock = new THREE.Clock();
 
 var gravities = [];
-gravities.f = function(obj) {
+gravities.f = obj => {
 
     var f = V3_ZERO.clone();
 
@@ -40,7 +40,7 @@ function updateCollision() {
 
     var setter = [];
 
-    octree.objectsData.forEach( function(octreeObj) {
+    octree.objectsData.forEach( octreeObj => {
 
         var mesh = octreeObj.object;
         var matObj = mesh.userData;
@@ -48,7 +48,7 @@ function updateCollision() {
         if ( !matObj.velocity )//immovable
             return;
 
-        octree.search( octreeObj.position, octreeObj.radius ).forEach( function(octreeObj2) {
+        octree.search( octreeObj.position, octreeObj.radius ).forEach( octreeObj2 => {
 
             var mesh2 = octreeObj2.object;
             var matObj2 =  mesh2.userData;
@@ -78,7 +78,7 @@ function updateCollision() {
 
 function updateMove(dt) {
 
-    octree.objectsData.forEach( function(octreeObj) {
+    octree.objectsData.forEach( octreeObj => {
 
         var mesh = octreeObj.object;
         var matObj = mesh.userData;

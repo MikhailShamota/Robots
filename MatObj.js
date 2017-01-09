@@ -21,7 +21,7 @@ MatObj.prototype.gravity = function(obj) {
     var r = obj.pos.clone().sub( this.pos );
     var rSq = r.lengthSq();
 
-    return r.normalize().multiplyScalar( 50.0 * this.mass * obj.mass / rSq );
+    return r.normalize().multiplyScalar( 10.0 * this.mass * obj.mass / rSq );
 };
 
 MatObj.prototype.dive = function(obj2, depth) {
@@ -94,8 +94,6 @@ extend( Planet, Celestial );
 function Sun(pos, mass, color) {
 
     Celestial.apply( this, arguments );
-
-    //this.mesh.material = new THREE.MeshBasicMaterial( {color: color} );
 }
 
 extend( Sun, Celestial );
