@@ -64,15 +64,15 @@ extend( Celestial, MatObj );
 
 Celestial.prototype.mesh = function(radius, color) {
 
-        var m = new THREE.Mesh(
-            new THREE.SphereGeometry(radius, 32, 32),
-            new THREE.MeshLambertMaterial({color: color, side: 2, shading: THREE.FlatShading})
-        );
+    var m = new THREE.Mesh(
+        new THREE.SphereGeometry(radius, 32, 32),
+        new THREE.MeshLambertMaterial({color: color, side: 2, shading: THREE.FlatShading})
+    );
 
-        m.position.copy( this.pos );
-        m.userData = this;
+    m.position.copy( this.pos );
+    m.userData = this;
 
-        return m;
+    return m;
 };
 
 //Celestial.prototype = Object.create( MatObj.prototype );

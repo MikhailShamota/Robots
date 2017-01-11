@@ -1,31 +1,71 @@
-var starSystem = [
-    {
-        f : SunBlack,
-        g : true,
-        l : LightWhite
-    },
-    {
-        f : PlanetArid
-    },
-    {
-        f : PlanetArid
-    },
-    {
-        f : PlanetArid
-    },
-    {
-        f : PlanetArid
-    },
-    {
-        f : AsteroidPlain,
-        q : 100
-    },
-    {
-        f : PlanetArid
-    }
-];
+function StarSystem() {
 
-starSystem.orbitPos = orbit => {
+    this.celestialsList = [
+        {
+            f : SunBlack,
+            g : true,
+            l : LightWhite
+        },
+        {
+            f : PlanetArid,
+            g : true
+        },
+        {
+            f : PlanetArid,
+            g : true
+        },
+        {
+            f : PlanetArid,
+            g : true
+        },
+        {
+            f : PlanetArid,
+            g : true
+        },
+        {
+            f : AsteroidPlain,
+            q : 100
+        },
+        {
+            f : PlanetArid,
+            g : true
+        }
+    ];
+
+    this.gravities = [];
+    this.gravities.f = function (obj) {
+
+        var f = V3_ZERO.clone();
+
+        this.forEach(function (grav) {
+
+            f.add(obj.gravity(grav));
+        });
+
+        return f;
+    };
+}
+
+StarSystem.prototype.init = function(scene, octree) {
+
+    var q = this.celestialsList.length;
+
+    this.celestialsList.forEach( (item, i) => {
+
+        for ( var x = 0; x < (item.q || 1); x++ ) {
+
+            var objMesh = item.f( this.orbitPos( i / q ) );
+
+            scene.add( objMesh );
+            octree.add( objMesh );
+
+            item.g && this.gravities.push( objMesh.userData );//add to gravity field
+            item.l && scene.add( item.l( objMesh.position ) );
+        }
+    });
+}
+
+StarSystem.prototype.orbitPos = orbit => {
 
     var p = v3Random( 1.0 );
 
@@ -33,27 +73,6 @@ starSystem.orbitPos = orbit => {
 
     return p;
 };
-
-starSystem.init = function() {
-
-    var q = this.length;
-
-    starSystem.forEach( (item, i) => {
-
-        for ( var x = 0; x < (item.q || 1); x++ ) {
-
-            var objMesh = item.f( starSystem.orbitPos( i / q ) );
-
-            scene.add( objMesh );
-            octree.add( objMesh );
-
-            item.g && gravities.push( objMesh.userData );//add to gravity field
-            item.l && scene.add( item.l( objMesh.position ) );
-        }
-    });
-
-    octree.update();
-}
 
 function AsteroidPlain(p) {
 
