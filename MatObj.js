@@ -53,50 +53,18 @@ MatObj.prototype.bounce = function(obj2) {
     return newVelocity.add( v1Tangent );
 };
 
-function Celestial(pos, mass) {
+MatObj.prototype.initMesh = function( m ) {
 
-    MatObj.apply( this, arguments );
-
-    this.mass = mass;
-}
-
-extend( Celestial, MatObj );
-
-Celestial.prototype.mesh = function(radius, color) {
-
-    var m = new THREE.Mesh(
+    /*var m = new THREE.Mesh(
         new THREE.SphereGeometry(radius, 32, 32),
         new THREE.MeshLambertMaterial({color: color, side: 2, shading: THREE.FlatShading})
-    );
+    );*/
 
     m.position.copy( this.pos );
     m.userData = this;
 
     return m;
 };
-
-//Celestial.prototype = Object.create( MatObj.prototype );
-
-function Asteroid(pos, mass) {
-
-    Celestial.apply( this, arguments );
-}
-
-extend( Asteroid, Celestial );
-
-function Planet(pos, mass) {
-
-    Celestial.apply( this, arguments );
-}
-
-extend( Planet, Celestial );
-
-function Sun(pos, mass, color) {
-
-    Celestial.apply( this, arguments );
-}
-
-extend( Sun, Celestial );
 
 function extend(Child, Parent) {
 
@@ -106,6 +74,8 @@ function extend(Child, Parent) {
     Child.prototype.constructor = Child;
     Child.superclass = Parent.prototype;
 }
+
+
 
 
 
