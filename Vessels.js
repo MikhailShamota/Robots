@@ -10,11 +10,16 @@ extend( Vessel, MatObj );
     return this.prototype.mesh( m );
 };*/
 
-function Fighter() {
+function Fighter( pos, mass ) {
 
+    Vessel.apply( this, arguments );
 }
 
-Fighter.prototype.mesh = function ( color ) {
+extend (Fighter, Vessel )
+
+Fighter.prototype.mesh = function () {
+
+    var size = Math.cbrt( this.mass );
 
     var m = new THREE.Mesh(
         new THREE.BoxGeometry( size, size, size, 0, 0, 0 ),

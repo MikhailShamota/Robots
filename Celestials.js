@@ -2,12 +2,14 @@ function Celestial(pos, mass) {
 
     MatObj.apply( this, arguments );
 
-    this.mass = mass;
+    //this.mass = mass;
 }
 
 extend( Celestial, MatObj );
 
-Celestial.prototype.mesh = function(radius, color) {
+Celestial.prototype.mesh = function( color ) {
+
+    var radius = Math.cbrt( this.mass );
 
     var m = new THREE.Mesh(
         new THREE.SphereGeometry(radius, 32, 32),
