@@ -8,6 +8,7 @@ var Scene = (function () {
     var clock = new THREE.Clock();
 
     var starSystem = new StarSystem();
+    var fleet1 = new Fleet();
 
     function updateCollision() {
 
@@ -56,14 +57,14 @@ var Scene = (function () {
             var mesh = octreeObj.object;
             var matObj = mesh.userData;
 
-            if (!matObj.velocity)//immovable
+            if ( !matObj.velocity )//immovable
                 return;
 
-            var f = starSystem.gravities.f(matObj);
+            var f = starSystem.gravities.f( matObj ).add( matObj.f || V3_ZERO );
 
-            matObj.velocity.add(matObj.velocityDelta(f, dt));
-            matObj.pos.add(matObj.posDelta(dt));
-            mesh.position.copy(matObj.pos);
+            matObj.velocity.add( matObj.velocityDelta( f, dt ) );
+            matObj.pos.add( matObj.posDelta( dt ) );
+            mesh.position.copy( matObj.pos );
         });
     }
 
@@ -171,6 +172,7 @@ var Scene = (function () {
         initOctree();
 
         starSystem.init( scene, octree );
+        fleet1.init( scene, octree );
 
         octree.update();
     }

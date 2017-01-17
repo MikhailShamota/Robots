@@ -12,14 +12,14 @@ function Fleet() {
 
     function smallFighter( p ) {
 
-        var fighter = new Fighter( p, 2 );
+        var fighter = new Fighter( p, 20000 );
 
         return fighter.mesh( 0xFF1111 );
     }
 
     function bigFighter( p ) {
 
-        var fighter = new Fighter( p, 5 );
+        var fighter = new Fighter( p, 50000 );
 
         return fighter.mesh( 0x11FF11 );
     }
@@ -27,20 +27,18 @@ function Fleet() {
 
 Fleet.prototype.init = function(scene, octree) {
 
-    function startPos() {
+    function startPos( i ) {
 
+        return new THREE.Vector3( 0, 200 * (i + 1), 0 );
     }
 
-    var q = this.vesselsList.length;
+    //var q = this.vesselsList.length;
 
-    this.vesselsList.forEach( (item, i) => {
+    this.vesselsList.forEach( (item, i ) => {
 
-        for ( var x = 0; x < (item.q || 1); x++ ) {
+        var objMesh = item.f( startPos( i ) );
 
-            var objMesh = item.f( startPos() );
-
-            scene.add( objMesh );
-            octree.add( objMesh );
-        }
+        scene.add( objMesh );
+        octree.add( objMesh );
     });
 };
