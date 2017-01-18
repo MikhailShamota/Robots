@@ -10,6 +10,10 @@ var Scene = (function () {
     var starSystem = new StarSystem();
     var fleet1 = new Fleet();
 
+    var eclipticPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ) );
+    var v2MousePoint = new THREE.Vector2();
+    var v3MousePoint = new THREE.Vector3();
+
     function updateCollision() {
 
         var setter = [];
@@ -63,9 +67,22 @@ var Scene = (function () {
             var f = starSystem.gravities.f( matObj ).add( matObj.f || V3_ZERO );
 
             matObj.velocity.add( matObj.velocityDelta( f, dt ) );
+
+            if ( matObj.f && v3MousePoint )
+                matObj.pos.copy( v3MousePoint );
+
             matObj.pos.add( matObj.posDelta( dt ) );
             mesh.position.copy( matObj.pos );
         });
+    }
+
+    function updateMouse() {
+
+        var raycaster = new THREE.Raycaster();
+
+        raycaster.setFromCamera( v2MousePoint, camera );
+
+        v3MousePoint = raycaster.ray.intersectPlane( eclipticPlane );
     }
 
     function update() {
@@ -77,12 +94,19 @@ var Scene = (function () {
         stats.update();
 
         ////
+        updateMouse();
 
         updateMove(dt);
 
         octree.rebuild();
 
         updateCollision();
+    }
+
+    function onMouseUpdate( event ) {
+
+        v2MousePoint.x = ( ( event.pageX - renderer.context.canvas.offsetLeft ) / window.innerWidth ) * 2 - 1;
+        v2MousePoint.y = - ( ( event.pageY - renderer.context.canvas.offsetTop ) / window.innerHeight ) * 2 + 1;
     }
 
     function initializeGL() {
@@ -108,6 +132,7 @@ var Scene = (function () {
         renderer.setSize(WIDTH, HEIGHT);
         renderer.sortObjects = false;
         //renderer.domElement.addEventListener("click", onMouseClick);
+        renderer.domElement.addEventListener('mousemove', onMouseUpdate, false);
 
         document.body.appendChild(renderer.domElement);
 

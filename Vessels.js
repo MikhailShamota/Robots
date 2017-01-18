@@ -1,4 +1,4 @@
-function Vessel( pos, mass ) {
+function Vessel(pos, mass) {
 
     MatObj.apply( this, arguments );
 
@@ -8,21 +8,21 @@ function Vessel( pos, mass ) {
 
 extend( Vessel, MatObj );
 
-/*Vessel.prototype.mesh = function( m ) {
+Vessel.prototype.fTurn = function( mesh, v3Dir ) {
 
-    return this.prototype.mesh( m );
-};*/
 
-function Fighter( pos, mass ) {
+};
+
+function Fighter(pos, mass) {
 
     Vessel.apply( this, arguments );
 
     this.f = new THREE.Vector3( 0, 0, 1 ).multiplyScalar( mass * 20 );
 }
 
-extend (Fighter, Vessel )
+extend ( Fighter, Vessel )
 
-Fighter.prototype.mesh = function ( color ) {
+Fighter.prototype.mesh = function (color) {
 
     var size = Math.cbrt( this.mass );
 
