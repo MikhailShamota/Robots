@@ -64,12 +64,26 @@ var Scene = (function () {
             if ( !matObj.velocity )//immovable
                 return;
 
-            var f = starSystem.gravities.f( matObj ).add( matObj.f || V3_ZERO );
+            var f = starSystem.gravities.f( matObj ).add( matObj.jet && matObj.jet( mesh ) || V3_ZERO );
 
             matObj.velocity.add( matObj.velocityDelta( f, dt ) );
 
-            if ( matObj.f && v3MousePoint )
-                matObj.pos.copy( v3MousePoint );
+            if ( matObj.turn && v3MousePoint ) {
+
+                //matObj.pos.copy(v3MousePoint);
+                var fTurn = matObj.turn( mesh, v3MousePoint );
+
+                var v3x = new THREE.Vector3();
+                var v3y = new THREE.Vector3();
+                var v3z = new THREE.Vector3();
+                mesh.matrix.extractBasis( v3x, v3y, v3z );
+
+                var rY = new THREE.Matrix4().makeRotationAxis( v3y, fTurn.x );//yaw
+                var rX = new THREE.Matrix4().makeRotationAxis( v3x, fTurn.y );//pitch
+                var rZ = new THREE.Matrix4().makeRotationAxis( v3z, fTurn.z );//roll
+
+                mesh.matrix.multiply( rY ).multiply( rZ ).multiply( rX );
+            }
 
             matObj.pos.add( matObj.posDelta( dt ) );
             mesh.position.copy( matObj.pos );
