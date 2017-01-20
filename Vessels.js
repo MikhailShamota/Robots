@@ -13,29 +13,19 @@ Vessel.prototype.turn = function( mesh, v3To ) {
 
     var dir = v3To.clone().sub( this.pos ).normalize();
 
-    /*var v3x = new THREE.Vector3();
-    var v3y = new THREE.Vector3();
-    var v3z = new THREE.Vector3();
-    mesh.matrix.extractBasis( v3x, v3y, v3z );*/
-
     var fwd = new THREE.Vector3( 0, 0, 1 );
-    var up = new THREE.Vector3( 0, 1, 0 );
-    var right = new THREE.Vector3( 1, 0, 0 );
 
     var matInv = new THREE.Matrix4();
     matInv.getInverse( mesh.matrix );
 
     dir.transformDirection( matInv );//now v3Dir is in a vessel coordinate system
 
-    var dirYaw = new THREE.Vector3( dir.x, 0, dir.y );// Y = 0
-    var dirPitch = new THREE.Vector3( 0, dir.y, dir.z );// X = 0
-    var dirRoll = new THREE.Vector3( dir.x, dir.y, 0 );// Z = 0
+    var grip = new THREE.Vector2( dir.x, -dir.y ).normalize();
 
-    var dotYaw = dirYaw.dot( right );// -1 .. +1
-    var dotPitch = dirPitch.dot( up );// -1 .. +1
-    var dotRoll = dirRoll.dot( up );// -1 .. +1
+    var dot = dir.normalize().dot( fwd );//-1..0..+1
+    dot = Math.min( 1 - dot, 1 );//+1..+1..0
 
-    return new THREE.Vector3( dotYaw, dotPitch, dotRoll ).multiplyScalar( this.fTurn );
+    return grip.multiplyScalar( dot );
 };
 
 Vessel.prototype.jet = function( mesh ) {
@@ -53,8 +43,8 @@ function Fighter(pos, mass) {
 
     Vessel.apply( this, arguments );
 
-    this.fJet = this.mass * 100
-    this.fTurn = this.mass * 50;
+    this.fJet = this.mass * 20;
+    this.fTurn = 0.5;//radians per sec
 }
 
 extend ( Fighter, Vessel )
@@ -63,10 +53,17 @@ Fighter.prototype.mesh = function (color) {
 
     var size = Math.cbrt( this.mass );
 
+    var box1 = new THREE.BoxGeometry( size, size, size * 2, 0, 0, 0 );
+    var box2 = new THREE.BoxGeometry( size * 2, size * 0.2, size, 0, 0, 0 );
+
+    box1.merge( box2, new THREE.Matrix4().makeTranslation( 0, 0, -size) );
+
     var m = new THREE.Mesh(
-        new THREE.BoxGeometry( size, size, size * 2, 0, 0, 0 ),
+        box1,
         new THREE.MeshLambertMaterial({color: color, side: 2, shading: THREE.FlatShading})
     );
+
+
 
     return this.initMesh( m );
 }

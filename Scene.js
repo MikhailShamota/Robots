@@ -70,19 +70,10 @@ var Scene = (function () {
 
             if ( matObj.turn && v3MousePoint ) {
 
-                //matObj.pos.copy(v3MousePoint);
                 var fTurn = matObj.turn( mesh, v3MousePoint );
 
-                var v3x = new THREE.Vector3();
-                var v3y = new THREE.Vector3();
-                var v3z = new THREE.Vector3();
-                mesh.matrix.extractBasis( v3x, v3y, v3z );
-
-                var rY = new THREE.Matrix4().makeRotationAxis( v3y, fTurn.x );//yaw
-                var rX = new THREE.Matrix4().makeRotationAxis( v3x, fTurn.y );//pitch
-                var rZ = new THREE.Matrix4().makeRotationAxis( v3z, fTurn.z );//roll
-
-                mesh.matrix.multiply( rY ).multiply( rZ ).multiply( rX );
+                mesh.rotation.y += fTurn.x * dt;
+                mesh.rotation.x += fTurn.y * dt;
             }
 
             matObj.pos.add( matObj.posDelta( dt ) );

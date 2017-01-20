@@ -3,7 +3,7 @@ function StarSystem() {
     this.celestialsList = [
         {
             f : SunBlack,
-            g : true,
+            g : false,
             l : LightWhite
         },
         {
