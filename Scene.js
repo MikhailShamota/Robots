@@ -64,18 +64,17 @@ var Scene = (function () {
             if ( !matObj.velocity )//immovable
                 return;
 
-            var f = starSystem.gravities.f( matObj ).add( matObj.jet && matObj.jet( mesh ) || V3_ZERO );
+            if ( matObj.turnTo && matObj.to ) {
 
-            matObj.velocity.add( matObj.velocityDelta( f, dt ) );
-
-            if ( matObj.turn && v3MousePoint ) {
-
-                var fTurn = matObj.turn( mesh, v3MousePoint );
+                var fTurn = matObj.turnTo( mesh );
 
                 mesh.rotation.y += fTurn.x * dt;
                 mesh.rotation.x += fTurn.y * dt;
             }
 
+            var f = starSystem.gravities.f( matObj ).add( matObj.jet && matObj.jet( mesh ) || V3_ZERO );
+
+            matObj.velocity.add( matObj.velocityDelta( f, dt ) );
             matObj.pos.add( matObj.posDelta( dt ) );
             mesh.position.copy( matObj.pos );
         });
@@ -90,6 +89,11 @@ var Scene = (function () {
         v3MousePoint = raycaster.ray.intersectPlane( eclipticPlane );
     }
 
+    function updateTarget() {
+
+        fleet1.update( v3MousePoint );
+    }
+
     function update() {
 
         var dt = clock.getDelta();//its in seconds
@@ -99,13 +103,15 @@ var Scene = (function () {
         stats.update();
 
         ////
-        updateMouse();
+        updateMouse();//get mouse position
 
-        updateMove(dt);
+        updateTarget();//update vessels movement direction
+
+        updateMove(dt);//update MatObj physics
 
         octree.rebuild();
 
-        updateCollision();
+        updateCollision();//check and process MatObj collisions
     }
 
     function onMouseUpdate( event ) {

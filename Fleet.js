@@ -3,27 +3,43 @@ function Fleet() {
     this.vesselsList = [
 
         {
-            f: smallFighter
+            f: smallFighter,
+            to: toPos
         },
         {
-            f: bigFighter
+            f: bigFighter,
+            to: toRandom
         }
     ];
 
     function smallFighter( p ) {
 
-        var fighter = new Fighter( p, 20000 );
-
-        return fighter.mesh( 0xFF1111 );
+        return new Fighter( p, 20000, 0xFF1111 );
     }
 
     function bigFighter( p ) {
 
-        var fighter = new Fighter( p, 50000 );
+        return new Fighter( p, 50000, 0x11FF11 );
+    }
 
-        return fighter.mesh( 0x11FF11 );
+    function toPos( pos ) {
+
+        return pos;
+    }
+
+    function toRandom() {
+
+        return v3Random() * WORLD_SIZE;
     }
 }
+
+Fleet.prototype.update = function(mousePos) {
+
+    this.vesselsList.forEach( (item ) => {
+
+        item.obj.to = item.to( mousePos ).clone();//where go to
+    });
+};
 
 Fleet.prototype.init = function(scene, octree) {
 
@@ -36,9 +52,11 @@ Fleet.prototype.init = function(scene, octree) {
 
     this.vesselsList.forEach( (item, i ) => {
 
-        var objMesh = item.f( startPos( i ) );
+        var obj = item.f( startPos( i ) );
 
-        scene.add( objMesh );
-        octree.add( objMesh );
+        scene.add( obj.mesh );
+        octree.add( obj.mesh );
+
+        item.obj = obj;//a link to vessel
     });
 };

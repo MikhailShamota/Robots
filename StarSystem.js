@@ -64,24 +64,20 @@ function StarSystem() {
 
         var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 50 );
 
-        var asteroid = new Asteroid( p, randomMassFromRadius( 1, 5 ) );
+        var asteroid = new Asteroid( p, randomMassFromRadius( 1, 5 ), 0x8030F0 );
         asteroid.velocity = v3Random( 10 ).add( v );
 
-        return asteroid.mesh( 0x8030F0 );
+        return asteroid;
     }
 
     function PlanetArid(p) {
 
-        var planet = new Planet( p, randomMassFromRadius( 5, 35 ) );
-
-        return planet.mesh( 0x80FFF0 );
+        return new Planet( p, randomMassFromRadius( 5, 35 ), 0x80FFF0 );
     }
 
     function SunBlack(p) {
 
-        var sun = new Sun( p, randomMassFromRadius( 50, 90 ), 0xAAAAAA );
-
-        return sun.mesh( 0xAAAA00 );
+        return new Sun( p, randomMassFromRadius( 50, 90 ), 0xAAAAAA );
     }
 
     function LightWhite( pos ) {
@@ -110,13 +106,13 @@ StarSystem.prototype.init = function(scene, octree) {
 
         for ( var x = 0; x < (item.q || 1); x++ ) {
 
-            var objMesh = item.f( orbitPos( i / q ) );
+            var obj = item.f( orbitPos( i / q ) );
 
-            scene.add( objMesh );
-            octree.add( objMesh );
+            scene.add( obj.mesh );
+            octree.add( obj.mesh );
 
-            item.g && this.gravities.push( objMesh.userData );//add to gravity field
-            item.l && scene.add( item.l( objMesh.position ) );
+            item.g && this.gravities.push( obj );//add to gravity field
+            item.l && scene.add( item.l( obj.pos ) );
         }
     });
 };

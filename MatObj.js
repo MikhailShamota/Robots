@@ -3,7 +3,10 @@ function MatObj(pos, mass) {
     this.pos = pos;
     this.mass = mass;
     this.velocity = null;
-    //this.mesh = null;
+
+    this.mesh = new THREE.Mesh();
+    this.mesh.position.copy( this.pos );
+    this.mesh.userData = this;//a link from mesh to this object
 }
 
 MatObj.prototype.velocityDelta = function( f, dt ) {
@@ -53,18 +56,12 @@ MatObj.prototype.bounce = function(obj2) {
     return newVelocity.add( v1Tangent );
 };
 
-MatObj.prototype.initMesh = function( m ) {
+/*
+MatObj.prototype.initMesh = function(m) {
 
-    /*var m = new THREE.Mesh(
-        new THREE.SphereGeometry(radius, 32, 32),
-        new THREE.MeshLambertMaterial({color: color, side: 2, shading: THREE.FlatShading})
-    );*/
 
-    m.position.copy( this.pos );
-    m.userData = this;
 
-    return m;
-};
+};*/
 
 function extend(Child, Parent) {
 
