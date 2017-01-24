@@ -65,7 +65,7 @@ function StarSystem() {
         var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 50 );
 
         var asteroid = new Asteroid( p, randomMassFromRadius( 1, 9 ), 0x8030F0 );
-        asteroid.velocity = v3Random( 10 ).add( v );
+        asteroid.v = v3Random( 10 ).add( v );
 
         return asteroid;
     }
@@ -77,7 +77,7 @@ function StarSystem() {
 
     function SunBlack(p) {
 
-        return new Sun( p, randomMassFromRadius( 50, 90 ), 0xAAAAAA );
+        return new Sun( p, randomMassFromRadius( 40, 50 ), 0xAAAAAA );
     }
 
     function LightWhite( pos ) {

@@ -23,7 +23,7 @@ var Scene = (function () {
             var mesh = octreeObj.object;
             var matObj = mesh.userData;
 
-            if (!matObj.velocity)//immovable
+            if ( !matObj.v )//immovable
                 return;
 
             octree.search(octreeObj.position, octreeObj.radius).forEach(octreeObj2 => {
@@ -42,7 +42,7 @@ var Scene = (function () {
 
                     setter.push({
                         obj: matObj,
-                        velocity: matObj.bounce(matObj2)
+                        v: matObj.bounce(matObj2)
                     });
                 }
             });
@@ -50,7 +50,7 @@ var Scene = (function () {
 
         setter.forEach(function (obj) {
 
-            obj.obj.velocity.copy(obj.velocity);
+            obj.obj.v.copy( obj.v );
         });
     }
 
@@ -58,29 +58,20 @@ var Scene = (function () {
 
         octree.objectsData.forEach(octreeObj => {
 
-            var mesh = octreeObj.object;
-            var obj = mesh.userData;//MatObj
+            var obj = octreeObj.object.userData;//mesh.userData => MatObj
 
-            if ( !obj.velocity )//immovable
-                return;
-
-            if ( obj.turnTo && obj.to ) {
-
-                var fTurn = obj.turnTo( mesh );
-
-                mesh.rotation.y += fTurn.x * dt;
-                mesh.rotation.x += fTurn.y * dt;
-            }
-
-            var fJet = obj.jet && obj.jet( mesh ) || V3_ZERO;
+            var fTurn = obj.turnVec && obj.turnVec() || V3_ZERO;
+            var fJet = obj.jetVec && obj.jetVec() || V3_ZERO;
             var fGrav = starSystem.gravities.f( obj );
-            var fResist = obj.K_SPACE_RESIST && obj.velocity.clone().multiplyScalar( -obj.velocity.length() * obj.K_SPACE_RESIST ) || V3_ZERO;//V^2 * K
+            var fResist = obj.resistVec && obj.resistVec() || V3_ZERO;//V^2 * K
 
-            var f = fGrav.add( fJet ).add( fResist );
+            var f = fGrav.add(fJet).add(fResist);
 
-            obj.velocity.add( obj.velocityDelta( f, dt ) );
-            obj.pos.add( obj.posDelta( dt ) );
-            mesh.position.copy( obj.pos );
+            obj.vTurn && obj.vTurn.lerp( obj.turnVelocityDelta( fTurn, dt ), 0.01 );
+            obj.v && obj.v.lerp( obj.newVelocity( f, dt ), 0.1 );
+            obj.v && obj.pos.lerp( obj.newPos( dt ), 1);
+
+            obj.updateMesh();
         });
     }
 

@@ -10,21 +10,6 @@ function Celestial(pos, mass, color) {
 
 extend( Celestial, MatObj );
 
-/*
-Celestial.prototype.mesh = function( color ) {
-
-
-
-    return this.initMesh( m );
-    //m.position.copy( this.pos );
-    //m.userData = this;
-
-    //return m;
-};
-*/
-
-//Celestial.prototype = Object.create( MatObj.prototype );
-
 function Asteroid(pos, mass, color) {
 
     Celestial.apply( this, arguments );
