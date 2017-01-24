@@ -1,5 +1,6 @@
 function Fleet() {
 
+    //obj property added due initialization
     this.vesselsList = [
 
         {
@@ -8,18 +9,18 @@ function Fleet() {
         },
         {
             f: bigFighter,
-            to: toRandom
+            to: toZero
         }
     ];
 
     function smallFighter( p ) {
 
-        return new Fighter( p, 20000, 0xFF1111 );
+        return new Fighter( p, 2000, 0xFF1111 );
     }
 
     function bigFighter( p ) {
 
-        return new Fighter( p, 50000, 0x11FF11 );
+        return new Fighter( p, 5000, 0x11FF11 );
     }
 
     function toPos( pos ) {
@@ -27,9 +28,9 @@ function Fleet() {
         return pos;
     }
 
-    function toRandom() {
+    function toZero() {
 
-        return v3Random() * WORLD_SIZE;
+        return V3_ZERO.clone();
     }
 }
 
@@ -37,7 +38,8 @@ Fleet.prototype.update = function(mousePos) {
 
     this.vesselsList.forEach( (item ) => {
 
-        item.obj.to = item.to( mousePos ).clone();//where go to
+        var to = item.to( mousePos );
+        item.obj.to = to && to.clone();//where go to
     });
 };
 

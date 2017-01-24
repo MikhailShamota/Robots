@@ -3,16 +3,8 @@ function StarSystem() {
     this.celestialsList = [
         {
             f : SunBlack,
-            g : false,
+            g : true,
             l : LightWhite
-        },
-        {
-            f : PlanetArid,
-            g : true
-        },
-        {
-            f : PlanetArid,
-            g : true
         },
         {
             f : PlanetArid,
@@ -29,6 +21,14 @@ function StarSystem() {
         {
             f : PlanetArid,
             g : true
+        },
+        {
+            f : PlanetArid,
+            g : true
+        },
+        {
+            f : PlanetArid,
+            g : true
         }
     ];
 
@@ -39,7 +39,7 @@ function StarSystem() {
 
         this.forEach(function (grav) {
 
-            f.add(obj.gravity(grav));
+            f.add( obj.gravity( grav ) );
         });
 
         return f;
@@ -64,7 +64,7 @@ function StarSystem() {
 
         var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 50 );
 
-        var asteroid = new Asteroid( p, randomMassFromRadius( 1, 5 ), 0x8030F0 );
+        var asteroid = new Asteroid( p, randomMassFromRadius( 1, 9 ), 0x8030F0 );
         asteroid.velocity = v3Random( 10 ).add( v );
 
         return asteroid;

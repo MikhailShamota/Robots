@@ -11,7 +11,7 @@ function MatObj(pos, mass) {
 
 MatObj.prototype.velocityDelta = function( f, dt ) {
     
-    return f.clone().multiplyScalar( dt / this.mass );
+    return f.clone().multiplyScalar( 0.1 * dt / this.mass );
 };
 
 MatObj.prototype.posDelta = function( dt ) {
@@ -24,7 +24,7 @@ MatObj.prototype.gravity = function(obj) {
     var r = obj.pos.clone().sub( this.pos );
     var rSq = r.lengthSq();
 
-    return r.normalize().multiplyScalar( 10.0 * this.mass * obj.mass / rSq );
+    return r.normalize().multiplyScalar( 20.0 * this.mass * obj.mass / rSq );
 };
 
 MatObj.prototype.dive = function(obj2, depth) {

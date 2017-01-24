@@ -59,24 +59,28 @@ var Scene = (function () {
         octree.objectsData.forEach(octreeObj => {
 
             var mesh = octreeObj.object;
-            var matObj = mesh.userData;
+            var obj = mesh.userData;//MatObj
 
-            if ( !matObj.velocity )//immovable
+            if ( !obj.velocity )//immovable
                 return;
 
-            if ( matObj.turnTo && matObj.to ) {
+            if ( obj.turnTo && obj.to ) {
 
-                var fTurn = matObj.turnTo( mesh );
+                var fTurn = obj.turnTo( mesh );
 
                 mesh.rotation.y += fTurn.x * dt;
                 mesh.rotation.x += fTurn.y * dt;
             }
 
-            var f = starSystem.gravities.f( matObj ).add( matObj.jet && matObj.jet( mesh ) || V3_ZERO );
+            var fJet = obj.jet && obj.jet( mesh ) || V3_ZERO;
+            var fGrav = starSystem.gravities.f( obj );
+            var fResist = obj.K_SPACE_RESIST && obj.velocity.clone().multiplyScalar( -obj.velocity.length() * obj.K_SPACE_RESIST ) || V3_ZERO;//V^2 * K
 
-            matObj.velocity.add( matObj.velocityDelta( f, dt ) );
-            matObj.pos.add( matObj.posDelta( dt ) );
-            mesh.position.copy( matObj.pos );
+            var f = fGrav.add( fJet ).add( fResist );
+
+            obj.velocity.add( obj.velocityDelta( f, dt ) );
+            obj.pos.add( obj.posDelta( dt ) );
+            mesh.position.copy( obj.pos );
         });
     }
 
