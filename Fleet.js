@@ -59,6 +59,13 @@ Fleet.prototype.init = function(scene, octree) {
         scene.add( obj.mesh );
         octree.add( obj.mesh );
 
+        //trail
+        obj.initTrail();
+        obj.trailMeshes.forEach( function(item) {
+
+            scene.add( item );
+        });
+
         item.obj = obj;//a link to vessel
     });
 };

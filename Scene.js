@@ -72,6 +72,8 @@ var Scene = (function () {
             obj.v && obj.pos.lerp( obj.newPos( dt ), 1);
 
             obj.updateMesh();
+
+            obj.updateTrail && obj.updateTrail();
         });
     }
 
@@ -143,6 +145,8 @@ var Scene = (function () {
         document.body.appendChild(renderer.domElement);
 
         scene.background = new THREE.Color(0x383838);
+
+        V2_RESOLUTION = new THREE.Vector2( renderer.context.canvas.width, renderer.context.canvas.height );
     }
 
     /*

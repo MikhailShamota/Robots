@@ -4,6 +4,8 @@ const V3_UNIT_X = new THREE.Vector3(1, 0, 0);
 const V3_UNIT_Y = new THREE.Vector3(0, 1, 0);
 const V3_UNIT_Z = new THREE.Vector3(0, 0, 1);
 
+var V2_RESOLUTION;
+
 function v3Random(length) {
     return V3_UNIT_X.clone().applyEuler(
         new THREE.Euler(
