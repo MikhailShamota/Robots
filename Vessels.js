@@ -12,6 +12,8 @@ function Vessel(pos, mass) {
     this.ptJet = [];
     this.trailMeshes = [];
     this.trailLines = [];
+    this.dtJet = 0;
+    this.trailWidth = 4;
 }
 
 extend( Vessel, MatObj );
@@ -55,52 +57,62 @@ Vessel.prototype.resistVec = function() {
     return this.v.clone().multiplyScalar( -this.v.length() * this.K_SPACE_RESIST );
 };
 
-Vessel.prototype.updateTrail = function() {
+Vessel.prototype.updateTrail = function(dt) {
 
     var self = this;
 
-    this.ptJet.forEach( function( item, i) {
+    var matrix = new THREE.Matrix4();
+    matrix.extractRotation( self.mesh.matrix );
 
-        var pt = item.clone().applyMatrix4( self.mesh.matrix ); //item.clone().add( self.pos );
-        self.trailLines[i].advance( pt );
+    this.dtJet += dt;
+    if ( this.dtJet < 0.02 )
+        return;
+
+    this.dtJet = 0;
+
+    this.ptJet.forEach( function(item, i) {
+
+        var pt = item.clone().applyMatrix4( matrix );
+        self.trailLines[i].advance( pt.add( self.pos ) );
     });
 };
 
 Vessel.prototype.initTrail = function () {
 
-    this.trail_material = new THREE.MeshLineMaterial( {
+    var material = new THREE.MeshLineMaterial( {
         color: new THREE.Color( "rgb(255, 2, 2)" ),
-        opacity: 1,
+        opacity: 0.5,
         resolution: V2_RESOLUTION,
         sizeAttenuation: 1,
-        lineWidth: 2,
+        lineWidth: this.trailWidth,
         near: 1,
         far: 100000,
-        depthTest: false,
+        depthTest: true,
         blending: THREE.AdditiveBlending,
-        transparent: false,
+        transparent: true,
         side: THREE.DoubleSide
     });
+
 
     var self = this;
 
     this.ptJet.forEach( function( item ) {
 
-        var trail_geometry = new THREE.Geometry();
+        var geom = new THREE.Geometry();
 
         for ( var i = 0; i < 100; i++ ) {
 
-            trail_geometry.vertices.push( item.clone().add( self.pos ) );
+            geom.vertices.push( item.clone().add( self.pos ) );
         }
 
-        var trail_line = new THREE.MeshLine();
-        trail_line.setGeometry( trail_geometry, function(p) { return p; } ); // makes width thin
+        var line = new THREE.MeshLine();
+        line.setGeometry( geom, function(p) { return p; } ); // makes width thinner
 
-        var trail_mesh = new THREE.Mesh( trail_line.geometry, self.trail_material ); // this syntax could definitely be improved!
-        trail_mesh.frustumCulled = false;
+        var meshTrail = new THREE.Mesh( line.geometry, material ); // this syntax could definitely be improved!
+        //trail_mesh.frustumCulled = false;
 
-        self.trailLines.push( trail_line );
-        self.trailMeshes.push( trail_mesh );
+        self.trailLines.push( line );
+        self.trailMeshes.push( meshTrail );
     });
 };
 
@@ -108,8 +120,9 @@ function Fighter(pos, mass, color) {
 
     Vessel.apply( this, arguments );
 
-    this.fJet = this.mass * 300;
+    this.fJet = this.mass * 1500;
     this.fTurn = 0.75;//radians per sec
+    this.trailWidth = 4;
 
     var size = Math.cbrt( this.mass );
 
@@ -121,7 +134,7 @@ function Fighter(pos, mass, color) {
     this.mesh.geometry = box1;
     this.mesh.material = new THREE.MeshLambertMaterial({color: color, side: 2, shading: THREE.FlatShading});
 
-    this.ptJet = [ new THREE.Vector3( -size, 0, -size * 2), new THREE.Vector3( size, 0, -size * 2), ];
+    this.ptJet = [ new THREE.Vector3( -size * 0.5 , 0, -size * 1.5), new THREE.Vector3( size * 0.5, 0, -size * 1.5), ];
 }
 
 extend ( Fighter, Vessel );

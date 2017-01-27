@@ -73,7 +73,7 @@ var Scene = (function () {
 
             obj.updateMesh();
 
-            obj.updateTrail && obj.updateTrail();
+            obj.updateTrail && obj.updateTrail(dt);
         });
     }
 
