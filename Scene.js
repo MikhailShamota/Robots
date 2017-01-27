@@ -14,6 +14,8 @@ var Scene = (function () {
     var v2MousePoint = new THREE.Vector2();
     var v3MousePoint = new THREE.Vector3();
 
+    var cursor;
+
     function updateCollision() {
 
         var setter = [];
@@ -84,6 +86,9 @@ var Scene = (function () {
         raycaster.setFromCamera( v2MousePoint, camera );
 
         v3MousePoint = raycaster.ray.intersectPlane( eclipticPlane );
+
+        if ( v3MousePoint )
+            cursor.position.copy( v3MousePoint );
     }
 
     function updateTarget() {
@@ -111,6 +116,7 @@ var Scene = (function () {
         updateCollision();//check and process MatObj collisions
     }
 
+    //TODO: mouse flat cursor on ecliptic plane
     function onMouseUpdate( event ) {
 
         v2MousePoint.x = ( ( event.pageX - renderer.context.canvas.offsetLeft ) / window.innerWidth ) * 2 - 1;
@@ -160,6 +166,7 @@ var Scene = (function () {
      */
 
     function initStats() {
+
         stats = new Stats();
         stats.setMode(0); // 0: fps, 1: ms
         // Align top-left
@@ -170,6 +177,7 @@ var Scene = (function () {
     }
 
     function initControls() {
+
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         //controls.addEventListener( 'change', render ); // add this only if there is no animation loop (requestAnimationFrame)
         controls.enableDamping = true;
@@ -199,6 +207,16 @@ var Scene = (function () {
         });
     }
 
+    function initCursor() {
+
+        var material = new THREE.MeshLambertMaterial( { color : 0xbb0909, side: THREE.DoubleSide } );
+        cursor = new THREE.Mesh( new THREE.PlaneGeometry( 50, 50 ), material );
+        //cursor.doubleSided = true;
+        cursor.rotation.x = Math.PI / 2;
+
+        scene.add( cursor );
+    }
+
     function initScene() {
 
         initializeGL();
@@ -210,6 +228,8 @@ var Scene = (function () {
         fleet1.init( scene, octree );
 
         octree.update();
+
+        initCursor();
     }
 
     function paintScene() {
