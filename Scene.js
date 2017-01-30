@@ -64,18 +64,18 @@ var Scene = (function () {
 
             var fTurn = obj.turnVec && obj.turnVec() || V3_ZERO;
             var fJet = obj.jetVec && obj.jetVec() || V3_ZERO;
-            var fGrav = starSystem.gravities.f( obj );
+            var fGrav = obj.gravity().add( starSystem.gravities.f( obj ) || V3_ZERO );
             var fResist = obj.resistVec && obj.resistVec() || V3_ZERO;//V^2 * K
 
-            var f = fGrav.add(fJet).add(fResist);
+            var f = fGrav.add( fJet ).add( fResist );
 
             obj.vTurn && obj.vTurn.lerp( obj.turnVelocityDelta( fTurn, dt ), 0.01 );
             obj.v && obj.v.lerp( obj.newVelocity( f, dt ), 0.1 );
-            obj.v && obj.pos.lerp( obj.newPos( dt ), 1);
+            obj.v && obj.pos.lerp( obj.newPos( dt ), 1 );
 
             obj.updateMesh();
 
-            obj.updateTrail && obj.updateTrail(dt);
+            obj.updateTrail && obj.updateTrail( dt );
         });
     }
 
@@ -209,8 +209,30 @@ var Scene = (function () {
 
     function initCursor() {
 
-        var material = new THREE.MeshLambertMaterial( { color : 0xbb0909, side: THREE.DoubleSide } );
-        cursor = new THREE.Mesh( new THREE.PlaneGeometry( 50, 50 ), material );
+        cursor = new THREE.Mesh( new THREE.PlaneGeometry( 50, 50 ) );
+
+        var loader = new THREE.TextureLoader();
+
+        loader.load(
+            'res/cursor.png',
+            function ( texture ) {
+
+                cursor.material = new THREE.MeshBasicMaterial( {
+                    map: texture,
+                    side: THREE.DoubleSide,
+                    transparent: true
+                } );
+            },
+            function ( xhr ) {
+
+                console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+            },
+            function ( xhr ) {
+
+                console.log( 'An error happened' );
+            }
+        );
+
         //cursor.doubleSided = true;
         cursor.rotation.x = Math.PI / 2;
 

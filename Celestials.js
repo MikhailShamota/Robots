@@ -1,4 +1,4 @@
-function Celestial(pos, mass, color) {
+function Celestial (pos, mass, color) {
 
     MatObj.apply( this, arguments );
 
@@ -6,6 +6,8 @@ function Celestial(pos, mass, color) {
 
     this.mesh.geometry = new THREE.SphereGeometry(radius, 32, 32);
     this.mesh.material = new THREE.MeshLambertMaterial({color: color, side: 2, shading: THREE.FlatShading});
+
+    //this.rOrbit = pos.length();
 }
 
 extend( Celestial, MatObj );

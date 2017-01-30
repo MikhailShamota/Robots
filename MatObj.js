@@ -8,12 +8,20 @@ function MatObj(pos, mass) {
     this.mesh = new THREE.Mesh();
     this.mesh.position.copy( this.pos );
     this.mesh.userData = this;//a link from mesh to this object
+
+    this.parent = null;
 }
+
+MatObj.prototype.setParent = function( parent ) {
+
+    this.parent = parent;
+    //this.rOrbit = this.pos.clone().sub( parent.pos ).length();
+};
 
 MatObj.prototype.turnVelocityDelta = function( f, dt ) {
 
     return f.clone().multiplyScalar( dt );
-}
+};
 
 MatObj.prototype.newVelocity = function( f, dt ) {
     
@@ -25,13 +33,38 @@ MatObj.prototype.newPos = function( dt ) {
     return this.v.clone().multiplyScalar( dt ).add( this.pos );
 };
 
+MatObj.prototype.gravity = function() {
+
+    if ( !this.parent )
+        return V3_ZERO.clone();
+
+    /*var r = this.parent.pos.clone().sub( this.pos );
+    var rSq = r.lengthSq();
+
+    return r.normalize().multiplyScalar( 20.0 * this.mass * this.parent.mass / rSq );*/
+
+    var r = this.parent.pos.clone().sub( this.pos );
+    var rLen = r.length();
+    r.normalize();
+
+    var vn = r.dot( this.v );
+    var nV = r.clone().multiplyScalar( vn );//normal velocity
+    var tV = this.v.clone().sub( nV );//tangent velocity
+    var vt = tV.length();//tangent velocity scalar
+
+    return r.multiplyScalar( this.mass * vt * vt / rLen ).add( nV.negate().multiplyScalar( this.mass ) );//add negate normal - to contradict fly away effect
+};
+
+/*
 MatObj.prototype.gravity = function(obj) {
 
     var r = obj.pos.clone().sub( this.pos );
     var rSq = r.lengthSq();
 
     return r.normalize().multiplyScalar( 20.0 * this.mass * obj.mass / rSq );
+
 };
+*/
 
 MatObj.prototype.dive = function(obj2, depth) {
 

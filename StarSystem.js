@@ -1,10 +1,13 @@
 function StarSystem() {
 
+    var K_ECLIPTIC_FORCE = 100;//force pulling to ecliptic plane
+
     this.celestialsList = [
         {
             f : SunBlack,
             g : true,
-            l : LightWhite
+            l : LightWhite,
+            p : null
         },
         {
             f : PlanetArid,
@@ -16,7 +19,8 @@ function StarSystem() {
         },
         {
             f : AsteroidPlain,
-            q : 100
+            q : 100,
+            p : 1 //index+1 of Parent - SunBlack
         },
         {
             f : PlanetArid,
@@ -36,11 +40,13 @@ function StarSystem() {
     this.gravities.f = function(obj) {
 
         //var f = V3_ZERO.clone();
-        var f = new THREE.Vector3( 0, - obj.pos.y * 10 * obj.mass, 0 );//go to ecliplic plane
 
-        this.forEach(function (grav) {
+        var f = new THREE.Vector3( 0, - obj.pos.y * K_ECLIPTIC_FORCE * obj.mass, 0 );//go to ecliplic plane
 
-            f.add( obj.gravity( grav ) );
+        this.forEach( function (grav) {
+
+            if ( obj.gravity )
+                f.add( obj.gravity( grav ) );
         });
 
         return f;
@@ -65,8 +71,8 @@ function StarSystem() {
 
         var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 50 );
 
-        var asteroid = new Asteroid( p, randomMassFromRadius( 1, 9 ), 0x8030F0 );
-        asteroid.v = v3Random( 10 ).add( v );
+        var asteroid = new Asteroid( p.add( v3Random(20) ), randomMassFromRadius( 1, 9 ), 0x8030F0 );
+        asteroid.v = v;
 
         return asteroid;
     }
@@ -102,18 +108,21 @@ StarSystem.prototype.init = function(scene, octree) {
     }
 
     var q = this.celestialsList.length;
+    var objList = [];
 
     this.celestialsList.forEach( (item, i) => {
 
         for ( var x = 0; x < (item.q || 1); x++ ) {
 
             var obj = item.f( orbitPos( i / q ) );
+            objList.push( obj );//temp
 
             scene.add( obj.mesh );
             octree.add( obj.mesh );
 
             item.g && this.gravities.push( obj );//add to gravity field
             item.l && scene.add( item.l( obj.pos ) );
+            item.p && obj.setParent( objList[ item.p - 1 ] );//set gravity parent
         }
     });
 };
