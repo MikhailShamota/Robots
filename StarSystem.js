@@ -6,8 +6,7 @@ function StarSystem() {
         {
             f : SunBlack,
             g : true,
-            l : LightWhite,
-            p : null
+            l : LightWhite
         },
         {
             f : PlanetArid,
@@ -19,12 +18,16 @@ function StarSystem() {
         },
         {
             f : AsteroidPlain,
-            q : 100,
-            p : 1 //index+1 of Parent - SunBlack
+            q : 100
         },
         {
             f : PlanetArid,
-            g : true
+            g : true,
+            sputniks : [
+
+                {f: MoonGray},
+                {f: MoonGray},
+            ]
         },
         {
             f : PlanetArid,
@@ -41,7 +44,7 @@ function StarSystem() {
 
         //var f = V3_ZERO.clone();
 
-        var f = new THREE.Vector3( 0, - obj.pos.y * K_ECLIPTIC_FORCE * obj.mass, 0 );//go to ecliplic plane
+        var f = new THREE.Vector3( 0, - obj.pos.y * K_ECLIPTIC_FORCE, 0 );//go to ecliplic plane
 
         this.forEach( function (grav) {
 
@@ -71,10 +74,22 @@ function StarSystem() {
 
         var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 50 );
 
-        var asteroid = new Asteroid( p.add( v3Random(20) ), randomMassFromRadius( 1, 9 ), 0x8030F0 );
-        asteroid.v = v;
+        var pos = p.add( MathHelper.v3Random( WORLD_SIZE * 0.2 ).setY( MathHelper.rand( -50, 50 ) ) );
+        var asteroid = new Asteroid( pos, randomMassFromRadius( 1, 9 ), 0x8030F0 );
+        asteroid.v = v.add( MathHelper.v3Random( 10 ) );
 
         return asteroid;
+    }
+
+    function MoonGray(p) {
+
+        var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 50 );
+
+        var moon = new Planet( p, randomMassFromRadius( 5, 10 ), 0xFF0000 );
+
+        moon.v = v.add( MathHelper.v3Random( 10 ) );
+
+        return moon;
     }
 
     function PlanetArid(p) {
@@ -98,31 +113,54 @@ function StarSystem() {
 
 StarSystem.prototype.init = function(scene, octree) {
 
-    function orbitPos(orbit) {
+    var self = this;
 
-        var p = v3Random( 1.0 );
+    function orbitPos(orbit, worldSize) {
 
-        p.multiply( new THREE.Vector3(1,0,1) ).normalize().multiplyScalar( orbit * WORLD_SIZE );//p.Y = 0
+        var p = MathHelper.v3Random( 1.0 );
+
+        p.setY(0).normalize().multiplyScalar( orbit * worldSize );
 
         return p;
     }
 
-    var q = this.celestialsList.length;
-    var objList = [];
+    function addItem(item, pos) {
 
-    this.celestialsList.forEach( (item, i) => {
+        var obj = item.f( pos );
+
+        scene.add( obj.mesh );
+        octree.add( obj.mesh );
+
+        item.g && self.gravities.push( obj );//add to gravity field
+        item.l && scene.add( item.l( obj.pos ) );
+    }
+
+
+    //var q = this.celestialsList.length;
+
+    this.celestialsList.forEach( (item, i, arrPlanets) => {
 
         for ( var x = 0; x < (item.q || 1); x++ ) {
 
+            var pPlanet = orbitPos( i / arrPlanets.length, WORLD_SIZE );
+
+            addItem( item, pPlanet );
+
+            item.sputniks && item.sputniks.forEach( (sputnik, j, arrSp) => {
+
+                var pSputnik = orbitPos( j + 1 / arrSp.length, 0.5 * WORLD_SIZE / arrPlanets.length ).add( pPlanet );
+
+                addItem( sputnik, pSputnik );
+            });
+            /*
             var obj = item.f( orbitPos( i / q ) );
-            objList.push( obj );//temp
 
             scene.add( obj.mesh );
             octree.add( obj.mesh );
 
             item.g && this.gravities.push( obj );//add to gravity field
             item.l && scene.add( item.l( obj.pos ) );
-            item.p && obj.setParent( objList[ item.p - 1 ] );//set gravity parent
+            */
         }
     });
 };

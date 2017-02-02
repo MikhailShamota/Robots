@@ -64,7 +64,7 @@ var Scene = (function () {
 
             var fTurn = obj.turnVec && obj.turnVec() || V3_ZERO;
             var fJet = obj.jetVec && obj.jetVec() || V3_ZERO;
-            var fGrav = obj.gravity().add( starSystem.gravities.f( obj ) || V3_ZERO );
+            var fGrav = starSystem.gravities.f( obj ) || V3_ZERO;
             var fResist = obj.resistVec && obj.resistVec() || V3_ZERO;//V^2 * K
 
             var f = fGrav.add( fJet ).add( fResist );
