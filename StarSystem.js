@@ -4,38 +4,45 @@ function StarSystem() {
 
     this.celestialsList = [
         {
-            f : SunBlack,
-            g : true,
-            l : LightWhite
-        },
-        {
-            f : PlanetArid,
-            g : true
-        },
-        {
-            f : PlanetArid,
-            g : true
-        },
-        {
-            f : AsteroidPlain,
-            q : 100
-        },
-        {
-            f : PlanetArid,
-            g : true,
-            sputniks : [
+            f: SunBlack,
+            g: true,
+            l: LightWhite,
+            r: 1000,
+            sputniks: [
+                {
+                    f: PlanetArid,
+                    g: true,
+                    r: 100
+                },
+                {
+                    f: PlanetArid,
+                    g: true,
+                    r: 100
+                },
+                {
+                    f: AsteroidPlain,
+                    q: 100,
+                    r: 100
+                },
+                {
+                    f: PlanetArid,
+                    g: true,
+                    r: 200,
+                    sputniks: [
 
-                {f: MoonGray},
-                {f: MoonGray},
+                        {f: MoonGray},
+                        {f: MoonGray}
+                    ]
+                },
+                {
+                    f: PlanetArid,
+                    g: true
+                },
+                {
+                    f: PlanetArid,
+                    g: true
+                }
             ]
-        },
-        {
-            f : PlanetArid,
-            g : true
-        },
-        {
-            f : PlanetArid,
-            g : true
         }
     ];
 
@@ -72,22 +79,22 @@ function StarSystem() {
 
     function AsteroidPlain(p) {
 
-        var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 50 );
+        //var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 50 );
 
-        var pos = p.add( MathHelper.v3Random( WORLD_SIZE * 0.2 ).setY( MathHelper.rand( -50, 50 ) ) );
-        var asteroid = new Asteroid( pos, randomMassFromRadius( 1, 9 ), 0x8030F0 );
-        asteroid.v = v.add( MathHelper.v3Random( 10 ) );
+        //var pos = p.add( MathHelper.v3Random( WORLD_SIZE * 0.2 ).setY( MathHelper.rand( -50, 50 ) ) );
+        var asteroid = new Asteroid( p, randomMassFromRadius( 1, 9 ), 0x8030F0 );
+        //asteroid.v = v.add( MathHelper.v3Random( 10 ) );
 
         return asteroid;
     }
 
     function MoonGray(p) {
 
-        var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 50 );
+        //var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 50 );
 
         var moon = new Planet( p, randomMassFromRadius( 5, 10 ), 0xFF0000 );
 
-        moon.v = v.add( MathHelper.v3Random( 10 ) );
+        //moon.v = v.add( MathHelper.v3Random( 10 ) );
 
         return moon;
     }
@@ -115,52 +122,55 @@ StarSystem.prototype.init = function(scene, octree) {
 
     var self = this;
 
-    function orbitPos(orbit, worldSize) {
+    function parseItems( parent, children ) {
 
-        var p = MathHelper.v3Random( 1.0 );
+        function orbitVelocity( parent, child ) {
 
-        p.setY(0).normalize().multiplyScalar( orbit * worldSize );
+            var fG = parent.gravity( child );
 
-        return p;
+            var r = parent.pos.clone().sub( child.pos );
+            var rLen = r.length();
+
+            return new THREE.Vector3( r.z, 0, -r.x ).normalize().multiplyScalar( Math.sqrt( fG * rLen / child.mass ) );
+        }
+
+        children && children.forEach( (item, i, arr) => {
+
+            for ( var x = 0; x < (item.q || 1); x++ ) {
+
+                var pos = parent ? MathHelper.v3Random(1.0).setY(0).normalize().multiplyScalar((i + 1 / arr.length) * (parent.rWorld / arr.length)).add(parent.pos) : V3_ZERO;
+
+                var obj = item.f(pos);
+
+                scene.add(obj.mesh);
+                octree.add(obj.mesh);
+
+                item.g && self.gravities.push(obj);//add to gravity field
+                item.l && scene.add(item.l(obj.pos));//lights
+                obj.rWorld = item.r;//object space
+                obj.v = obj.g ? null : parent && orbitVelocity( parent, obj );//velocity
+
+                item.sputniks && parseItems(obj, item.sputniks);
+            }
+        });
     }
 
-    function addItem(item, pos) {
+    parseItems( null, this.celestialsList );
 
-        var obj = item.f( pos );
+    /*this.celestialsList.forEach( (planet, i, arrPlanets) => {
 
-        scene.add( obj.mesh );
-        octree.add( obj.mesh );
-
-        item.g && self.gravities.push( obj );//add to gravity field
-        item.l && scene.add( item.l( obj.pos ) );
-    }
-
-
-    //var q = this.celestialsList.length;
-
-    this.celestialsList.forEach( (item, i, arrPlanets) => {
-
-        for ( var x = 0; x < (item.q || 1); x++ ) {
+        for ( var x = 0; x < (planet.q || 1); x++ ) {
 
             var pPlanet = orbitPos( i / arrPlanets.length, WORLD_SIZE );
 
-            addItem( item, pPlanet );
+            addItem( planet, pPlanet,  );
 
             item.sputniks && item.sputniks.forEach( (sputnik, j, arrSp) => {
 
                 var pSputnik = orbitPos( j + 1 / arrSp.length, 0.5 * WORLD_SIZE / arrPlanets.length ).add( pPlanet );
 
-                addItem( sputnik, pSputnik );
+                addItem( sputnik, pSputnik, planet );
             });
-            /*
-            var obj = item.f( orbitPos( i / q ) );
-
-            scene.add( obj.mesh );
-            octree.add( obj.mesh );
-
-            item.g && this.gravities.push( obj );//add to gravity field
-            item.l && scene.add( item.l( obj.pos ) );
-            */
         }
-    });
+    });*/
 };

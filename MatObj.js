@@ -8,15 +8,7 @@ function MatObj(pos, mass) {
     this.mesh = new THREE.Mesh();
     this.mesh.position.copy( this.pos );
     this.mesh.userData = this;//a link from mesh to this object
-
-    //this.parent = null;
 }
-
-/*MatObj.prototype.setParent = function( parent ) {
-
-    this.parent = parent;
-    //this.rOrbit = this.pos.clone().sub( parent.pos ).length();
-};*/
 
 MatObj.prototype.turnVelocityDelta = function( f, dt ) {
 
@@ -41,7 +33,6 @@ MatObj.prototype.gravity = function(obj) {
     return r.normalize().multiplyScalar( 20.0 * this.mass * obj.mass / rSq );
 
 };
-
 
 MatObj.prototype.dive = function(obj2, depth) {
 
