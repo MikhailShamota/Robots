@@ -1,6 +1,6 @@
 function StarSystem() {
 
-    var K_ECLIPTIC_FORCE = 100;//force pulling to ecliptic plane
+    var K_ECLIPTIC_FORCE = 100000;//force pulling to ecliptic plane
 
     this.celestialsList = [
         {
@@ -124,6 +124,7 @@ StarSystem.prototype.init = function(scene, octree) {
 
     function parseItems( parent, children ) {
 
+
         function orbitVelocity( parent, child ) {
 
             var fG = parent.gravity( child );
@@ -131,8 +132,9 @@ StarSystem.prototype.init = function(scene, octree) {
             var r = parent.pos.clone().sub( child.pos );
             var rLen = r.length();
 
-            return new THREE.Vector3( r.z, 0, -r.x ).normalize().multiplyScalar( Math.sqrt( fG * rLen / child.mass ) );
+            return new THREE.Vector3( r.z, 0, -r.x ).normalize().multiplyScalar( Math.sqrt( fG.length() * rLen / child.mass ) );
         }
+
 
         children && children.forEach( (item, i, arr) => {
 
@@ -148,7 +150,8 @@ StarSystem.prototype.init = function(scene, octree) {
                 item.g && self.gravities.push(obj);//add to gravity field
                 item.l && scene.add(item.l(obj.pos));//lights
                 obj.rWorld = item.r;//object space
-                obj.v = obj.g ? null : parent && orbitVelocity( parent, obj );//velocity
+                obj.v = !item.g && parent && orbitVelocity( parent, obj );//velocity
+                obj.parent = parent;
 
                 item.sputniks && parseItems(obj, item.sputniks);
             }

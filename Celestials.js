@@ -9,10 +9,22 @@ function Celestial (pos, mass, color) {
 
     this.rWorld = 0;
 
-    //this.rOrbit = pos.length();
+    this.parent = null;
 }
 
 extend( Celestial, MatObj );
+
+//override
+Celestial.prototype.newPos = function(dt) {
+
+    if ( !this.parent )
+        return;
+
+    var r = this.pos.clone().sub( this.parent.pos );
+    //var rLen = r.length();
+
+    return r.applyAxisAngle( V3_UNIT_Y, 1 * dt ).add( this.parent.pos );
+};
 
 function Asteroid(pos, mass, color) {
 
