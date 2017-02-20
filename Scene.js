@@ -65,15 +65,19 @@ var Scene = (function () {
             var fTurn = obj.turnVec && obj.turnVec() || V3_ZERO;
             var fJet = obj.jetVec && obj.jetVec() || V3_ZERO;
             var fGrav = starSystem.gravities.f( obj ) || V3_ZERO;
-            var fResist = obj.resistVec && obj.resistVec() || V3_ZERO;//V^2 * K
+            //var fResist = obj.resistVec && obj.resistVec() || V3_ZERO;//V^2 * K
 
-            var f = fGrav.add( fJet ).add( fResist );
+            var f = fGrav.add( fJet );
 
             obj.vTurn && obj.vTurn.lerp( obj.turnVelocityDelta( fTurn, dt ), 0.01 );
-            obj.v && obj.v.lerp( obj.newVelocity( f, dt ), 0.1 );
-            obj.v && obj.pos.lerp( obj.newPos( dt ), 1 );
+            obj.v && obj.v.lerp( obj.newVelocity( f, dt ), 1 );
+            obj.v && obj.pos.copy( obj.newPos( dt ) );
+
+            obj.pos.y *= 0.99;//2d restrictions - going to ecliptic plane
 
             obj.updateMesh();
+            obj.updateSpec();
+
 
             obj.updateTrail && obj.updateTrail( dt );
         });

@@ -14,18 +14,6 @@ function Celestial (pos, mass, color) {
 
 extend( Celestial, MatObj );
 
-//override
-Celestial.prototype.newPos = function(dt) {
-
-    if ( !this.parent )
-        return;
-
-    var r = this.pos.clone().sub( this.parent.pos );
-    //var rLen = r.length();
-
-    return r.applyAxisAngle( V3_UNIT_Y, 1 * dt ).add( this.parent.pos );
-};
-
 function Asteroid(pos, mass, color) {
 
     Celestial.apply( this, arguments );
@@ -39,6 +27,17 @@ function Planet(pos, mass, color) {
 }
 
 extend( Planet, Celestial );
+
+//override
+Celestial.prototype.newPos = function(dt) {
+
+    if ( !this.parent )
+        return;
+
+    var r = this.pos.clone().sub( this.parent.pos );
+
+    return r.applyAxisAngle( V3_UNIT_Y, 0.1 * dt ).add( this.parent.pos );
+};
 
 function Sun(pos, mass, color) {
 

@@ -1,6 +1,6 @@
 function StarSystem() {
 
-    var K_ECLIPTIC_FORCE = 100000;//force pulling to ecliptic plane
+    var K_ECLIPTIC_FORCE = 200;//force pulling to ecliptic plane
 
     this.celestialsList = [
         {
@@ -49,9 +49,10 @@ function StarSystem() {
     this.gravities = [];
     this.gravities.f = function(obj) {
 
-        //var f = V3_ZERO.clone();
+        var f = V3_ZERO.clone();
 
-        var f = new THREE.Vector3( 0, - obj.pos.y * K_ECLIPTIC_FORCE, 0 );//go to ecliplic plane
+        //var f = new THREE.Vector3( 0, -obj.pos.y * K_ECLIPTIC_FORCE * obj.mass, 0 );//go to ecliplic plane
+        var f = obj.pos.clone().multiplyScalar( -K_ECLIPTIC_FORCE * obj.mass / WORLD_SIZE );
 
         this.forEach( function (grav) {
 
@@ -138,22 +139,22 @@ StarSystem.prototype.init = function(scene, octree) {
 
         children && children.forEach( (item, i, arr) => {
 
-            for ( var x = 0; x < (item.q || 1); x++ ) {
+            for ( var x = 0; x < ( item.q || 1 ); x++ ) {
 
-                var pos = parent ? MathHelper.v3Random(1.0).setY(0).normalize().multiplyScalar((i + 1 / arr.length) * (parent.rWorld / arr.length)).add(parent.pos) : V3_ZERO;
+                var pos = parent ? MathHelper.v3Random( 1.0 ).setY( 0 ).normalize().multiplyScalar( ( i + 1 / arr.length ) * ( parent.rWorld / arr.length ) ).add( parent.pos ) : V3_ZERO;
 
-                var obj = item.f(pos);
+                var obj = item.f( pos );
 
-                scene.add(obj.mesh);
-                octree.add(obj.mesh);
+                scene.add( obj.mesh );
+                octree.add( obj.mesh );
 
-                item.g && self.gravities.push(obj);//add to gravity field
-                item.l && scene.add(item.l(obj.pos));//lights
+                item.g && self.gravities.push( obj );//add to gravity field
+                item.l && scene.add( item.l( obj.pos ) );//lights
                 obj.rWorld = item.r;//object space
                 obj.v = !item.g && parent && orbitVelocity( parent, obj );//velocity
                 obj.parent = parent;
 
-                item.sputniks && parseItems(obj, item.sputniks);
+                item.sputniks && parseItems( obj, item.sputniks );
             }
         });
     }

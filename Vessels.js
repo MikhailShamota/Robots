@@ -18,7 +18,7 @@ function Vessel(pos, mass) {
 
 extend( Vessel, MatObj );
 
-Vessel.prototype.K_SPACE_RESIST = 150;
+Vessel.prototype.K_SPACE_RESIST = 50;
 Vessel.prototype.V3_FWD = new THREE.Vector3( 0, 0, 1 );
 
 Vessel.prototype.turnVec = function() {
@@ -35,10 +35,22 @@ Vessel.prototype.turnVec = function() {
 
     var grip = new THREE.Vector3( -dir.y, dir.x, 0 ).normalize();//x and y change as Y grip is about x-axis rotation
 
+
+    grip.x = 0;//2d restrictions - restrict pitch
+
     var dot = dir.normalize().dot( this.V3_FWD );//-1..0..+1
     dot = Math.min( 1 - dot, 1 );//+1..+1..0
 
-    return grip.multiplyScalar( Math.sign( dot ) * this.fTurn );
+    grip.multiplyScalar( Math.sign( dot ) * this.fTurn );
+    grip.z = -grip.y;//2d restrictions - emulate roll
+
+    return grip;
+};
+
+//override
+Vessel.prototype.updateSpec = function() {
+
+    this.mesh.rotation.z *= 0.99;
 };
 
 Vessel.prototype.jetVec = function() {
@@ -52,9 +64,23 @@ Vessel.prototype.jetVec = function() {
     return v3z.multiplyScalar( this.fJet );
 };
 
-Vessel.prototype.resistVec = function() {
+/*Vessel.prototype.resistVec = function() {
 
     return this.v.clone().multiplyScalar( -this.v.length() * this.K_SPACE_RESIST );
+};*/
+
+//override
+Vessel.prototype.newVelocity = function( f, dt ) {
+
+    var vNew = f.clone().multiplyScalar( dt / this.mass ).add( this.v );
+
+    //var fResist = vNew.clone().multiplyScalar( -vNew.length() * this.K_SPACE_RESIST );
+
+    //return fResist.clone().multiplyScalar( dt / this.mass ).add( vNew );
+
+    var v = vNew.clone().multiplyScalar( Math.max( 0, 1 - ( vNew.length() * this.K_SPACE_RESIST * dt / this.mass ) ) );
+
+    return v;
 };
 
 Vessel.prototype.updateTrail = function(dt) {
@@ -120,7 +146,7 @@ function Fighter(pos, mass, color) {
 
     Vessel.apply( this, arguments );
 
-    this.fJet = this.mass * 1500;
+    this.fJet = this.mass * 400;
     this.fTurn = 0.75;//radians per sec
     this.trailWidth = 4;
 

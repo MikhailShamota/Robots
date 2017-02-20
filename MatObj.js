@@ -20,7 +20,7 @@ MatObj.prototype.newVelocity = function( f, dt ) {
     return f.clone().multiplyScalar( dt / this.mass ).add( this.v );
 };
 
-MatObj.prototype.newPos = function( dt ) {
+MatObj.prototype.newPos = function(dt) {
 
     return this.v.clone().multiplyScalar( dt ).add( this.pos );
 };
@@ -30,7 +30,7 @@ MatObj.prototype.gravity = function(obj) {
     var r = obj.pos.clone().sub( this.pos );
     var rSq = r.lengthSq();
 
-    return r.normalize().multiplyScalar( 20.0 * this.mass * obj.mass / rSq );
+    return r.normalize().multiplyScalar( 10.0 * this.mass * obj.mass / rSq );
 
 };
 
@@ -73,6 +73,10 @@ MatObj.prototype.updateMesh = function() {
     }
 
     this.mesh.position.copy( this.pos );
+};
+
+MatObj.prototype.updateSpec = function() {
+
 };
 
 function extend(Child, Parent) {
