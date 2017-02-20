@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="510eed05-ed6a-4361-9ef3-ef26ad0cd624" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Celestials.js" afterPath="$PROJECT_DIR$/Celestials.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MatObj.js" afterPath="$PROJECT_DIR$/MatObj.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scene.js" afterPath="$PROJECT_DIR$/Scene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StarSystem.js" afterPath="$PROJECT_DIR$/StarSystem.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Vessels.js" afterPath="$PROJECT_DIR$/Vessels.js" />
     </list>
     <ignored path="Robots.iws" />
@@ -42,7 +39,7 @@
         <entry file="file://$PROJECT_DIR$/Scene.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="72" column="59" selection-start-line="72" selection-start-column="59" selection-end-line="72" selection-end-column="59" />
+              <caret line="72" column="62" selection-start-line="72" selection-start-column="62" selection-end-line="72" selection-end-column="62" />
               <folding />
             </state>
           </provider>
@@ -62,7 +59,7 @@
         <entry file="file://$PROJECT_DIR$/Fleet.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
+              <caret line="13" column="6" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -72,7 +69,7 @@
         <entry file="file://$PROJECT_DIR$/StarSystem.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="2" column="28" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
+              <caret line="23" column="26" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -88,21 +85,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="MatObj.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MatObj.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/MatObj.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9524862">
+            <state vertical-scroll-proportion="0.0">
               <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Vessels.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Vessels.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Vessels.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="34" selection-start-line="20" selection-start-column="34" selection-end-line="20" selection-end-column="34" />
+            <state vertical-scroll-proportion="0.5730594">
+              <caret line="149" column="20" selection-start-line="149" selection-start-column="20" selection-end-line="149" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -127,12 +124,12 @@
         <option value="$PROJECT_DIR$/Planets.js" />
         <option value="$PROJECT_DIR$/main.html" />
         <option value="$PROJECT_DIR$/draw.js" />
-        <option value="$PROJECT_DIR$/Fleet.js" />
         <option value="$PROJECT_DIR$/MatObj.js" />
-        <option value="$PROJECT_DIR$/Vessels.js" />
-        <option value="$PROJECT_DIR$/Scene.js" />
         <option value="$PROJECT_DIR$/Celestials.js" />
         <option value="$PROJECT_DIR$/StarSystem.js" />
+        <option value="$PROJECT_DIR$/Scene.js" />
+        <option value="$PROJECT_DIR$/Fleet.js" />
+        <option value="$PROJECT_DIR$/Vessels.js" />
       </list>
     </option>
   </component>
@@ -433,7 +430,13 @@
       <option name="project" value="LOCAL" />
       <updated>1486746903238</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="come... get some 2">
+      <created>1487609033021</created>
+      <option name="number" value="00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1487609033021</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -509,7 +512,8 @@
     <MESSAGE value="moon" />
     <MESSAGE value="star system" />
     <MESSAGE value="come... get some" />
-    <option name="LAST_COMMIT_MESSAGE" value="come... get some" />
+    <MESSAGE value="come... get some 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="come... get some 2" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -772,26 +776,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Fleet.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="57" column="0" selection-start-line="57" selection-start-column="0" selection-end-line="57" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/draw.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-10.068966">
           <caret line="22" column="4" selection-start-line="22" selection-start-column="4" selection-end-line="22" selection-end-column="4" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Vessels.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="34" selection-start-line="20" selection-start-column="34" selection-end-line="20" selection-end-column="34" />
           <folding />
         </state>
       </provider>
@@ -804,10 +792,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/MatObj.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/StarSystem.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="2" column="28" selection-start-line="2" selection-start-column="28" selection-end-line="2" selection-end-column="28" />
+          <caret line="23" column="26" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
           <folding />
         </state>
       </provider>
@@ -815,15 +811,23 @@
     <entry file="file://$PROJECT_DIR$/Scene.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="72" column="59" selection-start-line="72" selection-start-column="59" selection-end-line="72" selection-end-column="59" />
+          <caret line="72" column="62" selection-start-line="72" selection-start-column="62" selection-end-line="72" selection-end-column="62" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MatObj.js">
+    <entry file="file://$PROJECT_DIR$/Fleet.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9524862">
-          <caret line="65" column="0" selection-start-line="65" selection-start-column="0" selection-end-line="65" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="13" column="6" selection-start-line="13" selection-start-column="6" selection-end-line="13" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Vessels.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5730594">
+          <caret line="149" column="20" selection-start-line="149" selection-start-column="20" selection-end-line="149" selection-end-column="20" />
           <folding />
         </state>
       </provider>

@@ -70,15 +70,13 @@ var Scene = (function () {
             var f = fGrav.add( fJet );
 
             obj.vTurn && obj.vTurn.lerp( obj.turnVelocityDelta( fTurn, dt ), 0.01 );
-            obj.v && obj.v.lerp( obj.newVelocity( f, dt ), 1 );
+            obj.v && obj.v.lerp( obj.newVelocity( f, dt ), 0.1 );
             obj.v && obj.pos.copy( obj.newPos( dt ) );
 
             obj.pos.y *= 0.99;//2d restrictions - going to ecliptic plane
 
             obj.updateMesh();
             obj.updateSpec();
-
-
             obj.updateTrail && obj.updateTrail( dt );
         });
     }
@@ -113,11 +111,13 @@ var Scene = (function () {
 
         updateTarget();//update vessels movement direction
 
+        updateCollision();//check and process MatObj collisions
+
         updateMove(dt);//update MatObj physics
 
         octree.rebuild();
 
-        updateCollision();//check and process MatObj collisions
+
     }
 
     //TODO: mouse flat cursor on ecliptic plane
