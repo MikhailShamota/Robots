@@ -116,8 +116,6 @@ var Scene = (function () {
         updateMove(dt);//update MatObj physics
 
         octree.rebuild();
-
-
     }
 
     //TODO: mouse flat cursor on ecliptic plane

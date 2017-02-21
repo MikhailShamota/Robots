@@ -74,13 +74,7 @@ Vessel.prototype.newVelocity = function( f, dt ) {
 
     var vNew = f.clone().multiplyScalar( dt / this.mass ).add( this.v );
 
-    //var fResist = vNew.clone().multiplyScalar( -vNew.length() * this.K_SPACE_RESIST );
-
-    //return fResist.clone().multiplyScalar( dt / this.mass ).add( vNew );
-
-    var v = vNew.clone().multiplyScalar( Math.max( 0, 1 - ( vNew.length() * this.K_SPACE_RESIST * dt / this.mass ) ) );
-
-    return v;
+    return vNew.clone().multiplyScalar( Math.max( 0, 1 - ( vNew.length() * this.K_SPACE_RESIST * dt / this.mass ) ) );
 };
 
 Vessel.prototype.updateTrail = function(dt) {

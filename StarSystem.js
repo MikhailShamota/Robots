@@ -49,7 +49,7 @@ function StarSystem() {
     this.gravities = [];
     this.gravities.f = function(obj) {
 
-        var f = V3_ZERO.clone();
+        //var f = V3_ZERO.clone();
 
         //var f = new THREE.Vector3( 0, -obj.pos.y * K_ECLIPTIC_FORCE * obj.mass, 0 );//go to ecliplic plane
         var f = obj.pos.clone().multiplyScalar( -K_ECLIPTIC_FORCE * obj.mass / WORLD_SIZE );

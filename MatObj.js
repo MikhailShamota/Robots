@@ -10,6 +10,8 @@ function MatObj(pos, mass) {
     this.mesh.userData = this;//a link from mesh to this object
 }
 
+MatObj.prototype.K_GRAVITY = 20;
+
 MatObj.prototype.turnVelocityDelta = function( f, dt ) {
 
     return f.clone().multiplyScalar( dt );
@@ -30,7 +32,7 @@ MatObj.prototype.gravity = function(obj) {
     var r = obj.pos.clone().sub( this.pos );
     var rSq = r.lengthSq();
 
-    return r.normalize().multiplyScalar( 10.0 * this.mass * obj.mass / rSq );
+    return r.normalize().multiplyScalar( this.K_GRAVITY * this.mass * obj.mass / rSq );
 
 };
 
