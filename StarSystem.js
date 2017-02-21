@@ -21,7 +21,12 @@ function StarSystem() {
                 },
                 {
                     f: AsteroidPlain,
-                    q: 100,
+                    q: 20,
+                    r: 200
+                },
+                {
+                    f: AsteroidPlain,
+                    q: 40,
                     r: 100
                 },
                 {
@@ -80,11 +85,7 @@ function StarSystem() {
 
     function AsteroidPlain(p) {
 
-        //var v = new THREE.Vector3( p.z, 0, -p.x ).normalize().multiplyScalar( 50 );
-
-        //var pos = p.add( MathHelper.v3Random( WORLD_SIZE * 0.2 ).setY( MathHelper.rand( -50, 50 ) ) );
         var asteroid = new Asteroid( p, randomMassFromRadius( 1, 9 ), 0x8030F0 );
-        //asteroid.v = v.add( MathHelper.v3Random( 10 ) );
 
         return asteroid;
     }
