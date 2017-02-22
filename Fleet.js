@@ -15,7 +15,7 @@ function Fleet() {
 
     function smallFighter( p ) {
 
-        return new Fighter( p, 2000, 0xFF1111 );
+        return new Fighter( p, 3000, 0xFF1111 );
     }
 
     function bigFighter( p ) {

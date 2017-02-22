@@ -18,7 +18,7 @@ function Vessel(pos, mass) {
 
 extend( Vessel, MatObj );
 
-Vessel.prototype.K_SPACE_RESIST = 100;
+Vessel.prototype.K_SPACE_RESIST = 200;
 Vessel.prototype.V3_FWD = new THREE.Vector3( 0, 0, 1 );
 
 Vessel.prototype.turnVec = function() {
@@ -140,8 +140,8 @@ function Fighter(pos, mass, color) {
 
     Vessel.apply( this, arguments );
 
-    this.fJet = this.mass * 800;
-    this.fTurn = 0.75;//radians per sec
+    this.fJet = 24000000//this.mass * 80000;
+    this.fTurn = 2.25;//radians per sec
     this.trailWidth = 4;
 
     var size = Math.cbrt( this.mass );
