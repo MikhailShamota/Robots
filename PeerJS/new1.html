@@ -1,0 +1,70 @@
+<html>
+<head>
+	<script src="http://cdn.peerjs.com/0.3/peer.min.js"></script>
+</head>
+<body>
+	<input type="text" label="my-peerJs-key" id="peerJs-Key"></input>
+	<button onclick="peerOpen()">peer open</button>
+	<input type="text" label="dest-peer-id" id="dest-peer-id"></input>
+	<button onclick="peerConnect()">peer connect</button>
+	<button onclick="connSend()">conn send</button>
+	<script>
+		const myKey = document.getElementById("peerJs-Key").value;
+		var peer;
+		var conn;
+		
+		function setConn(dataConn) {
+
+			conn = dataConn;
+
+			//console.log('got connect from: '+dataConn.peer);			
+			conn.on('open', function() {
+
+				console.log('conn opened');
+				conn.send('hi!');
+			});
+			
+			// Receive messages
+			conn.on('data', function(data) {
+			
+				console.log('Received', data);
+			});
+		}
+		
+		function peerOpen() {
+		
+			peer = new Peer({key: myKey});
+			peer.on('open', function(id) {
+			
+				console.log('My peer ID is: ' + id);
+			});
+			
+			//Receive connection
+			peer.on('connection', function(dataConn) { 
+			
+				setConn(dataConn);
+			});
+		}
+
+		function peerConnect() {
+			
+			setConn( peer.connect( document.getElementById("dest-peer-id").value ) );
+		}
+		
+		function connSend() {
+		
+			conn.send('Hello!');
+			conn.send({
+			  strings: 'hi!',
+			  numbers: 150,
+			  arrays: [1,2,3],
+			  evenBinary: new Blob([1,2,3]),
+			  andMore: {bool: true}
+			});
+			console.log('send complete');
+		}
+
+
+	</script>
+</body>
+</html>

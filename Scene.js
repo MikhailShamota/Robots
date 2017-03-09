@@ -9,6 +9,7 @@ var Scene = (function () {
 
     var starSystem = new StarSystem();
     var fleet1 = new Fleet();
+    var lasers = [];
 
     var eclipticPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ) );
     var v2MousePoint = new THREE.Vector2();
@@ -118,11 +119,34 @@ var Scene = (function () {
         octree.rebuild();
     }
 
+    function fire(from, to) {
+
+        var laserBeam	= new THREEx.LaserBeam();
+
+        laserBeam.object3d.position.copy( from.pos );
+
+        laserBeam.object3d.quaternion.setFromUnitVectors( V3_UNIT_X, from.v.clone().normalize() );
+
+        scene.add( laserBeam.object3d );
+
+        /*
+        var laserCooked	= new THREEx.LaserCooked(laserBeam)
+        onRenderFcts.push(function(delta, now){
+            laserCooked.update(delta, now)
+        })
+                */
+    }
+
     //TODO: mouse flat cursor on ecliptic plane
     function onMouseUpdate( event ) {
 
         v2MousePoint.x = ( ( event.pageX - renderer.context.canvas.offsetLeft ) / window.innerWidth ) * 2 - 1;
         v2MousePoint.y = - ( ( event.pageY - renderer.context.canvas.offsetTop ) / window.innerHeight ) * 2 + 1;
+    }
+
+    function onMouseClick( event ) {
+
+        fire( fleet1.vesselsList[0].obj, null );
     }
 
     function initializeGL() {
@@ -147,7 +171,7 @@ var Scene = (function () {
         renderer = new THREE.WebGLRenderer({antialias: true});
         renderer.setSize(WIDTH, HEIGHT);
         renderer.sortObjects = false;
-        //renderer.domElement.addEventListener("click", onMouseClick);
+        renderer.domElement.addEventListener("click", onMouseClick);
         renderer.domElement.addEventListener('mousemove', onMouseUpdate, false);
 
         document.body.appendChild(renderer.domElement);
