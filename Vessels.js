@@ -21,6 +21,11 @@ extend( Vessel, MatObj );
 Vessel.prototype.K_SPACE_RESIST = 200;
 Vessel.prototype.V3_FWD = new THREE.Vector3( 0, 0, 1 );
 
+Vessel.prototype.fwd = function() {
+
+    return this.V3_FWD.clone().applyQuaternion( this.mesh.quaternion );
+}
+
 Vessel.prototype.turnVec = function() {
 
     if ( !this.to )

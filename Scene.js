@@ -6,10 +6,66 @@ var Scene = (function () {
     var scene, octree;
 
     var clock = new THREE.Clock();
+    var nowTime = Date.now();
 
     var starSystem = new StarSystem();
     var fleet1 = new Fleet();
+
     var lasers = [];
+    lasers.maxQty = 10;
+    lasers.nextIdx = 0;//newest to create
+    lasers.lastIdx = 0;//oldest created
+    lasers.timeout = 2000;//ms
+    lasers.speed = 10000;//per sec
+    lasers.addToEnd = function(laser) {
+
+        this[ this.nextIdx ] = laser;
+        this.nextIdx = ( this.nextIdx + 1 ) % this.maxQty;
+    };
+    lasers.cleanup = function() {
+
+        var now = Date.now();
+
+        var lastLaser = this[ this.lastIdx ];
+
+        if ( lastLaser && now - lastLaser.created > this.timeout ) {
+
+            this.lastIdx = ( this.lastIdx + 1 ) % this.maxQty;
+            return lastLaser;
+        }
+    };
+    lasers.parse = function() {
+
+    };
+    lasers.move = function(dt) {
+
+        var self = this;
+
+        function mov(idx) {
+
+            var item = self[ idx ];
+            var las = scene.getObjectById( item.object3d.id );
+
+            las && las.position.copy( las.position.clone().add( item.fwd.clone().multiplyScalar( dt * self.speed ) ) );
+        }
+
+        if ( this.lastIdx < this.nextIdx ) {
+            for ( var i = this.lastIdx; i < this.nextIdx; i++ ) {
+
+                mov( i );
+            }
+        } else
+        {
+            for ( var j = 0; j < this.nextIdx; j++ ) {
+
+                mov( j );
+            }
+            for ( var k = this.lastIdx; k < this.length; k ++ ) {
+
+                mov( k );
+            }
+        }
+    };
 
     var eclipticPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ) );
     var v2MousePoint = new THREE.Vector2();
@@ -99,7 +155,23 @@ var Scene = (function () {
         fleet1.update( v3MousePoint );
     }
 
+    function remove(id) {
+
+        scene.remove( scene.getObjectById( id ) );
+    }
+
+    function updateLasers(dt) {
+
+        var old = lasers.cleanup();
+
+        old && remove( old.object3d.id );
+
+        lasers.move( dt );
+    }
+
     function update() {
+
+        nowTime = Date.now();
 
         var dt = clock.getDelta();//its in seconds
         clock.start();
@@ -116,19 +188,25 @@ var Scene = (function () {
 
         updateMove(dt);//update MatObj physics
 
+        updateLasers(dt);
+
         octree.rebuild();
     }
 
     function fire(from, to) {
 
+        var fwd = from.fwd();
         var laserBeam	= new THREEx.LaserBeam();
 
         laserBeam.object3d.position.copy( from.pos );
 
-        laserBeam.object3d.quaternion.setFromUnitVectors( V3_UNIT_X, from.v.clone().normalize() );
+        laserBeam.object3d.quaternion.setFromUnitVectors( V3_UNIT_X, fwd );
 
         scene.add( laserBeam.object3d );
 
+        laserBeam.created = nowTime;
+        laserBeam.fwd = fwd;
+        lasers.addToEnd( laserBeam );
         /*
         var laserCooked	= new THREEx.LaserCooked(laserBeam)
         onRenderFcts.push(function(delta, now){
