@@ -12,7 +12,7 @@ var Scene = (function () {
     var fleet1 = new Fleet();
 
     var lasers = [];
-    lasers.maxQty = 10;
+    lasers.maxQty = 100;
     lasers.nextIdx = 0;//newest to create
     lasers.lastIdx = 0;//oldest created
     lasers.timeout = 2000;//ms
@@ -34,12 +34,10 @@ var Scene = (function () {
             return lastLaser;
         }
     };
-    lasers.parse = function() {
-
-    };
     lasers.move = function(dt) {
 
         var self = this;
+        var now = Date.now();
 
         function mov(idx) {
 
@@ -47,6 +45,8 @@ var Scene = (function () {
             var las = scene.getObjectById( item.object3d.id );
 
             las && las.position.copy( las.position.clone().add( item.fwd.clone().multiplyScalar( dt * self.speed ) ) );
+
+            las && now - item.created > item.liveSec * MSEC_IN_SEC && remove( item.object3d.id );
         }
 
         if ( this.lastIdx < this.nextIdx ) {
@@ -196,6 +196,24 @@ var Scene = (function () {
     function fire(from, to) {
 
         var fwd = from.fwd();
+        var dist = WORLD_SIZE * 100;
+
+        var raycaster = new THREE.Raycaster( from.pos, fwd );
+        var intersects = raycaster.intersectObjects( scene.children );
+
+        //intersects[0] - thyself
+
+        if( intersects.length > 1 ) {
+
+            var hitPt = intersects[ 1 ].point;
+            dist = hitPt.distanceTo( raycaster.ray.origin );
+
+            //object3d.scale.x	= distance
+        }else{
+
+            //object3d.scale.x	= 10
+        }
+
         var laserBeam	= new THREEx.LaserBeam();
 
         laserBeam.object3d.position.copy( from.pos );
@@ -206,7 +224,10 @@ var Scene = (function () {
 
         laserBeam.created = nowTime;
         laserBeam.fwd = fwd;
+        laserBeam.liveSec = dist / lasers.speed;
         lasers.addToEnd( laserBeam );
+
+
         /*
         var laserCooked	= new THREEx.LaserCooked(laserBeam)
         onRenderFcts.push(function(delta, now){
