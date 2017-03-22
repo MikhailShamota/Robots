@@ -17,8 +17,8 @@ THREEx.LaserBeam	= function() {
 		depthWrite	: false,
 		transparent	: true
 	});
-    var length = 500;
-	var thickness = 10;
+    var length = 1;
+	var thickness = 5;
 	var geometry	= new THREE.PlaneGeometry(length, thickness);
 	var nPlanes	= 16;
 	for(var i = 0; i < nPlanes; i++){

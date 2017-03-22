@@ -11,11 +11,13 @@ var Scene = (function () {
     var starSystem = new StarSystem();
     var fleet1 = new Fleet();
 
-    var lasers = [];
+    var lasers = new LoopedArray( 100, 30 );//100 qty, 30 ms to live
+
+    /*var lasers = [];
     lasers.maxQty = 100;
     lasers.nextIdx = 0;//newest to create
     lasers.lastIdx = 0;//oldest created
-    lasers.timeout = 2000;//ms
+    lasers.timeout = 30;//ms
     lasers.speed = 10000;//per sec
     lasers.addToEnd = function(laser) {
 
@@ -44,9 +46,9 @@ var Scene = (function () {
             var item = self[ idx ];
             var las = scene.getObjectById( item.object3d.id );
 
-            las && las.position.copy( las.position.clone().add( item.fwd.clone().multiplyScalar( dt * self.speed ) ) );
+            //las && las.position.copy( las.position.clone().add( item.fwd.clone().multiplyScalar( dt * self.speed ) ) );
 
-            las && now - item.created > item.liveSec * MSEC_IN_SEC && remove( item.object3d.id );
+            //las && now - item.created > item.liveSec * MSEC_IN_SEC && remove( item.object3d.id );
         }
 
         if ( this.lastIdx < this.nextIdx ) {
@@ -66,6 +68,7 @@ var Scene = (function () {
             }
         }
     };
+    */
 
     var eclipticPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ) );
     var v2MousePoint = new THREE.Vector2();
@@ -160,13 +163,14 @@ var Scene = (function () {
         scene.remove( scene.getObjectById( id ) );
     }
 
-    function updateLasers(dt) {
+    function updateLasers() {
 
-        var old = lasers.cleanup();
+        var old = lasers.getLastOutTime();
 
         old && remove( old.object3d.id );
 
-        lasers.move( dt );
+        //lasers.mapAll();
+        //lasers.move( dt );
     }
 
     function update() {
@@ -188,7 +192,7 @@ var Scene = (function () {
 
         updateMove(dt);//update MatObj physics
 
-        updateLasers(dt);
+        updateLasers();
 
         octree.rebuild();
     }
@@ -208,10 +212,12 @@ var Scene = (function () {
             var hitPt = intersects[ 1 ].point;
             dist = hitPt.distanceTo( raycaster.ray.origin );
 
+            scene.add( Flare( hitPt, 100, 0xffff00 ) );
             //object3d.scale.x	= distance
         }else{
 
             //object3d.scale.x	= 10
+
         }
 
         var laserBeam	= new THREEx.LaserBeam();
@@ -219,13 +225,14 @@ var Scene = (function () {
         laserBeam.object3d.position.copy( from.pos );
 
         laserBeam.object3d.quaternion.setFromUnitVectors( V3_UNIT_X, fwd );
+        laserBeam.object3d.scale.set( dist, 1, 1 );
 
         scene.add( laserBeam.object3d );
 
-        laserBeam.created = nowTime;
+        //laserBeam.created = nowTime;
         laserBeam.fwd = fwd;
-        laserBeam.liveSec = dist / lasers.speed;
-        lasers.addToEnd( laserBeam );
+        //laserBeam.liveSec = dist / lasers.speed;
+        lasers.addItem( laserBeam );
 
 
         /*
