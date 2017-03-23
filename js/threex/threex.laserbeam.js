@@ -26,7 +26,7 @@ THREEx.LaserBeam	= function() {
 		mesh.position.x	= length * 0.5;
 		mesh.rotation.x	= i/nPlanes * Math.PI;
 
-		object3d.add( mesh )
+		object3d.add( mesh );
 	}
 
 	function generateLaserBodyCanvas(){

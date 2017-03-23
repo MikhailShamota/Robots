@@ -11,7 +11,8 @@ var Scene = (function () {
     var starSystem = new StarSystem();
     var fleet1 = new Fleet();
 
-    var lasers = new LoopedArray( 100, 30 );//100 qty, 30 ms to live
+    var lasers = new LoopedArray( 10, 30 );//100 qty, 30 ms to live
+    var hits = new LoopedArray( 10, 40 );//100 qty, 30 ms to live
 
     /*var lasers = [];
     lasers.maxQty = 100;
@@ -163,11 +164,13 @@ var Scene = (function () {
         scene.remove( scene.getObjectById( id ) );
     }
 
-    function updateLasers() {
+    function updateLoopedArrays() {
 
         var old = lasers.getLastOutTime();
-
         old && remove( old.object3d.id );
+
+        old = hits.getLastOutTime();
+        old && remove( old.id );
 
         //lasers.mapAll();
         //lasers.move( dt );
@@ -192,7 +195,7 @@ var Scene = (function () {
 
         updateMove(dt);//update MatObj physics
 
-        updateLasers();
+        updateLoopedArrays();
 
         octree.rebuild();
     }
@@ -212,7 +215,10 @@ var Scene = (function () {
             var hitPt = intersects[ 1 ].point;
             dist = hitPt.distanceTo( raycaster.ray.origin );
 
-            scene.add( Flare( hitPt, 100, 0xffff00 ) );
+            var flare = Flare( hitPt, 100, 0xffff00 );
+
+            scene.add( flare );
+            hits.addItem( flare );
             //object3d.scale.x	= distance
         }else{
 
@@ -220,27 +226,18 @@ var Scene = (function () {
 
         }
 
-        var laserBeam	= new THREEx.LaserBeam();
+        var l = new THREEx.LaserBeam();
+        l.object3d.position.copy( from.pos );
 
-        laserBeam.object3d.position.copy( from.pos );
+        l.object3d.quaternion.setFromUnitVectors( V3_UNIT_X, fwd );
+        l.object3d.scale.set( dist, 1, 1 );
 
-        laserBeam.object3d.quaternion.setFromUnitVectors( V3_UNIT_X, fwd );
-        laserBeam.object3d.scale.set( dist, 1, 1 );
-
-        scene.add( laserBeam.object3d );
+        scene.add( l.object3d );
 
         //laserBeam.created = nowTime;
-        laserBeam.fwd = fwd;
+        //l.fwd = fwd;
         //laserBeam.liveSec = dist / lasers.speed;
-        lasers.addItem( laserBeam );
-
-
-        /*
-        var laserCooked	= new THREEx.LaserCooked(laserBeam)
-        onRenderFcts.push(function(delta, now){
-            laserCooked.update(delta, now)
-        })
-                */
+        lasers.addItem( l );
     }
 
     //TODO: mouse flat cursor on ecliptic plane
