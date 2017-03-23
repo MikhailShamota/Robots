@@ -11,7 +11,7 @@ var Scene = (function () {
     var starSystem = new StarSystem();
     var fleet1 = new Fleet();
 
-    var lasers = new LoopedArray( 10, 30 );//100 qty, 30 ms to live
+    var lasers = new LoopedArray( 10, 50 );//100 qty, 30 ms to live
     var hits = new LoopedArray( 10, 40 );//100 qty, 30 ms to live
 
     /*var lasers = [];
@@ -75,7 +75,7 @@ var Scene = (function () {
     var v2MousePoint = new THREE.Vector2();
     var v3MousePoint = new THREE.Vector3();
 
-    var cursor;
+    var cursor = new THREE.Mesh( new THREE.PlaneGeometry( 50, 50 ) );
 
     function updateCollision() {
 
@@ -215,7 +215,7 @@ var Scene = (function () {
             var hitPt = intersects[ 1 ].point;
             dist = hitPt.distanceTo( raycaster.ray.origin );
 
-            var flare = Flare( hitPt, 100, 0xffff00 );
+            var flare = Flare( hitPt, 100, 0xffff00, 'res/blue_particle.jpg' );
 
             scene.add( flare );
             hits.addItem( flare );
@@ -336,10 +336,16 @@ var Scene = (function () {
         });
     }
 
-    function initCursor() {
+    function initCursor(texture) {
 
-        cursor = new THREE.Mesh( new THREE.PlaneGeometry( 50, 50 ) );
+        cursor.material = new THREE.MeshBasicMaterial( {
 
+            map: texture,
+            side: THREE.DoubleSide,
+            transparent: true
+        } );
+
+        /*
         var loader = new THREE.TextureLoader();
 
         loader.load(
@@ -360,7 +366,8 @@ var Scene = (function () {
 
                 console.log( 'An error happened' );
             }
-        );
+        );*/
+
 
         //cursor.doubleSided = true;
         cursor.rotation.x = Math.PI / 2;
@@ -380,7 +387,9 @@ var Scene = (function () {
 
         octree.update();
 
-        initCursor();
+        Textures.add( 'res/cursor.png', initCursor );
+        Textures.add( 'res/blue_particle.jpg' );
+        //initCursor();
     }
 
     function paintScene() {

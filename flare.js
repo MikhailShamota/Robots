@@ -1,9 +1,11 @@
-function Flare(pos, size, color) {
+function Flare(pos, size, color, texture) {
 
     var material	= new THREE.SpriteMaterial({
 
+        map: texture && Textures.add( texture ),
         color : color,
-        blending : THREE.AdditiveBlending
+        blending : THREE.AdditiveBlending,
+        transparent: true
     });
 
     var sprite	= new THREE.Sprite( material );
@@ -12,7 +14,7 @@ function Flare(pos, size, color) {
     sprite.position.copy( pos );
 
     var object3d = new THREE.Object3D();
-    object3d.add(sprite);
+    object3d.add( sprite );
 
     // add a point light
     var light	= new THREE.PointLight( color );
@@ -25,13 +27,3 @@ function Flare(pos, size, color) {
 
     return object3d;
 }
-
-/*function FlareTexture() {
-
-    var textureUrl	= THREEx.LaserCooked.baseURL+'images/blue_particle.jpg';
-    var texture	= new THREE.TextureLoader().load(textureUrl)
-    material.texture = texture;
-}
-
-extend( FlareTexture, Flare );*/
-
