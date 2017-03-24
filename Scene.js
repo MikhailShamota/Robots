@@ -11,8 +11,11 @@ var Scene = (function () {
     var starSystem = new StarSystem();
     var fleet1 = new Fleet();
 
-    var lasers = new LoopedArray( 10, 50 );//100 qty, 30 ms to live
-    var hits = new LoopedArray( 10, 40 );//100 qty, 30 ms to live
+    var loopedArrays = {
+
+        lasers: new LoopedArray(10, 50),//100 qty, 30 ms to live
+        hits: new LoopedArray(10, 40)//100 qty, 30 ms to live
+    };
 
     var eclipticPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ) );
     var v2MousePoint = new THREE.Vector2();
@@ -109,14 +112,20 @@ var Scene = (function () {
 
     function updateLoopedArrays() {
 
-        var old = lasers.getLastOutTime();
+        function removeOld(arr) {
+
+            var old = arr.getLastOutTime();
+            old && remove( old.id );
+        }
+
+        removeOld( loopedArrays.hits );
+        removeOld( loopedArrays.lasers );
+
+        /*var old = lasers.getLastOutTime();
         old && remove( old.id );
 
         old = hits.getLastOutTime();
-        old && remove( old.id );
-
-        //lasers.mapAll();
-        //lasers.move( dt );
+        old && remove( old.id );*/
     }
 
     function update() {
@@ -145,42 +154,40 @@ var Scene = (function () {
 
     function fire(from, to) {
 
-        var fwd = from.fwd();
-        var dist = WORLD_SIZE * 100;
+        var raycaster = new THREE.Raycaster( from.pos, from.fwd() );
 
-        var raycaster = new THREE.Raycaster( from.pos, fwd );
-        var intersects = raycaster.intersectObjects( scene.children );
+        var octreeObjects = octree.search(
+            raycaster.ray.origin,
+            raycaster.ray.far,
+            false/*false to get geometry info*/,
+            raycaster.ray.direction );
 
-        //intersects[0] - thyself
+        var hits = 0;
 
-        if( intersects.length > 1 ) {
+        octreeObjects && octreeObjects.forEach( function(item) {
 
-            var hitPt = intersects[ 1 ].point;
-            dist = hitPt.distanceTo( raycaster.ray.origin );
+            var mesh = item.object;
+            if ( mesh.id == from.mesh.id || hits > 0 )
+                return;
 
-            var flare = Flare( hitPt, 100, 0xffff00, 'res/blue_particle.jpg' );
+            var intersects = raycaster.intersectObject( mesh );
+            if ( intersects.length > 0) {
 
-            scene.add( flare );
-            hits.addItem( flare );
-            //object3d.scale.x	= distance
-        }else{
+                hits++;
+                var hitPt = intersects[ 0 ].point;
 
-            //object3d.scale.x	= 10
+                var flare = Flare( hitPt, 100, 0xffff00, 'res/blue_particle.jpg' );
 
-        }
+                loopedArrays.hits.addItem( flare );
+                scene.add( flare );
+            }else{
+            }
+        });
 
         var beam = Beam( raycaster.ray );
 
-        lasers.addItem( beam );
+        loopedArrays.lasers.addItem( beam );
         scene.add( beam );
-
-        /*var l = new THREEx.LaserBeam();
-        l.object3d.position.copy( from.pos );
-
-        l.object3d.quaternion.setFromUnitVectors( V3_UNIT_X, fwd );
-        l.object3d.scale.set( dist, 1, 1 );*/
-        //scene.add( l.object3d );
-        //lasers.addItem( l );
     }
 
     //TODO: mouse flat cursor on ecliptic plane

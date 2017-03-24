@@ -36,7 +36,7 @@ function Beam(ray) {
         opacity: 0.5,
         resolution: V2_RESOLUTION,
         sizeAttenuation: 1,
-        lineWidth: 4,
+        lineWidth: 2,
         near: 1,
         far: 100000,
         depthTest: true,
