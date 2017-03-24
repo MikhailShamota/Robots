@@ -149,6 +149,8 @@ var Scene = (function () {
 
         updateLoopedArrays();
 
+        onMouseClick(null);
+
         octree.rebuild();
     }
 

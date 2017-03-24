@@ -23,7 +23,7 @@ function Flare(pos, size, color, texture) {
     light.distance	= size * 5;
     light.position.copy( pos );
 
-    sprite.add( light );
+    //sprite.add( light );
 
     return object3d;
 }
