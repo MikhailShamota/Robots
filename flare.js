@@ -27,3 +27,31 @@ function Flare(pos, size, color, texture) {
 
     return object3d;
 }
+
+function Beam(ray) {
+
+    var material = new THREE.MeshLineMaterial( {
+
+        color: new THREE.Color( "rgb(255, 255, 2)" ),
+        opacity: 0.5,
+        resolution: V2_RESOLUTION,
+        sizeAttenuation: 1,
+        lineWidth: 4,
+        near: 1,
+        far: 100000,
+        depthTest: true,
+        blending: THREE.AdditiveBlending,
+        transparent: true,
+        side: THREE.DoubleSide
+    });
+
+    var geom = new THREE.Geometry();
+
+    geom.vertices.push( ray.origin.clone() );
+    geom.vertices.push( ray.origin.clone().add( ray.direction.clone().multiplyScalar( WORLD_SIZE * 1000 ) ) );
+
+    var line = new THREE.MeshLine();
+    line.setGeometry( geom );
+
+    return new THREE.Mesh( line.geometry, material ); // this syntax could definitely be improved!*/
+}

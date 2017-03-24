@@ -14,63 +14,6 @@ var Scene = (function () {
     var lasers = new LoopedArray( 10, 50 );//100 qty, 30 ms to live
     var hits = new LoopedArray( 10, 40 );//100 qty, 30 ms to live
 
-    /*var lasers = [];
-    lasers.maxQty = 100;
-    lasers.nextIdx = 0;//newest to create
-    lasers.lastIdx = 0;//oldest created
-    lasers.timeout = 30;//ms
-    lasers.speed = 10000;//per sec
-    lasers.addToEnd = function(laser) {
-
-        this[ this.nextIdx ] = laser;
-        this.nextIdx = ( this.nextIdx + 1 ) % this.maxQty;
-    };
-    lasers.cleanup = function() {
-
-        var now = Date.now();
-
-        var lastLaser = this[ this.lastIdx ];
-
-        if ( lastLaser && now - lastLaser.created > this.timeout ) {
-
-            this.lastIdx = ( this.lastIdx + 1 ) % this.maxQty;
-            return lastLaser;
-        }
-    };
-    lasers.move = function(dt) {
-
-        var self = this;
-        var now = Date.now();
-
-        function mov(idx) {
-
-            var item = self[ idx ];
-            var las = scene.getObjectById( item.object3d.id );
-
-            //las && las.position.copy( las.position.clone().add( item.fwd.clone().multiplyScalar( dt * self.speed ) ) );
-
-            //las && now - item.created > item.liveSec * MSEC_IN_SEC && remove( item.object3d.id );
-        }
-
-        if ( this.lastIdx < this.nextIdx ) {
-            for ( var i = this.lastIdx; i < this.nextIdx; i++ ) {
-
-                mov( i );
-            }
-        } else
-        {
-            for ( var j = 0; j < this.nextIdx; j++ ) {
-
-                mov( j );
-            }
-            for ( var k = this.lastIdx; k < this.length; k ++ ) {
-
-                mov( k );
-            }
-        }
-    };
-    */
-
     var eclipticPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ) );
     var v2MousePoint = new THREE.Vector2();
     var v3MousePoint = new THREE.Vector3();
@@ -167,7 +110,7 @@ var Scene = (function () {
     function updateLoopedArrays() {
 
         var old = lasers.getLastOutTime();
-        old && remove( old.object3d.id );
+        old && remove( old.id );
 
         old = hits.getLastOutTime();
         old && remove( old.id );
@@ -226,18 +169,18 @@ var Scene = (function () {
 
         }
 
-        var l = new THREEx.LaserBeam();
+        var beam = Beam( raycaster.ray );
+
+        lasers.addItem( beam );
+        scene.add( beam );
+
+        /*var l = new THREEx.LaserBeam();
         l.object3d.position.copy( from.pos );
 
         l.object3d.quaternion.setFromUnitVectors( V3_UNIT_X, fwd );
-        l.object3d.scale.set( dist, 1, 1 );
-
-        scene.add( l.object3d );
-
-        //laserBeam.created = nowTime;
-        //l.fwd = fwd;
-        //laserBeam.liveSec = dist / lasers.speed;
-        lasers.addItem( l );
+        l.object3d.scale.set( dist, 1, 1 );*/
+        //scene.add( l.object3d );
+        //lasers.addItem( l );
     }
 
     //TODO: mouse flat cursor on ecliptic plane
