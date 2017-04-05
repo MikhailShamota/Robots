@@ -6,6 +6,7 @@ function LoopedArray(qty, ms) {
 
     this.nextIdx = 0;//newest to create
     this.lastIdx = 0;//oldest created
+    this.qty = 0;
 }
 
 LoopedArray.prototype.now = function() {
@@ -15,12 +16,19 @@ LoopedArray.prototype.now = function() {
 
 LoopedArray.prototype.addItem = function(item) {
 
+    if ( this.qty >= this.maxQty )//if nowhere
+        return false;//хуй
+
     item.created = this.now();
     this.array[ this.nextIdx ] = item;
     this.nextIdx = ( this.nextIdx + 1 ) % this.maxQty;
+
+    this.qty++;
+
+    return true;
 };
 
-LoopedArray.prototype.getLastOutTime = function() {
+LoopedArray.prototype.pullLastOutOfTime = function() {
 
     var now = this.now();
 
@@ -29,6 +37,8 @@ LoopedArray.prototype.getLastOutTime = function() {
     if ( last && now - last.created > this.timeout ) {
 
         this.lastIdx = ( this.lastIdx + 1 ) % this.maxQty;
+
+        this.qty--;
 
         return last;
     }

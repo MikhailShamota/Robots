@@ -13,14 +13,14 @@ var Scene = (function () {
 
     var loopedArrays = {
 
-        lasers: new LoopedArray(10, 50),//100 qty, 30 ms to live
-        hits: new LoopedArray(10, 40)//100 qty, 30 ms to live
+        lasers: new LoopedArray(100, 1150),//100 qty, 30 ms to live
+        hits: new LoopedArray(100, 40)//100 qty, 30 ms to live
     };
 
     var eclipticPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ) );
     var v2MousePoint = new THREE.Vector2();
     var v3MousePoint = new THREE.Vector3();
-
+    var isMouseDown = 0;
     var cursor = new THREE.Mesh( new THREE.PlaneGeometry( 50, 50 ) );
 
     function updateCollision() {
@@ -110,11 +110,16 @@ var Scene = (function () {
         scene.remove( scene.getObjectById( id ) );
     }
 
+    function updateLasersMove() {
+
+        loopedArrays.lasers.mapAll( BeamMove );
+    }
+
     function updateLoopedArrays() {
 
         function removeOld(arr) {
 
-            var old = arr.getLastOutTime();
+            var old = arr.pullLastOutOfTime();
             old && remove( old.id );
         }
 
@@ -149,12 +154,21 @@ var Scene = (function () {
 
         updateLoopedArrays();
 
-        onMouseClick(null);
+        updateFire();
+
+        updateLasersMove();
 
         octree.rebuild();
     }
 
-    function fire(from, to) {
+    function updateFire() {
+
+        var myObj = fleet1.vesselsList[0].obj;
+
+        isMouseDown > 0 && ( nowTime - myObj.lastFired > 50 || ! myObj.lastFired ) && fire( myObj, null );
+    }
+
+    function fire( from ) {
 
         var raycaster = new THREE.Raycaster( from.pos, from.fwd() );
 
@@ -165,8 +179,9 @@ var Scene = (function () {
             raycaster.ray.direction );
 
         var hits = 0;
+        var dist = WORLD_SIZE * 1000;
 
-        octreeObjects && octreeObjects.forEach( function(item) {
+        octreeObjects && octreeObjects.forEach( function( item ) {
 
             var mesh = item.object;
             if ( mesh.id == from.mesh.id || hits > 0 )
@@ -176,20 +191,23 @@ var Scene = (function () {
             if ( intersects.length > 0) {
 
                 hits++;
+                dist = intersects[ 0 ].distance;
                 var hitPt = intersects[ 0 ].point;
 
                 var flare = Flare( hitPt, 100, 0xffff00, 'res/blue_particle.jpg' );
 
-                loopedArrays.hits.addItem( flare );
-                scene.add( flare );
+                if ( loopedArrays.hits.addItem( flare ) )
+                    scene.add( flare );
             }else{
             }
         });
 
-        var beam = Beam( raycaster.ray );
+        var beam = Beam( raycaster.ray, dist );
 
-        loopedArrays.lasers.addItem( beam );
-        scene.add( beam );
+        if ( loopedArrays.lasers.addItem( beam ) )
+            scene.add( beam );
+
+        from.lastFired = nowTime;
     }
 
     //TODO: mouse flat cursor on ecliptic plane
@@ -201,7 +219,17 @@ var Scene = (function () {
 
     function onMouseClick( event ) {
 
-        fire( fleet1.vesselsList[0].obj, null );
+        //fire( fleet1.vesselsList[0].obj, null );
+    }
+
+    function onMouseDown( event ) {
+
+        isMouseDown++;
+    }
+
+    function onMouseUp( event ) {
+
+        isMouseDown = 0;
     }
 
     function initializeGL() {
@@ -228,6 +256,8 @@ var Scene = (function () {
         renderer.sortObjects = false;
         renderer.domElement.addEventListener("click", onMouseClick);
         renderer.domElement.addEventListener('mousemove', onMouseUpdate, false);
+        renderer.domElement.addEventListener('mousedown', onMouseDown, false);
+        renderer.domElement.addEventListener('mouseup', onMouseUp, false);
 
         document.body.appendChild(renderer.domElement);
 
@@ -288,7 +318,7 @@ var Scene = (function () {
         });
     }
 
-    function initCursor(texture) {
+    function initCursor( texture ) {
 
         cursor.material = new THREE.MeshBasicMaterial( {
 
