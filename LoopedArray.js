@@ -42,6 +42,8 @@ LoopedArray.prototype.pullLastOutOfTime = function() {
 
         return last;
     }
+
+    return null;
 };
 
 LoopedArray.prototype.mapAll = function( func ) {

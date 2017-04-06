@@ -67,7 +67,16 @@ var Scene = (function () {
 
         octree.objectsData.forEach(octreeObj => {
 
-            var obj = octreeObj.object.userData;//mesh.userData => MatObj
+            var mesh = octreeObj.object;
+            var obj = mesh.userData;//mesh.userData => MatObj
+
+            if ( obj.hits <= 0 ) {
+
+                obj.kill();
+                //remove( mesh.id );
+                scene.remove( mesh );
+                octree.remove( mesh );
+            }
 
             var fTurn = obj.turnVec && obj.turnVec() || V3_ZERO;
             var fJet = obj.jetVec && obj.jetVec() || V3_ZERO;
@@ -105,11 +114,6 @@ var Scene = (function () {
         fleet1.update( v3MousePoint );
     }
 
-    function remove(id) {
-
-        scene.remove( scene.getObjectById( id ) );
-    }
-
     function updateLasersMove() {
 
         loopedArrays.lasers.mapAll( BeamMove );
@@ -120,7 +124,7 @@ var Scene = (function () {
         function removeOld(arr) {
 
             var old = arr.pullLastOutOfTime();
-            old && remove( old.id );
+            old && scene.remove( old );
         }
 
         removeOld( loopedArrays.hits );
@@ -191,6 +195,7 @@ var Scene = (function () {
             if ( intersects.length > 0) {
 
                 hits++;
+                mesh.userData.hits--;
                 dist = intersects[ 0 ].distance;
                 var hitPt = intersects[ 0 ].point;
 

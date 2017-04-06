@@ -5,7 +5,7 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LoopedArray.js" afterPath="$PROJECT_DIR$/LoopedArray.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scene.js" afterPath="$PROJECT_DIR$/Scene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flare.js" afterPath="$PROJECT_DIR$/flare.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Vessels.js" afterPath="$PROJECT_DIR$/Vessels.js" />
     </list>
     <ignored path="Robots.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,11 +39,19 @@
       <file leaf-file-name="Scene.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Scene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3005525">
-              <caret line="16" column="33" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
-              <folding>
-                <element signature="e#1718#2576#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.42651933">
+              <caret line="132" column="44" selection-start-line="132" selection-start-column="44" selection-end-line="132" selection-end-column="44" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Octree.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/Octree.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="272" column="8" selection-start-line="272" selection-start-column="8" selection-end-line="272" selection-end-column="8" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -52,7 +60,7 @@
         <entry file="file://$PROJECT_DIR$/LoopedArray.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="18" column="46" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
+              <caret line="45" column="16" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
               <folding />
             </state>
           </provider>
@@ -63,16 +71,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
               <caret line="38407" column="8" selection-start-line="38407" selection-start-column="8" selection-end-line="38407" selection-end-column="8" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Octree.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/js/Octree.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="468" column="8" selection-start-line="468" selection-start-column="8" selection-end-line="468" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -98,6 +96,16 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="MatObj.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MatObj.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="67" column="0" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="flare.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/flare.js">
           <provider selected="true" editor-type-id="text-editor">
@@ -108,21 +116,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/main.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-5.8846154">
-              <caret line="9" column="48" selection-start-line="9" selection-start-column="48" selection-end-line="9" selection-end-column="48" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Vessels.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Vessels.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="135" column="81" selection-start-line="135" selection-start-column="81" selection-end-line="135" selection-end-column="81" />
+              <caret line="147" column="18" selection-start-line="147" selection-start-column="18" selection-end-line="147" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -149,7 +147,6 @@
         <option value="$PROJECT_DIR$/StarSystem.js" />
         <option value="$PROJECT_DIR$/PeerJS/new1.html" />
         <option value="$PROJECT_DIR$/MatObj.js" />
-        <option value="$PROJECT_DIR$/Vessels.js" />
         <option value="$PROJECT_DIR$/draw.js" />
         <option value="$PROJECT_DIR$/js/flare.js" />
         <option value="$PROJECT_DIR$/Textures.js" />
@@ -157,6 +154,7 @@
         <option value="$PROJECT_DIR$/main.html" />
         <option value="$PROJECT_DIR$/Fleet.js" />
         <option value="$PROJECT_DIR$/flare.js" />
+        <option value="$PROJECT_DIR$/Vessels.js" />
         <option value="$PROJECT_DIR$/LoopedArray.js" />
         <option value="$PROJECT_DIR$/Scene.js" />
       </list>
@@ -568,7 +566,13 @@
       <option name="project" value="LOCAL" />
       <updated>1490357361299</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="moving short laser bursts&#10;loopedArray is safe by qty&#10;halting laser by impact">
+      <created>1491399591425</created>
+      <option name="number" value="00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1491399591425</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -623,7 +627,6 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="false" />
-    <MESSAGE value="turn force to mousepoint" />
     <MESSAGE value="turn force work!" />
     <MESSAGE value="update to MatObj &lt;- mesh in constructor&#10;vessel list now has goTo func" />
     <MESSAGE value="Space resists&#10;" />
@@ -648,7 +651,8 @@
     <MESSAGE value="Laser beam by MeshLine" />
     <MESSAGE value="laser intersects by octree" />
     <MESSAGE value="incessant laser fire" />
-    <option name="LAST_COMMIT_MESSAGE" value="incessant laser fire" />
+    <MESSAGE value="moving short laser bursts&#10;loopedArray is safe by qty&#10;halting laser by impact" />
+    <option name="LAST_COMMIT_MESSAGE" value="moving short laser bursts&#10;loopedArray is safe by qty&#10;halting laser by impact" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -920,14 +924,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/THREE.MeshLine.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.74585634">
-          <caret line="227" column="30" selection-start-line="227" selection-start-column="30" selection-end-line="227" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Celestials.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -960,26 +956,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Vessels.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="135" column="81" selection-start-line="135" selection-start-column="81" selection-end-line="135" selection-end-column="81" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-5.8846154">
           <caret line="9" column="48" selection-start-line="9" selection-start-column="48" selection-end-line="9" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/Octree.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="468" column="8" selection-start-line="468" selection-start-column="8" selection-end-line="468" selection-end-column="8" />
           <folding />
         </state>
       </provider>
@@ -1032,14 +1012,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MatObj.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3325967">
-          <caret line="67" column="0" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/flare.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1048,21 +1020,51 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/MatObj.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="67" column="0" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/THREE.MeshLine.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3325967">
+          <caret line="199" column="0" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Vessels.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="147" column="18" selection-start-line="147" selection-start-column="18" selection-end-line="147" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/Octree.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="272" column="8" selection-start-line="272" selection-start-column="8" selection-end-line="272" selection-end-column="8" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/LoopedArray.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="18" column="46" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
+          <caret line="45" column="16" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Scene.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3005525">
-          <caret line="16" column="33" selection-start-line="16" selection-start-column="33" selection-end-line="16" selection-end-column="33" />
-          <folding>
-            <element signature="e#1718#2576#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.42651933">
+          <caret line="132" column="44" selection-start-line="132" selection-start-column="44" selection-end-line="132" selection-end-column="44" />
+          <folding />
         </state>
       </provider>
     </entry>

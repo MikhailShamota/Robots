@@ -14,6 +14,8 @@ function Vessel(pos, mass) {
     this.trailLines = [];
     this.dtJet = 0;
     this.trailWidth = 4;
+
+    this.hits = 1;//toughness
 }
 
 extend( Vessel, MatObj );
@@ -141,6 +143,11 @@ Vessel.prototype.initTrail = function () {
     });
 };
 
+Vessel.prototype.kill = function () {
+
+    this.v = null;
+};
+
 function Fighter(pos, mass, color) {
 
     Vessel.apply( this, arguments );
@@ -148,6 +155,7 @@ function Fighter(pos, mass, color) {
     this.fJet = 24000000//this.mass * 80000;
     this.fTurn = 2.25;//radians per sec
     this.trailWidth = 4;
+    this.hits = 3;//toughness
 
     var size = Math.cbrt( this.mass );
 
