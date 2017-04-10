@@ -14,7 +14,26 @@ var Scene = (function () {
     var loopedArrays = {
 
         lasers: new LoopedArray(100, 1150),//100 qty, 30 ms to live
-        hits: new LoopedArray(100, 40)//100 qty, 30 ms to live
+        hits: new LoopedArray(100, 40),//100 qty, 30 ms to live
+        explosions: new LoopedArray(10, 140)//100 qty, 30 ms to live
+    };
+
+    loopedArrays.add2scene = function( arr, obj ) {
+
+        arr.addItem( obj ) && scene.add( obj );
+    };
+
+    loopedArrays.update = function() {
+
+        function removeOld(arr) {
+
+            var old = arr.pullLastOutOfTime();
+            old && scene.remove( old );
+        }
+
+        removeOld( this.hits );
+        removeOld( this.lasers );
+        removeOld( this.explosions );
     };
 
     var eclipticPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ) );
@@ -63,6 +82,34 @@ var Scene = (function () {
         });
     }
 
+    function addHit( pt ) {
+
+        loopedArrays.add2scene(
+
+            loopedArrays.hits,
+            Flare( pt, 100, 0xffff00, 'res/blue_particle.jpg' )
+        );
+    }
+
+    function addExplosion( pt ) {
+
+        loopedArrays.add2scene(
+
+            loopedArrays.explosions,
+            Flare( pt, 400, 0xffbb11, 'res/blue_particle.jpg' )
+        );
+    }
+
+    function addShot( ray, dist ) {
+
+        loopedArrays.add2scene(
+
+            loopedArrays.lasers,
+            Beam( ray, dist )
+        );
+
+    }
+
     function updateMove(dt) {
 
         octree.objectsData.forEach(octreeObj => {
@@ -73,7 +120,9 @@ var Scene = (function () {
             if ( obj.hits <= 0 ) {
 
                 obj.kill();
-                //remove( mesh.id );
+
+                addExplosion( obj.pos );
+
                 scene.remove( mesh );
                 octree.remove( mesh );
             }
@@ -119,24 +168,6 @@ var Scene = (function () {
         loopedArrays.lasers.mapAll( BeamMove );
     }
 
-    function updateLoopedArrays() {
-
-        function removeOld(arr) {
-
-            var old = arr.pullLastOutOfTime();
-            old && scene.remove( old );
-        }
-
-        removeOld( loopedArrays.hits );
-        removeOld( loopedArrays.lasers );
-
-        /*var old = lasers.getLastOutTime();
-        old && remove( old.id );
-
-        old = hits.getLastOutTime();
-        old && remove( old.id );*/
-    }
-
     function update() {
 
         nowTime = Date.now();
@@ -156,7 +187,7 @@ var Scene = (function () {
 
         updateMove(dt);//update MatObj physics
 
-        updateLoopedArrays();
+        loopedArrays.update();
 
         updateFire();
 
@@ -197,20 +228,13 @@ var Scene = (function () {
                 hits++;
                 mesh.userData.hits--;
                 dist = intersects[ 0 ].distance;
-                var hitPt = intersects[ 0 ].point;
 
-                var flare = Flare( hitPt, 100, 0xffff00, 'res/blue_particle.jpg' );
-
-                if ( loopedArrays.hits.addItem( flare ) )
-                    scene.add( flare );
+                addHit( intersects[ 0 ].point );
             }else{
             }
         });
 
-        var beam = Beam( raycaster.ray, dist );
-
-        if ( loopedArrays.lasers.addItem( beam ) )
-            scene.add( beam );
+        addShot( raycaster.ray, dist );
 
         from.lastFired = nowTime;
     }

@@ -5,7 +5,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LoopedArray.js" afterPath="$PROJECT_DIR$/LoopedArray.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scene.js" afterPath="$PROJECT_DIR$/Scene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Vessels.js" afterPath="$PROJECT_DIR$/Vessels.js" />
     </list>
     <ignored path="Robots.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,9 +38,11 @@
       <file leaf-file-name="Scene.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Scene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.42651933">
-              <caret line="132" column="44" selection-start-line="132" selection-start-column="44" selection-end-line="132" selection-end-column="44" />
-              <folding />
+            <state vertical-scroll-proportion="0.65745854">
+              <caret line="35" column="37" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
+              <folding>
+                <element signature="e#1167#2152#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -60,7 +61,7 @@
         <entry file="file://$PROJECT_DIR$/LoopedArray.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="45" column="16" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
+              <caret line="66" column="25" selection-start-line="66" selection-start-column="25" selection-end-line="66" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -110,7 +111,7 @@
         <entry file="file://$PROJECT_DIR$/flare.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="60" column="42" selection-start-line="60" selection-start-column="42" selection-end-line="60" selection-end-column="42" />
+              <caret line="65" column="14" selection-start-line="65" selection-start-column="14" selection-end-line="65" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -120,7 +121,7 @@
         <entry file="file://$PROJECT_DIR$/Vessels.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="147" column="18" selection-start-line="147" selection-start-column="18" selection-end-line="147" selection-end-column="18" />
+              <caret line="145" column="0" selection-start-line="145" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -572,7 +573,13 @@
       <option name="project" value="LOCAL" />
       <updated>1491399591425</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="ships are killable now">
+      <created>1491483340556</created>
+      <option name="number" value="00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1491483340556</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -627,7 +634,6 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="false" />
-    <MESSAGE value="turn force work!" />
     <MESSAGE value="update to MatObj &lt;- mesh in constructor&#10;vessel list now has goTo func" />
     <MESSAGE value="Space resists&#10;" />
     <MESSAGE value="update move refactoring" />
@@ -652,7 +658,8 @@
     <MESSAGE value="laser intersects by octree" />
     <MESSAGE value="incessant laser fire" />
     <MESSAGE value="moving short laser bursts&#10;loopedArray is safe by qty&#10;halting laser by impact" />
-    <option name="LAST_COMMIT_MESSAGE" value="moving short laser bursts&#10;loopedArray is safe by qty&#10;halting laser by impact" />
+    <MESSAGE value="ships are killable now" />
+    <option name="LAST_COMMIT_MESSAGE" value="ships are killable now" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1012,14 +1019,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/flare.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="60" column="42" selection-start-line="60" selection-start-column="42" selection-end-line="60" selection-end-column="42" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/MatObj.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1036,14 +1035,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Vessels.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="147" column="18" selection-start-line="147" selection-start-column="18" selection-end-line="147" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/Octree.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1052,19 +1043,37 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Vessels.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="145" column="0" selection-start-line="145" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/flare.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="65" column="14" selection-start-line="65" selection-start-column="14" selection-end-line="65" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/LoopedArray.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="16" selection-start-line="45" selection-start-column="16" selection-end-line="45" selection-end-column="16" />
+          <caret line="66" column="25" selection-start-line="66" selection-start-column="25" selection-end-line="66" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Scene.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42651933">
-          <caret line="132" column="44" selection-start-line="132" selection-start-column="44" selection-end-line="132" selection-end-column="44" />
-          <folding />
+        <state vertical-scroll-proportion="0.65745854">
+          <caret line="35" column="37" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
+          <folding>
+            <element signature="e#1167#2152#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
