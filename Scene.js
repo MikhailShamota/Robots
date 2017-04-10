@@ -15,9 +15,9 @@ var Scene = (function () {
 
         collection : {
 
-            "lasers": new LoopedArray(100, 1150),//100 qty, 30 ms to live
-            "hits": new LoopedArray(100, 40),//100 qty, 30 ms to live
-            "explosions": new LoopedArray(10, 140)//100 qty, 30 ms to live
+            "lasers": new LoopedArray( 100, 1150 ),//100 qty, 30 ms to live
+            "hits": new LoopedArray( 100, 40 ),
+            "explosions": new LoopedArray( 10, 140 )
         }
     };
 
@@ -111,7 +111,7 @@ var Scene = (function () {
 
     function updateMove(dt) {
 
-        octree.objectsData.forEach(octreeObj => {
+        octree.objectsData.forEach( octreeObj => {
 
             var mesh = octreeObj.object;
             var obj = mesh.userData;//mesh.userData => MatObj
@@ -141,6 +141,16 @@ var Scene = (function () {
 
             obj.updateMesh();
             obj.updateSpec();
+            //obj.updateTrail && obj.updateTrail( dt );
+        });
+    }
+
+    function updateTrails( dt ) {
+
+        fleet1.vesselsList.forEach( function( item ) {
+
+            var obj = item.obj;
+
             obj.updateTrail && obj.updateTrail( dt );
         });
     }
@@ -185,6 +195,8 @@ var Scene = (function () {
         updateCollision();//check and process MatObj collisions
 
         updateMove(dt);//update MatObj physics
+
+        updateTrails( dt );
 
         loopedArrays.update();
 

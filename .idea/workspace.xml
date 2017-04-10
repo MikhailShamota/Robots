@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="510eed05-ed6a-4361-9ef3-ef26ad0cd624" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Fleet.js" afterPath="$PROJECT_DIR$/Fleet.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scene.js" afterPath="$PROJECT_DIR$/Scene.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Vessels.js" afterPath="$PROJECT_DIR$/Vessels.js" />
     </list>
     <ignored path="Robots.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -37,8 +39,8 @@
       <file leaf-file-name="Scene.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Scene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.45082873">
-              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+            <state vertical-scroll-proportion="2.9303868">
+              <caret line="156" column="0" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -78,7 +80,7 @@
         <entry file="file://$PROJECT_DIR$/Fleet.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="68" column="41" selection-start-line="68" selection-start-column="41" selection-end-line="68" selection-end-column="41" />
+              <caret line="62" column="15" selection-start-line="62" selection-start-column="15" selection-end-line="62" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -118,7 +120,7 @@
         <entry file="file://$PROJECT_DIR$/Vessels.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="145" column="0" selection-start-line="145" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
+              <caret line="111" column="37" selection-start-line="111" selection-start-column="37" selection-end-line="111" selection-end-column="37" />
               <folding />
             </state>
           </provider>
@@ -150,11 +152,11 @@
         <option value="$PROJECT_DIR$/Textures.js" />
         <option value="$PROJECT_DIR$/js/threex/threex.laserbeam.js" />
         <option value="$PROJECT_DIR$/main.html" />
-        <option value="$PROJECT_DIR$/Fleet.js" />
         <option value="$PROJECT_DIR$/flare.js" />
-        <option value="$PROJECT_DIR$/Vessels.js" />
         <option value="$PROJECT_DIR$/LoopedArray.js" />
+        <option value="$PROJECT_DIR$/Fleet.js" />
         <option value="$PROJECT_DIR$/Scene.js" />
+        <option value="$PROJECT_DIR$/Vessels.js" />
       </list>
     </option>
   </component>
@@ -582,7 +584,13 @@
       <option name="project" value="LOCAL" />
       <updated>1491841101859</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="dynamic loop through LoopedArray collection">
+      <created>1491841726498</created>
+      <option name="number" value="00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1491841726498</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -637,7 +645,6 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="false" />
-    <MESSAGE value="Space resists&#10;" />
     <MESSAGE value="update move refactoring" />
     <MESSAGE value="meshline as jet trail" />
     <MESSAGE value="smooth trail&#10;ecliplic grav" />
@@ -662,7 +669,8 @@
     <MESSAGE value="moving short laser bursts&#10;loopedArray is safe by qty&#10;halting laser by impact" />
     <MESSAGE value="ships are killable now" />
     <MESSAGE value="explosions&#10;fix removing oldest items for LoopedArrays&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="explosions&#10;fix removing oldest items for LoopedArrays&#10;" />
+    <MESSAGE value="dynamic loop through LoopedArray collection" />
+    <option name="LAST_COMMIT_MESSAGE" value="dynamic loop through LoopedArray collection" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -998,14 +1006,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Fleet.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="68" column="41" selection-start-line="68" selection-start-column="41" selection-end-line="68" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/draw.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1018,14 +1018,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="185" column="0" selection-start-line="185" selection-start-column="0" selection-end-line="185" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MatObj.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="67" column="0" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1046,14 +1038,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Vessels.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="145" column="0" selection-start-line="145" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/flare.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1070,10 +1054,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Fleet.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="62" column="15" selection-start-line="62" selection-start-column="15" selection-end-line="62" selection-end-column="15" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MatObj.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="67" column="0" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Vessels.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="111" column="37" selection-start-line="111" selection-start-column="37" selection-end-line="111" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Scene.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.45082873">
-          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+        <state vertical-scroll-proportion="2.9303868">
+          <caret line="156" column="0" selection-start-line="156" selection-start-column="0" selection-end-line="156" selection-end-column="0" />
           <folding />
         </state>
       </provider>

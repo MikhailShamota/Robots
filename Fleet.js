@@ -43,11 +43,11 @@ Fleet.prototype.update = function(mousePos) {
     });
 };
 
-Fleet.prototype.init = function(scene, octree) {
+Fleet.prototype.init = function( scene, octree ) {
 
     function startPos( i ) {
 
-        return new THREE.Vector3( 0, 200 * (i + 1), 0 );
+        return new THREE.Vector3( 0, 200 * ( i + 1 ), 0 );
     }
 
     //var q = this.vesselsList.length;

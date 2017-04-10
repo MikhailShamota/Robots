@@ -1,4 +1,4 @@
-function Vessel(pos, mass) {
+function Vessel(pos, mass, color) {
 
     MatObj.apply( this, arguments );
 
@@ -16,6 +16,8 @@ function Vessel(pos, mass) {
     this.trailWidth = 4;
 
     this.hits = 1;//toughness
+
+    this.color = color;
 }
 
 extend( Vessel, MatObj );
@@ -107,7 +109,7 @@ Vessel.prototype.updateTrail = function(dt) {
 Vessel.prototype.initTrail = function () {
 
     var material = new THREE.MeshLineMaterial( {
-        color: new THREE.Color( "rgb(255, 2, 2)" ),
+        color: new THREE.Color( this.color ),
         opacity: 0.5,
         resolution: V2_RESOLUTION,
         sizeAttenuation: 1,
