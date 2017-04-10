@@ -13,27 +13,26 @@ var Scene = (function () {
 
     var loopedArrays = {
 
-        lasers: new LoopedArray(100, 1150),//100 qty, 30 ms to live
-        hits: new LoopedArray(100, 40),//100 qty, 30 ms to live
-        explosions: new LoopedArray(10, 140)//100 qty, 30 ms to live
+        collection : {
+
+            "lasers": new LoopedArray(100, 1150),//100 qty, 30 ms to live
+            "hits": new LoopedArray(100, 40),//100 qty, 30 ms to live
+            "explosions": new LoopedArray(10, 140)//100 qty, 30 ms to live
+        }
     };
 
     loopedArrays.add2scene = function( arr, obj ) {
 
-        arr.addItem( obj ) && scene.add( obj );
+        this.collection[ arr ].addItem( obj ) && scene.add( obj );
     };
 
     loopedArrays.update = function() {
 
-        function removeOld(arr) {
+        for ( var arr in this.collection ) {
 
-            var old = arr.pullLastOutOfTime();
+            var old = this.collection[ arr ].pullLastOutOfTime();
             old && scene.remove( old );
         }
-
-        removeOld( this.hits );
-        removeOld( this.lasers );
-        removeOld( this.explosions );
     };
 
     var eclipticPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ) );
@@ -86,7 +85,7 @@ var Scene = (function () {
 
         loopedArrays.add2scene(
 
-            loopedArrays.hits,
+            "hits",
             Flare( pt, 100, 0xffff00, 'res/blue_particle.jpg' )
         );
     }
@@ -95,7 +94,7 @@ var Scene = (function () {
 
         loopedArrays.add2scene(
 
-            loopedArrays.explosions,
+            "explosions",
             Flare( pt, 400, 0xffbb11, 'res/blue_particle.jpg' )
         );
     }
@@ -104,7 +103,7 @@ var Scene = (function () {
 
         loopedArrays.add2scene(
 
-            loopedArrays.lasers,
+            "lasers",
             Beam( ray, dist )
         );
 
@@ -165,7 +164,7 @@ var Scene = (function () {
 
     function updateLasersMove() {
 
-        loopedArrays.lasers.mapAll( BeamMove );
+        loopedArrays.collection[ "lasers" ].mapAll( BeamMove );
     }
 
     function update() {

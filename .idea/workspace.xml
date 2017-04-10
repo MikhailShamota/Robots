@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="510eed05-ed6a-4361-9ef3-ef26ad0cd624" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LoopedArray.js" afterPath="$PROJECT_DIR$/LoopedArray.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scene.js" afterPath="$PROJECT_DIR$/Scene.js" />
     </list>
     <ignored path="Robots.iws" />
@@ -38,11 +37,9 @@
       <file leaf-file-name="Scene.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Scene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.65745854">
-              <caret line="35" column="37" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
-              <folding>
-                <element signature="e#1167#2152#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.45082873">
+              <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -579,7 +576,13 @@
       <option name="project" value="LOCAL" />
       <updated>1491483340556</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="explosions&#10;fix removing oldest items for LoopedArrays&#10;">
+      <created>1491841101859</created>
+      <option name="number" value="00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1491841101859</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -634,7 +637,6 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="false" />
-    <MESSAGE value="update to MatObj &lt;- mesh in constructor&#10;vessel list now has goTo func" />
     <MESSAGE value="Space resists&#10;" />
     <MESSAGE value="update move refactoring" />
     <MESSAGE value="meshline as jet trail" />
@@ -659,7 +661,8 @@
     <MESSAGE value="incessant laser fire" />
     <MESSAGE value="moving short laser bursts&#10;loopedArray is safe by qty&#10;halting laser by impact" />
     <MESSAGE value="ships are killable now" />
-    <option name="LAST_COMMIT_MESSAGE" value="ships are killable now" />
+    <MESSAGE value="explosions&#10;fix removing oldest items for LoopedArrays&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="explosions&#10;fix removing oldest items for LoopedArrays&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1069,11 +1072,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Scene.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.65745854">
-          <caret line="35" column="37" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
-          <folding>
-            <element signature="e#1167#2152#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.45082873">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
