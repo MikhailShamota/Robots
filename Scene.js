@@ -9,7 +9,8 @@ var Scene = (function () {
     var nowTime = Date.now();
 
     var starSystem = new StarSystem();
-    var fleet1 = new Fleet();
+    var players = [];
+    var thisPlayer;
 
     var loopedArrays = {
 
@@ -147,12 +148,15 @@ var Scene = (function () {
 
     function updateTrails( dt ) {
 
-        fleet1.vesselsList.forEach( function( item ) {
+        for ( var player in players ) {
 
-            var obj = item.obj;
+            players[ player ].vesselsList.forEach(function (item) {
 
-            obj.updateTrail && obj.updateTrail( dt );
-        });
+                var obj = item.obj;
+
+                obj.updateTrail && obj.updateTrail(dt);
+            });
+        }
     }
 
     function updateMouse() {
@@ -169,7 +173,7 @@ var Scene = (function () {
 
     function updateTarget() {
 
-        fleet1.update( v3MousePoint );
+        players[ thisPlayer ].update( v3MousePoint || V3_ZERO );
     }
 
     function updateLasersMove() {
@@ -209,7 +213,7 @@ var Scene = (function () {
 
     function updateFire() {
 
-        var myObj = fleet1.vesselsList[0].obj;
+        var myObj = players[ thisPlayer ].vesselsList[0].obj;
 
         isMouseDown > 0 && ( nowTime - myObj.lastFired > 50 || ! myObj.lastFired ) && fire( myObj, null );
     }
@@ -259,7 +263,6 @@ var Scene = (function () {
 
     function onMouseClick( event ) {
 
-        //fire( fleet1.vesselsList[0].obj, null );
     }
 
     function onMouseDown( event ) {
@@ -367,34 +370,22 @@ var Scene = (function () {
             transparent: true
         } );
 
-        /*
-        var loader = new THREE.TextureLoader();
-
-        loader.load(
-            'res/cursor.png',
-            function ( texture ) {
-
-                cursor.material = new THREE.MeshBasicMaterial( {
-                    map: texture,
-                    side: THREE.DoubleSide,
-                    transparent: true
-                } );
-            },
-            function ( xhr ) {
-
-                console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-            },
-            function ( xhr ) {
-
-                console.log( 'An error happened' );
-            }
-        );*/
-
-
-        //cursor.doubleSided = true;
         cursor.rotation.x = Math.PI / 2;
 
         scene.add( cursor );
+    }
+
+    function initPlayer( id ) {
+
+        var player = new Fleet();
+
+        player.init( scene, octree );
+
+        players[id] = player;
+
+        octree.update();//TODO:это дубль, нужный
+
+        console.log(id + ' entered');
     }
 
     function initScene() {
@@ -405,7 +396,9 @@ var Scene = (function () {
         initOctree();
 
         starSystem.init( scene, octree );
-        fleet1.init( scene, octree );
+
+        thisPlayer = PeerServer.getMyPeerId();
+        initPlayer( thisPlayer );
 
         octree.update();
 
@@ -422,15 +415,24 @@ var Scene = (function () {
         renderer.render(scene, camera);
     }
 
+    function getDataFromPeer( peer, data ) {
+
+        !(peer in players) && initPlayer( peer );
+    }
+
     return {
 
         constructInstance: function constructInstance () {
+
             if ( instance ) {
+
                 return instance;
             }
             if ( this && this.constructor === constructInstance ) {
+
                 instance = this;
             } else {
+
                 return new constructInstance();
             }
         },
@@ -443,6 +445,11 @@ var Scene = (function () {
         paint : function() {
 
             paintScene();
+        },
+
+        receiveData : function( peer, data ) {
+
+            getDataFromPeer( peer, data );
         }
     }
 } () );

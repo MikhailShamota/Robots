@@ -55,26 +55,37 @@
 
 <script>
 
+    var sceneDraw = false;
+
     initConnect();
     //drawScene();
 
     function initConnect() {
 
-        //init connection to PeerJS
-        PeerServer.open( function( id ) {
+        PeerServer.setCallbackOpen( function( id ) {
 
-                document.getElementById('hConnStatus').innerHTML = "connected";
-            }
-        );
+            document.getElementById('hConnStatus').innerHTML = "connected";
+        });
+
+        PeerServer.setCallbackConnect( drawScene );//TODO: возможен дублированный запуск, сейчас решается sceneDraw
+        PeerServer.setCallbackReceive( Scene.receiveData );
+
+        //init connection to PeerJS
+        PeerServer.open();
     }
 
     function drawScene() {
 
+        if ( sceneDraw )
+            return;
+
+        sceneDraw = true;
         document.getElementById('dMenu').style.display = 'none';
         document.getElementById('dScene').style.display = 'block';
 
         Scene.init();
         Scene.paint();
+
 
         document.getElementById('myPeerId').value = PeerServer.getMyPeerId();
     }
@@ -88,7 +99,7 @@
 
         var id = document.getElementById("inpPeerId").value;
 
-        PeerServer.connect( id, drawScene );
+        PeerServer.connect( id );
     }
 
 </script>

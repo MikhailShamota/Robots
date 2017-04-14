@@ -6,7 +6,11 @@ var PeerServer = ( function() {
 
     var myPeerId;
 
-    function initConn(dataConn, callback) {
+    var callbackOpen;
+    var callbackReceive;
+    var callbackConnect;
+
+    function initConn( dataConn ) {
 
         conn = dataConn;
 
@@ -15,24 +19,25 @@ var PeerServer = ( function() {
 
             console.log('conn opened');
             conn.send('hi!');
-            callback && callback();
+            callbackConnect && callbackConnect();
         });
 
         // Receive messages
         conn.on('data', function(data) {
 
-            console.log('Received', data);
+            callbackReceive && callbackReceive( conn.peer, data );
+            console.log('Received from ' + conn.peer, data);
         });
     }
 
-    function peerOpen( callback ) {
+    function peerOpen() {
 
         peer = new Peer({key: myKey});
         peer.on('open', function(id) {
 
             myPeerId = id;
             console.log('My peer ID is: ' + id);
-            callback(id);
+            callbackOpen && callbackOpen(id);
         });
 
         //Receive connection
@@ -42,9 +47,9 @@ var PeerServer = ( function() {
         });
     }
 
-    function peerConnect( peerid, callback ) {
+    function peerConnect( peerid ) {
 
-        initConn( peer.connect( peerid ), callback );
+        initConn( peer.connect( peerid ) );
     }
 
     function peerSend( data ) {
@@ -56,15 +61,15 @@ var PeerServer = ( function() {
     return {
 
         //open connection to PeerJs server
-        open : function( callback ) {
+        open : function() {
 
-            peerOpen( callback );
+            peerOpen();
         },
 
         //connect to peerid
-        connect : function( peerid, callback ) {
+        connect : function( peerid ) {
 
-            peerConnect( peerid, callback );
+            peerConnect( peerid );
         },
 
         //send data to everyone connected
@@ -77,6 +82,21 @@ var PeerServer = ( function() {
         getMyPeerId : function() {
 
             return myPeerId;
+        },
+
+        setCallbackOpen( func ) {
+
+            callbackOpen = func;
+        },
+
+        setCallbackConnect( func ) {
+
+            callbackConnect = func;
+        },
+
+        setCallbackReceive( func ) {
+
+            callbackReceive = func;
         }
     }
 } () );

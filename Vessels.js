@@ -7,7 +7,7 @@ function Vessel(pos, mass, color) {
     this.fJet = null;//jet force
     this.fTurn = null;//turn force
 
-    this.to = null;//fly to
+    this.to = V3_ZERO;//fly to
 
     this.ptJet = [];
     this.trailMeshes = [];

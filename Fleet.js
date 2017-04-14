@@ -6,11 +6,11 @@ function Fleet() {
         {
             f: smallFighter,
             to: toPos
-        },
+        }/*,
         {
             f: bigFighter,
             to: toZero
-        }
+        }*/
     ];
 
     function smallFighter( p ) {
@@ -39,7 +39,7 @@ Fleet.prototype.update = function(mousePos) {
     this.vesselsList.forEach( (item ) => {
 
         var to = item.to( mousePos );
-        item.obj.to = to && to.clone();//where go to
+        item.obj.to = ( to && to.clone() );//where go to
     });
 };
 
