@@ -22,25 +22,77 @@
     <script src="Celestials.js"></script>
     <script src="Vessels.js"></script>
 
+    <script src="draw.js"></script>
+
     <link rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
-<div id="Stats-output"></div>
 
-<div id="top">
-    <div id="content">
-        <div class="bodytext">
-            <span id="MyPeerId" class="headline">...waiting for peer id...</span><br>
+<div class="wrapper" id="dMenu">
+    <div id="menu">
+        <div id="main">
+
+            <h1>Space game</h1>
+            <h2 id="hConnStatus">connecting...</h2>
+            <ul>
+                <li><a href="javascript:void(0)" onclick="newGame()" class="button">New</a></li>
+                <li> <h2>OR</h2></li>
+                <li><input class="input" type="text" id="inpPeerId" value="Enter peer id" onclick="this.value=''"/></li>
+                <li><a href="javascript:void(0)" onclick="joinGame()" id="btnJoin" class="button">Join</a></li>
+            </ul>
         </div>
     </div>
 </div>
-<div id="footer">Foooooter</div>
+
+<div id="dScene" style="display:none" >
+    <div id="Stats-output"></div>
+
+    <div id="header">
+        <input class="text" type="text" id="myPeerId" value="Your peer id" readonly/>
+    </div>
+    <div id="footer">Foooooter</div>
+</div>
+
+<script>
+
+    initConnect();
+    //drawScene();
+
+    function initConnect() {
+
+        //init connection to PeerJS
+        PeerServer.open( function( id ) {
+
+                document.getElementById('hConnStatus').innerHTML = "connected";
+            }
+        );
+    }
+
+    function drawScene() {
+
+        document.getElementById('dMenu').style.display = 'none';
+        document.getElementById('dScene').style.display = 'block';
+
+        Scene.init();
+        Scene.paint();
+
+        document.getElementById('myPeerId').value = PeerServer.getMyPeerId();
+    }
+
+    function newGame() {
+
+        drawScene();
+    }
+
+    function joinGame() {
+
+        var id = document.getElementById("inpPeerId").value;
+
+        PeerServer.connect( id, drawScene );
+    }
+
+</script>
 
 </body>
 
-<script src="draw.js"></script>
-
-
-
-</body>
 </html>

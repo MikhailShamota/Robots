@@ -6,7 +6,7 @@ var PeerServer = ( function() {
 
     var myPeerId;
 
-    function initConn(dataConn) {
+    function initConn(dataConn, callback) {
 
         conn = dataConn;
 
@@ -15,6 +15,7 @@ var PeerServer = ( function() {
 
             console.log('conn opened');
             conn.send('hi!');
+            callback && callback();
         });
 
         // Receive messages
@@ -41,9 +42,9 @@ var PeerServer = ( function() {
         });
     }
 
-    function peerConnect( peerid ) {
+    function peerConnect( peerid, callback ) {
 
-        setConn( peer.connect( peerid ) );
+        initConn( peer.connect( peerid ), callback );
     }
 
     function peerSend( data ) {
@@ -61,15 +62,21 @@ var PeerServer = ( function() {
         },
 
         //connect to peerid
-        connect : function( peerid ) {
+        connect : function( peerid, callback ) {
 
-            peerConnect( peerid );
+            peerConnect( peerid, callback );
         },
 
         //send data to everyone connected
         send : function( data ) {
 
             peerSend( data );
+        },
+
+        //getPeerId
+        getMyPeerId : function() {
+
+            return myPeerId;
         }
     }
 } () );

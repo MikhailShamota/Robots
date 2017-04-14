@@ -50,15 +50,17 @@ var MathHelper = {
     rand: function (min, max) {
 
         return Math.random() * (max - min) + min;
-    }
+    },
 
+    getUrlVars: function() {
+
+        var vars = {};
+        var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
+        function( m, key, value ) {
+
+            vars[key] = value;
+        });
+        return vars;
+    }
 };
 
-
-Scene.init();
-Scene.paint();
-
-PeerServer.open( function ( id ){
-
-    document.getElementById('MyPeerId').innerHTML = id;
-});
