@@ -17,7 +17,7 @@ var Scene = (function () {
 
             "lasers": new LoopedArray( 100, 1150 ),//100 qty, 30 ms to live
             "hits": new LoopedArray( 100, 40 ),
-            "explosions": new LoopedArray( 10, 140 )
+            "explosions": new LoopedArray( 10, 50 )
         }
     };
 

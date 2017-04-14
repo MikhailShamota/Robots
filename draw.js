@@ -54,6 +54,11 @@ var MathHelper = {
 
 };
 
+
 Scene.init();
 Scene.paint();
 
+PeerServer.open( function ( id ){
+
+    document.getElementById('MyPeerId').innerHTML = id;
+});
