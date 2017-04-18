@@ -10,7 +10,7 @@ var Scene = (function () {
 
     var starSystem = new StarSystem();
     var players = [];
-    var thisPlayer;
+    var thisPlayerId;
 
     var loopedArrays = {
 
@@ -39,7 +39,7 @@ var Scene = (function () {
     var eclipticPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ) );
     var v2MousePoint = new THREE.Vector2();
     var v3MousePoint = new THREE.Vector3();
-    var isMouseDown = 0;
+
     var cursor = new THREE.Mesh( new THREE.PlaneGeometry( 50, 50 ) );
 
     function updateCollision() {
@@ -146,17 +146,14 @@ var Scene = (function () {
         });
     }
 
-    function updateTrails( dt ) {
+    function updateTrails( player, dt ) {
 
-        for ( var player in players ) {
+        player.fleet.vesselsList.forEach(function (item) {
 
-            players[ player ].vesselsList.forEach(function (item) {
+            var obj = item.obj;
 
-                var obj = item.obj;
-
-                obj.updateTrail && obj.updateTrail(dt);
-            });
-        }
+            obj.updateTrail && obj.updateTrail(dt);
+        });
     }
 
     function updateMouse() {
@@ -173,7 +170,7 @@ var Scene = (function () {
 
     function updateTarget() {
 
-        players[ thisPlayer ].update( v3MousePoint || V3_ZERO );
+        players[ thisPlayerId ].fleet.update( v3MousePoint || V3_ZERO );
     }
 
     function updateLasersMove() {
@@ -200,22 +197,28 @@ var Scene = (function () {
 
         updateMove(dt);//update MatObj physics
 
-        updateTrails( dt );
-
         loopedArrays.update();
 
-        updateFire();
+        for ( var playerId in players ) {
+
+            var player = players[ playerId ];
+
+            updateTrails( player, dt );
+            updateFire( player );
+        }
 
         updateLasersMove();
 
         octree.rebuild();
     }
 
-    function updateFire() {
+    function updateFire( player ) {
 
-        var myObj = players[ thisPlayer ].vesselsList[0].obj;
+        //var myObj = players[ thisPlayerId ].fleet.vesselsList[0].obj;
+        //isMouseDown > 0 && ( nowTime - myObj.lastFired > 50 || ! myObj.lastFired ) && fire( myObj, null );
 
-        isMouseDown > 0 && ( nowTime - myObj.lastFired > 50 || ! myObj.lastFired ) && fire( myObj, null );
+        var vessel = player.fleet.vesselsList[0].obj;
+        player.isMouseDown > 0 && ( nowTime - vessel.lastFired > 50 || ! vessel.lastFired ) && fire( vessel, null );
     }
 
     function fire( from ) {
@@ -261,18 +264,30 @@ var Scene = (function () {
         v2MousePoint.y = - ( ( event.pageY - renderer.context.canvas.offsetTop ) / window.innerHeight ) * 2 + 1;
     }
 
+    function setMouseDown( playerid ) {
+
+        players[ playerid ].isMouseDown++;
+    }
+
+    function setMouseUp( playerid ) {
+
+        players[ playerid ].isMouseDown = 0;
+    }
+
     function onMouseClick( event ) {
 
     }
 
     function onMouseDown( event ) {
 
-        isMouseDown++;
+        //isMouseDown++;
+        setMouseDown( thisPlayerId );
     }
 
     function onMouseUp( event ) {
 
-        isMouseDown = 0;
+        //isMouseDown = 0;
+        setMouseUp( thisPlayerId );
     }
 
     function initializeGL() {
@@ -377,15 +392,16 @@ var Scene = (function () {
 
     function initPlayer( id ) {
 
-        var player = new Fleet();
+        var player = {};
 
-        player.init( scene, octree );
+        player.fleet = new Fleet();
+        player.fleet.init( scene, octree );
 
-        players[id] = player;
+        player.isMouseDown = 0;
 
-        octree.update();//TODO:это дубль, нужный
+        players[ id ] = player;
 
-        console.log(id + ' entered');
+        console.log( id + ' entered' );
     }
 
     function initScene() {
@@ -397,8 +413,8 @@ var Scene = (function () {
 
         starSystem.init( scene, octree );
 
-        thisPlayer = PeerServer.getMyPeerId();
-        initPlayer( thisPlayer );
+        thisPlayerId = PeerServer.getMyPeerId();
+        initPlayer( thisPlayerId );
 
         octree.update();
 
@@ -418,6 +434,8 @@ var Scene = (function () {
     function getDataFromPeer( peer, data ) {
 
         !(peer in players) && initPlayer( peer );
+
+        //data.
     }
 
     return {

@@ -67,7 +67,7 @@
             document.getElementById('hConnStatus').innerHTML = "connected";
         });
 
-        PeerServer.setCallbackConnect( drawScene );//TODO: возможен дублированный запуск, сейчас решается sceneDraw
+        //PeerServer.setCallbackConnect( drawScene );//возможен дублированный запуск, сейчас решается sceneDraw
         PeerServer.setCallbackReceive( Scene.receiveData );
 
         //init connection to PeerJS
@@ -100,6 +100,8 @@
         var id = document.getElementById("inpPeerId").value;
 
         PeerServer.connect( id );
+
+        drawScene();
     }
 
 </script>

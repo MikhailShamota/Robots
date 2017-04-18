@@ -68,4 +68,6 @@ Fleet.prototype.init = function( scene, octree ) {
 
         item.obj = obj;//a link to vessel
     });
+
+    octree.update();
 };
