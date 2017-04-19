@@ -11,14 +11,16 @@ var Scene = (function () {
     var starSystem = new StarSystem();
     var players = [];
 
-    //players.iid = null;//i am index
     var iPlayer = function() { return players[ iPlayer.id ] };//i am player
     iPlayer.id = null;//i am index
+    iPlayer.lastPeerSent = 0;
+    iPlayer.onChange = function() {
 
-    //var thisPlayerId;
+        if ( nowTime - this.lastPeerSent < 1000 )
+            return;
 
-
-    var lastPeerSent = 0;
+        PeerServer.send( iPlayer().pack() );
+    };
 
     var loopedArrays = {
 
@@ -186,14 +188,6 @@ var Scene = (function () {
         loopedArrays.collection[ "lasers" ].mapAll( BeamMove );
     }
 
-    function updatePeers() {
-
-        if ( nowTime - lastPeerSent < 1000 )
-            return;
-
-        PeerServer.send( iPlayer().pack() );
-    }
-
     function update() {
 
         nowTime = Date.now();
@@ -204,8 +198,6 @@ var Scene = (function () {
         controls.update(); // required if controls.enableDamping = true, or if controls.autoRotate = true
         stats.update();
 
-        ////
-        updatePeers();
         ////
         updateMouse();//get mouse position
 
@@ -420,6 +412,7 @@ var Scene = (function () {
 
         iPlayer.id = PeerServer.getMyPeerId();
         initPlayer( iPlayer.id );
+        iPlayer().changeCallback = iPlayer.onChange;
 
         octree.update();
 
