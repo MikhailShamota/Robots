@@ -10,7 +10,15 @@ var Scene = (function () {
 
     var starSystem = new StarSystem();
     var players = [];
-    var thisPlayerId;
+
+    //players.iid = null;//i am index
+    var iPlayer = function() { return players[ iPlayer.id ] };//i am player
+    iPlayer.id = null;//i am index
+
+    //var thisPlayerId;
+
+
+    var lastPeerSent = 0;
 
     var loopedArrays = {
 
@@ -148,11 +156,11 @@ var Scene = (function () {
 
     function updateTrails( player, dt ) {
 
-        player.fleet.vesselsList.forEach(function (item) {
+        player.fleet.vesselsList.forEach(function ( item ) {
 
             var obj = item.obj;
 
-            obj.updateTrail && obj.updateTrail(dt);
+            obj.updateTrail && obj.updateTrail( dt );
         });
     }
 
@@ -170,12 +178,20 @@ var Scene = (function () {
 
     function updateTarget() {
 
-        players[ thisPlayerId ].fleet.update( v3MousePoint || V3_ZERO );
+        iPlayer().fleet.update( v3MousePoint || V3_ZERO );
     }
 
     function updateLasersMove() {
 
         loopedArrays.collection[ "lasers" ].mapAll( BeamMove );
+    }
+
+    function updatePeers() {
+
+        if ( nowTime - lastPeerSent < 1000 )
+            return;
+
+        PeerServer.send( iPlayer().pack() );
     }
 
     function update() {
@@ -188,6 +204,8 @@ var Scene = (function () {
         controls.update(); // required if controls.enableDamping = true, or if controls.autoRotate = true
         stats.update();
 
+        ////
+        updatePeers();
         ////
         updateMouse();//get mouse position
 
@@ -264,30 +282,19 @@ var Scene = (function () {
         v2MousePoint.y = - ( ( event.pageY - renderer.context.canvas.offsetTop ) / window.innerHeight ) * 2 + 1;
     }
 
-    function setMouseDown( playerid ) {
-
-        players[ playerid ].isMouseDown++;
-    }
-
-    function setMouseUp( playerid ) {
-
-        players[ playerid ].isMouseDown = 0;
-    }
-
     function onMouseClick( event ) {
 
     }
 
     function onMouseDown( event ) {
 
-        //isMouseDown++;
-        setMouseDown( thisPlayerId );
+        iPlayer().setMouseDown();
     }
 
     function onMouseUp( event ) {
 
         //isMouseDown = 0;
-        setMouseUp( thisPlayerId );
+        iPlayer().setMouseUp();
     }
 
     function initializeGL() {
@@ -392,12 +399,10 @@ var Scene = (function () {
 
     function initPlayer( id ) {
 
-        var player = {};
+        var player = new Player( id );
 
         player.fleet = new Fleet();
         player.fleet.init( scene, octree );
-
-        player.isMouseDown = 0;
 
         players[ id ] = player;
 
@@ -413,14 +418,13 @@ var Scene = (function () {
 
         starSystem.init( scene, octree );
 
-        thisPlayerId = PeerServer.getMyPeerId();
-        initPlayer( thisPlayerId );
+        iPlayer.id = PeerServer.getMyPeerId();
+        initPlayer( iPlayer.id );
 
         octree.update();
 
         Textures.add( 'res/cursor.png', initCursor );
         Textures.add( 'res/blue_particle.jpg' );
-        //initCursor();
     }
 
     function paintScene() {
@@ -435,7 +439,7 @@ var Scene = (function () {
 
         !(peer in players) && initPlayer( peer );
 
-        //data.
+        players[ peer ].unpack( data );
     }
 
     return {
