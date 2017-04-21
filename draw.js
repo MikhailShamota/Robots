@@ -34,6 +34,11 @@ var MathHelper = {
         return x*x*(3 - 2*x);
     },
 
+    grid: function( x, size ) {
+
+        return Math.round( x / size ) * size;
+    },
+
     //makes new random vector with length
     v3Random: function (length) {
 

@@ -28,7 +28,7 @@ Vessel.prototype.V3_FWD = new THREE.Vector3( 0, 0, 1 );
 Vessel.prototype.fwd = function() {
 
     return this.V3_FWD.clone().applyQuaternion( this.mesh.quaternion );
-}
+};
 
 Vessel.prototype.turnVec = function() {
 
@@ -43,7 +43,6 @@ Vessel.prototype.turnVec = function() {
     dir.transformDirection( matInv );//now v3Dir is in a vessel coordinate system
 
     var grip = new THREE.Vector3( -dir.y, dir.x, 0 ).normalize();//x and y change as Y grip is about x-axis rotation
-
 
     grip.x = 0;//2d restrictions - restrict pitch
 

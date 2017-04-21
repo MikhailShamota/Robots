@@ -56,7 +56,7 @@ var Scene = (function () {
 
         var setter = [];
 
-        octree.objectsData.forEach(octreeObj => {
+        octree.objectsData.forEach( octreeObj => {
 
             var mesh = octreeObj.object;
             var matObj = mesh.userData;
@@ -64,7 +64,7 @@ var Scene = (function () {
             if ( !matObj.v )//immovable
                 return;
 
-            octree.search(octreeObj.position, octreeObj.radius).forEach(octreeObj2 => {
+            octree.search( octreeObj.position, octreeObj.radius ).forEach( octreeObj2 => {
 
                 var mesh2 = octreeObj2.object;
                 var matObj2 = mesh2.userData;
@@ -72,15 +72,15 @@ var Scene = (function () {
                 if (mesh.id == mesh2.id)
                     return;
 
-                var depth = octreeObj2.radius + octreeObj.radius - mesh.position.distanceTo(mesh2.position);
+                var depth = octreeObj2.radius + octreeObj.radius - mesh.position.distanceTo( mesh2.position );
 
-                if (depth > 0) {//bounce
+                if ( depth > 0 ) {//bounce
 
-                    matObj.pos.add(matObj.dive(matObj2, depth));
+                    matObj.pos.add( matObj.dive( matObj2, depth ) );
 
                     setter.push({
                         obj: matObj,
-                        v: matObj.bounce(matObj2)
+                        v: matObj.bounce( matObj2 )
                     });
                 }
             });

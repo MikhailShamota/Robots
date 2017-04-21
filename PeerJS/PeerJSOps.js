@@ -26,7 +26,7 @@ var PeerServer = ( function() {
         conn.on('data', function(data) {
 
             callbackReceive && callbackReceive( conn.peer, data );
-            console.log('Received from ' + conn.peer, data);
+            !callbackReceive && console.log('Received from ' + conn.peer, data);
         });
     }
 
