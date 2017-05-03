@@ -25,9 +25,12 @@ Player.prototype.setMouseUp = function() {
 
 Player.prototype.pack = function() {
 
+    var vessel = this.fleet.vesselsList[0];
+
     return {
 
         m: this.isMouseDown
+        //v: vessel.pack()
     }
 };
 

@@ -1,31 +1,41 @@
 function MatObj(pos, mass) {
 
     this.pos = pos;
+    this.turn = new THREE.Vector3();
+
     this.mass = mass;
     this.v = null;//velocity
-    this.vTurn = null;//turn velocity
+    //this.vTurn = null;//turn velocity
 
     this.mesh = new THREE.Mesh();
     this.mesh.position.copy( this.pos );
     this.mesh.userData = this;//a link from mesh to this object
 }
 
-MatObj.prototype.K_GRAVITY = 20;
+MatObj.prototype.K_GRAVITY = 2;
+MatObj.prototype.K_SPACE_RESIST = 1;
 
-MatObj.prototype.turnVelocityDelta = function( f, dt ) {
+MatObj.prototype.resistForce = function( v, k ) {
 
-    return f.clone().multiplyScalar( dt );
+    return v.clone().multiplyScalar( v.length() * k );
 };
 
-MatObj.prototype.newVelocity = function( f, dt ) {
-    
-    return f.clone().multiplyScalar( dt / this.mass ).add( this.v );
+MatObj.prototype.velocityDelta = function( f, dt ) {
+
+    return f.clone().multiplyScalar( dt / this.mass );
 };
 
-MatObj.prototype.newPos = function(dt) {
+MatObj.prototype.newPos = function( dt ) {
 
     return this.v.clone().multiplyScalar( dt ).add( this.pos );
 };
+
+/*
+MatObj.prototype.newTurn = function( dt ) {
+
+    return this.vTurn.clone().multiplyScalar( dt ).add( this.turn );
+};
+*/
 
 MatObj.prototype.gravity = function(obj) {
 
@@ -67,13 +77,7 @@ MatObj.prototype.bounce = function(obj2) {
 
 MatObj.prototype.updateMesh = function() {
 
-    if ( this.vTurn ) {
-
-        this.mesh.rotation.x += this.vTurn.x;
-        this.mesh.rotation.y += this.vTurn.y;
-        this.mesh.rotation.z += this.vTurn.z;
-    }
-
+    this.mesh.rotation.setFromVector3( this.turn );
     this.mesh.position.copy( this.pos );
 };
 
