@@ -34,7 +34,7 @@ function Fleet() {
     }
 }
 
-Fleet.prototype.update = function(mousePos) {
+Fleet.prototype.update = function( mousePos ) {
 
     this.vesselsList.forEach( (item ) => {
 
@@ -47,7 +47,7 @@ Fleet.prototype.init = function( scene, octree ) {
 
     function startPos( i ) {
 
-        return new THREE.Vector3( 0, 200 * ( i + 1 ), 0 );
+        return new THREE.Vector3( 0, 20 * ( i + 1 ), -500 );
     }
 
     //var q = this.vesselsList.length;

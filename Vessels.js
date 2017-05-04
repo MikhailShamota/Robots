@@ -18,6 +18,8 @@ function Vessel(pos, mass, color) {
     this.hits = 1;//toughness
 
     this.color = color;
+
+    this.isFiring = false;
 }
 
 extend( Vessel, MatObj );
@@ -30,7 +32,8 @@ Vessel.prototype.pack = function() {
 
         p: this.pos,
         v: this.v,
-        t: this.turn
+        t: this.turn,
+        f: this.isFiring
     }
 };
 
@@ -38,8 +41,8 @@ Vessel.prototype.unpack = function( data ) {
 
     this.pos = data.p;
     this.v = data.v;
-    this.mesh.rotation = data.r;
-    this.to = data.t;
+    this.turn = data.t;
+    this.isFiring = data.f;
 };
 
 Vessel.prototype.fwd = function() {

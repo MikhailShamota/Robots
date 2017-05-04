@@ -122,41 +122,45 @@ var Scene = (function () {
 
     function updateMove(dt) {
 
+        function killObject( obj ) {
+
+            obj.kill();
+
+            addExplosion( obj.pos );
+
+            scene.remove( obj.mesh );
+            octree.remove( obj.mesh );
+        }
+
+        function getForces( obj ) {
+
+            var fJet = obj.jetVec && obj.jetVec() || V3_ZERO;
+            var fGravity = starSystem.gravities.f( obj ) || V3_ZERO;
+
+            var fResist = obj.resistForce( obj.v, obj.K_SPACE_RESIST ) || V3_ZERO;
+            return fGravity.add( fJet ).sub( fResist );
+        }
+
         octree.objectsData.forEach( octreeObj => {
 
-            var mesh = octreeObj.object;
-            var obj = mesh.userData;//mesh.userData => MatObj
+            //var mesh = octreeObj.object;
+            //var obj = mesh.userData;//mesh.userData => MatObj
+            var obj = octreeObj.object.userData;//octree -> object -> mesh -> userData => MatObj
 
-            if ( obj.hits <= 0 ) {
+            //CHECK & KILL & REMOVE
+            obj.hits <= 0 && killObject( obj );
 
-                obj.kill();
+            //TURN
+            obj.turn.y += ( obj.turnVec && obj.turnVec() || V3_ZERO ).multiplyScalar( obj.sTurn * dt ).y;
 
-                addExplosion( obj.pos );
+            //VELOCITY & POSITION
+            obj.v && obj.v.add( obj.velocityDelta( getForces( obj ), dt ) ) && obj.pos.copy( obj.newPos( dt ) );
 
-                scene.remove( mesh );
-                octree.remove( mesh );
-            }
-
-            var grip = obj.turnVec && obj.turnVec() || V3_ZERO;
-            var fJet = obj.jetVec && obj.jetVec() || V3_ZERO;
-            var fGrav = starSystem.gravities.f( obj ) || V3_ZERO;
-
-            var fResist = obj.v && obj.resistForce( obj.v, obj.K_SPACE_RESIST ) || V3_ZERO;
-            var f = fGrav.add( fJet ).sub( fResist );
-
-
-            obj.turn.y += grip.multiplyScalar( obj.sTurn * dt ).y;
-
-
-            obj.v && obj.v.add( obj.velocityDelta( f, dt ) );
-            obj.v && obj.pos.copy( obj.newPos( dt ) );
-
-
-            obj.pos.y *= 0.99;//2d restrictions - going to ecliptic plane
+            //ECLIPTIC PLANE INEXORABLE PULL
+            obj.pos.y *= 0.099;
 
             obj.updateMesh();
             obj.updateSpec();
-            //obj.updateTrail && obj.updateTrail( dt );
         });
     }
 
@@ -209,7 +213,7 @@ var Scene = (function () {
 
         updateCollision();//check and process MatObj collisions
 
-        updateMove(dt);//update MatObj physics
+        updateMove( dt );//update MatObj physics
 
         loopedArrays.update();
 
@@ -232,7 +236,7 @@ var Scene = (function () {
         //isMouseDown > 0 && ( nowTime - myObj.lastFired > 50 || ! myObj.lastFired ) && fire( myObj, null );
 
         var vessel = player.fleet.vesselsList[0].obj;
-        player.isMouseDown > 0 && ( nowTime - vessel.lastFired > 50 || ! vessel.lastFired ) && fire( vessel, null );
+        vessel.isFiring = player.isMouseDown > 0 && ( nowTime - vessel.lastFired > 50 || ! vessel.lastFired ) && fire( vessel, null );
     }
 
     function fire( from ) {
