@@ -23,7 +23,7 @@ var Scene = (function () {
 
     function send() {
 
-        if ( nowTime - this.lastPeerSent < MSEC_EXCH_PERIOD )
+        if ( nowTime - this.lastPeerSent < SEC_EXCH_PERIOD * MSEC_IN_SEC )
             return;
 
         PeerServer.send( iPlayer().pack() );
@@ -147,6 +147,7 @@ var Scene = (function () {
             var fGravity = starSystem.gravities.f( obj ) || V3_ZERO;
 
             var fResist = obj.resistForce( obj.v ) || V3_ZERO;
+
             return fGravity.add( fJet ).sub( fResist );
         }
 
@@ -412,10 +413,10 @@ var Scene = (function () {
 
     function initPlayer( id ) {
 
-        var player = new Player( id );
+        var player = new Player( id, Object.keys( players ).length );
 
         player.fleet = new Fleet();
-        player.fleet.init( scene, octree );
+        player.fleet.init( scene, octree, player.color );
 
         players[ id ] = player;
 

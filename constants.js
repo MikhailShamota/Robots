@@ -8,6 +8,4 @@ const MSEC_IN_SEC = 1000;
 const K_GRAVITY = 2;
 const K_SPACE_RESIST = 100;
 
-const MSEC_EXCH_PERIOD = 1000;
-
-const IMPORT_VECTORS_LERP_ALPHA = 0.1;
+const SEC_EXCH_PERIOD = 1;

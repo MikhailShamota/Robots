@@ -76,6 +76,9 @@ MatObj.prototype.updateMesh = function() {
 
     this.mesh.rotation.setFromVector3( this.turn );
     this.mesh.position.copy( this.pos );
+
+    //this.mesh.rotation.setFromVector3( this.mesh.rotation.toVector3().lerp( this.turn, 0.03 ) );
+    //this.mesh.position.lerp( this.pos, 0.03 );
 };
 
 MatObj.prototype.updateSpec = function() {

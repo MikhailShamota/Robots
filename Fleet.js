@@ -13,14 +13,14 @@ function Fleet() {
         }*/
     ];
 
-    function smallFighter( p ) {
+    function smallFighter( p, color ) {
 
-        return new Fighter( p, 3000, 0xFF1111 );
+        return new Fighter( p, 3000, color );
     }
 
-    function bigFighter( p ) {
+    function bigFighter( p, color ) {
 
-        return new Fighter( p, 5000, 0x11FF11 );
+        return new Fighter( p, 5000, color );
     }
 
     function toPos( pos ) {
@@ -43,7 +43,7 @@ Fleet.prototype.update = function( mousePos ) {
     });
 };
 
-Fleet.prototype.init = function( scene, octree ) {
+Fleet.prototype.init = function( scene, octree, color ) {
 
     function startPos( i ) {
 
@@ -54,7 +54,7 @@ Fleet.prototype.init = function( scene, octree ) {
 
     this.vesselsList.forEach( (item, i ) => {
 
-        var obj = item.f( startPos( i ) );
+        var obj = item.f( startPos( i ), color );
 
         scene.add( obj.mesh );
         octree.add( obj.mesh );

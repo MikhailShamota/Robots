@@ -62,3 +62,5 @@ var MathHelper = {
     }
 };
 
+//TODO:autoscale
+//TODO:random colors

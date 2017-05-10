@@ -7,7 +7,7 @@ function Vessel(pos, mass, color) {
     this.fJet = null;//jet force
     this.sTurn = null;//turn rad per sec
 
-    this.to = null;//fly to. maintain direction if null
+    this.to = new THREE.Vector3();//fly to. maintain direction if null
 
     this.ptJet = [];
     this.trailMeshes = [];
@@ -20,6 +20,8 @@ function Vessel(pos, mass, color) {
     this.color = color;
 
     this.isFiring = false;
+
+    //this.deltaPos = null;
 }
 
 extend( Vessel, MatObj );
@@ -33,6 +35,7 @@ Vessel.prototype.pack = function() {
         p: this.pos && this.pos.toArray(),
         v: this.v && this.v.toArray(),
         t: this.turn && this.turn.toArray(),
+        to: this.fwd().multiplyScalar( WORLD_SIZE ).add( this.pos ).toArray(),
         f: this.isFiring,
         h: this.hits
     }
@@ -40,17 +43,20 @@ Vessel.prototype.pack = function() {
 
 Vessel.prototype.unpack = function( data ) {
 
-    function importVectorFromArray( to, from_array, alpha ) {
+    function set( to, from_array ) {
 
-        to && from_array && to.lerp( new THREE.Vector3().fromArray( from_array ), alpha || 1 );
+        to && from_array && to.fromArray( from_array );
     }
 
-    importVectorFromArray( this.pos, data.p, IMPORT_VECTORS_LERP_ALPHA );
-    importVectorFromArray( this.v, data.v );
-    importVectorFromArray( this.turn, data.t );
+    set( this.pos, data.p );
+    set( this.v, data.v );
 
-    //data.v && this.v.fromArray( data.v );
-    //data.t && this.turn.fromArray( data.t );
+    //hard
+    //set( this.turn, data.t );
+    //OR
+    //smooth
+    set( this.to, data.to );
+
     this.isFiring = data.f;
     this.hits = data.h;
 };

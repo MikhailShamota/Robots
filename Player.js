@@ -1,4 +1,4 @@
-function Player( id ) {
+function Player( id, num ) {
 
     this.id = id;
 
@@ -7,7 +7,11 @@ function Player( id ) {
     this.isMouseDown = 0;
 
     this.changeCallback = null;
+
+    this.color = this.colors[ num ];
 }
+
+Player.prototype.colors = [ 0xaa0000, 0x00aa00, 0x0000aa, 0xaaaa00, 0xaa00aa ];
 
 Player.prototype.getVessel = function() {
 
