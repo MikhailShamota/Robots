@@ -16,11 +16,20 @@ var Scene = (function () {
     iPlayer.lastPeerSent = 0;
     iPlayer.onChange = function() {
 
-        if ( nowTime - this.lastPeerSent < 1000 )
+        this.getVessel().isFiring = this.isMouseDown;
+
+        send();
+    };
+
+    function send() {
+
+        if ( nowTime - this.lastPeerSent < MSEC_EXCH_PERIOD )
             return;
 
         PeerServer.send( iPlayer().pack() );
-    };
+
+        this.lastPeerSent = nowTime;
+    }
 
     var loopedArrays = {
 
@@ -137,7 +146,7 @@ var Scene = (function () {
             var fJet = obj.jetVec && obj.jetVec() || V3_ZERO;
             var fGravity = starSystem.gravities.f( obj ) || V3_ZERO;
 
-            var fResist = obj.resistForce( obj.v, obj.K_SPACE_RESIST ) || V3_ZERO;
+            var fResist = obj.resistForce( obj.v ) || V3_ZERO;
             return fGravity.add( fJet ).sub( fResist );
         }
 
@@ -227,6 +236,8 @@ var Scene = (function () {
 
         updateLasersMove();
 
+        send();
+
         octree.rebuild();
     }
 
@@ -234,9 +245,11 @@ var Scene = (function () {
 
         //var myObj = players[ thisPlayerId ].fleet.vesselsList[0].obj;
         //isMouseDown > 0 && ( nowTime - myObj.lastFired > 50 || ! myObj.lastFired ) && fire( myObj, null );
+        //var vessel = player.fleet.vesselsList[0].obj;
 
-        var vessel = player.fleet.vesselsList[0].obj;
-        vessel.isFiring = player.isMouseDown > 0 && ( nowTime - vessel.lastFired > 50 || ! vessel.lastFired ) && fire( vessel, null );
+        var vessel = player.getVessel();
+
+        vessel.isFiring && ( nowTime - vessel.lastFired > 50 || ! vessel.lastFired ) && fire( vessel, null );
     }
 
     function fire( from ) {

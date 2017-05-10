@@ -30,16 +30,12 @@ Player.prototype.setMouseUp = function() {
 
 Player.prototype.pack = function() {
 
-/*    var vessel = this.fleet.vesselsList[0].obj;
-
-    return vessel.pack();*/
+    return this.getVessel().pack();
 };
 
 Player.prototype.unpack = function( data ) {
 
-/*    var vessel = this.fleet.vesselsList[0].obj;
-
-    vessel.unpack( data );*/
+    this.getVessel().unpack( data );
 };
 
 Player.prototype.change = function() {

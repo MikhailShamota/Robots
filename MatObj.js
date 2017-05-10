@@ -12,12 +12,9 @@ function MatObj(pos, mass) {
     this.mesh.userData = this;//a link from mesh to this object
 }
 
-MatObj.prototype.K_GRAVITY = 2;
-MatObj.prototype.K_SPACE_RESIST = 1;
+MatObj.prototype.resistForce = function( v ) {
 
-MatObj.prototype.resistForce = function( v, k ) {
-
-    return v.clone().multiplyScalar( v.length() * k );
+    return v.clone().multiplyScalar( v.length() * K_SPACE_RESIST );
 };
 
 MatObj.prototype.velocityDelta = function( f, dt ) {
@@ -42,7 +39,7 @@ MatObj.prototype.gravity = function(obj) {
     var r = obj.pos.clone().sub( this.pos );
     var rSq = r.lengthSq();
 
-    return r.normalize().multiplyScalar( this.K_GRAVITY * this.mass * obj.mass / rSq );
+    return r.normalize().multiplyScalar( K_GRAVITY * this.mass * obj.mass / rSq );
 
 };
 

@@ -7,7 +7,7 @@ function Vessel(pos, mass, color) {
     this.fJet = null;//jet force
     this.sTurn = null;//turn rad per sec
 
-    this.to = V3_ZERO;//fly to
+    this.to = null;//fly to. maintain direction if null
 
     this.ptJet = [];
     this.trailMeshes = [];
@@ -30,19 +30,29 @@ Vessel.prototype.pack = function() {
 
     return {
 
-        p: this.pos,
-        v: this.v,
-        t: this.turn,
-        f: this.isFiring
+        p: this.pos && this.pos.toArray(),
+        v: this.v && this.v.toArray(),
+        t: this.turn && this.turn.toArray(),
+        f: this.isFiring,
+        h: this.hits
     }
 };
 
 Vessel.prototype.unpack = function( data ) {
 
-    this.pos = data.p;
-    this.v = data.v;
-    this.turn = data.t;
+    function importVectorFromArray( to, from_array, alpha ) {
+
+        to && from_array && to.lerp( new THREE.Vector3().fromArray( from_array ), alpha || 1 );
+    }
+
+    importVectorFromArray( this.pos, data.p, IMPORT_VECTORS_LERP_ALPHA );
+    importVectorFromArray( this.v, data.v );
+    importVectorFromArray( this.turn, data.t );
+
+    //data.v && this.v.fromArray( data.v );
+    //data.t && this.turn.fromArray( data.t );
     this.isFiring = data.f;
+    this.hits = data.h;
 };
 
 Vessel.prototype.fwd = function() {
