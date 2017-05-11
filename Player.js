@@ -1,4 +1,4 @@
-function Player( id, num ) {
+function Player( id ) {
 
     this.id = id;
 
@@ -8,10 +8,8 @@ function Player( id, num ) {
 
     this.changeCallback = null;
 
-    this.color = this.colors[ num ];
+    this.color = new THREE.Color().setHSL( ( Math.sin( id.hashCode() ) + 1 ) * 0.5 /*0..1*/ , 0.5, 0.5 );
 }
-
-Player.prototype.colors = [ 0xaa0000, 0x00aa00, 0x0000aa, 0xaaaa00, 0xaa00aa ];
 
 Player.prototype.getVessel = function() {
 

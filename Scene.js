@@ -164,7 +164,7 @@ var Scene = (function () {
             obj.turn.y += ( obj.turnVec && obj.turnVec() || V3_ZERO ).multiplyScalar( obj.sTurn * dt ).y;
 
             //VELOCITY & POSITION
-            obj.v && obj.v.add( obj.velocityDelta( getForces( obj ), dt ) ) && obj.pos.copy( obj.newPos( dt ) );
+            obj.v && obj.v.add( obj.velocityDelta( getForces( obj ), dt ).clampLength( 0, VELOCITY_LIMIT_PER_SEC * dt ) ) && obj.pos.copy( obj.newPos( dt ) );
 
             //ECLIPTIC PLANE INEXORABLE PULL
             obj.pos.y *= 0.099;
@@ -413,7 +413,7 @@ var Scene = (function () {
 
     function initPlayer( id ) {
 
-        var player = new Player( id, Object.keys( players ).length );
+        var player = new Player( id );
 
         player.fleet = new Fleet();
         player.fleet.init( scene, octree, player.color );

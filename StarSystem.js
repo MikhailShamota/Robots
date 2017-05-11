@@ -9,7 +9,7 @@ function StarSystem() {
             l: LightWhite,
             r: 1000,
             sputniks: [
-              /*  {
+                {
                     f: PlanetArid,
                     g: true,
                     r: 100
@@ -46,7 +46,7 @@ function StarSystem() {
                 {
                     f: PlanetArid,
                     g: true
-                }*/
+                }
             ]
         }
     ];

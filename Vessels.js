@@ -16,12 +16,11 @@ function Vessel(pos, mass, color) {
     this.trailWidth = 4;
 
     this.hits = 1;//toughness
+    //this.importedHits = 999999999999;
 
     this.color = color;
 
     this.isFiring = false;
-
-    //this.deltaPos = null;
 }
 
 extend( Vessel, MatObj );
@@ -48,14 +47,19 @@ Vessel.prototype.unpack = function( data ) {
         to && from_array && to.fromArray( from_array );
     }
 
-    set( this.pos, data.p );
-    set( this.v, data.v );
-
     //hard
+    //set( this.pos, data.p );
     //set( this.turn, data.t );
-    //OR
-    //smooth
+
+    set( this.v, data.v );
     set( this.to, data.to );
+
+
+    var x = new THREE.Vector3();
+    set( x, data.p );
+    x.sub( this.pos ).multiplyScalar( 1 / SEC_TO_PEER_PT );
+
+    this.v.add( x );
 
     this.isFiring = data.f;
     this.hits = data.h;

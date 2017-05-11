@@ -1,5 +1,17 @@
 var V2_RESOLUTION;
 
+String.prototype.hashCode = function(){
+
+    var hash = 0;
+    if (this.length == 0) return hash;
+    for (var i = 0; i < this.length; i++) {
+        var character = this.charCodeAt(i);
+        hash = ((hash<<5)-hash)+character;
+        hash = hash & hash; // Convert to 32bit integer
+    }
+    return hash;
+}
+
 var MathHelper = {
     // Get a value between two values
     clamp: function (value, min, max) {
@@ -63,4 +75,4 @@ var MathHelper = {
 };
 
 //TODO:autoscale
-//TODO:random colors
+//TODO:autorotate
