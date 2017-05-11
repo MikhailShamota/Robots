@@ -1,14 +1,14 @@
 function MatObj(pos, mass) {
 
     this.pos = pos;
-    this.turn = new THREE.Vector3();
+    this.turn = null;//new THREE.Vector3();
 
     this.mass = mass;
     this.v = null;//velocity
     //this.vTurn = null;//turn velocity
 
     this.mesh = new THREE.Mesh();
-    this.mesh.position.copy( this.pos );
+    this.pos && this.mesh.position.copy( this.pos );
     this.mesh.userData = this;//a link from mesh to this object
 }
 
@@ -74,8 +74,8 @@ MatObj.prototype.bounce = function(obj2) {
 
 MatObj.prototype.updateMesh = function() {
 
-    this.mesh.rotation.setFromVector3( this.turn );
-    this.mesh.position.copy( this.pos );
+    this.turn && this.mesh.rotation.setFromVector3( this.turn );
+    this.pos && this.mesh.position.copy( this.pos );
 
     //this.mesh.rotation.setFromVector3( this.mesh.rotation.toVector3().lerp( this.turn, 0.03 ) );
     //this.mesh.position.lerp( this.pos, 0.03 );

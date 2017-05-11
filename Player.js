@@ -32,12 +32,16 @@ Player.prototype.setMouseUp = function() {
 
 Player.prototype.pack = function() {
 
-    return this.getVessel().pack();
+    var data = this.getVessel().pack();
+
+    data.id = this.id;
+
+    return data;
 };
 
 Player.prototype.unpack = function( data ) {
 
-    this.getVessel().unpack( data );
+    data.id && this.getVessel().unpack( data );
 };
 
 Player.prototype.change = function() {

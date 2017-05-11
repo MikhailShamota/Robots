@@ -2,7 +2,7 @@ function Vessel(pos, mass, color) {
 
     MatObj.apply( this, arguments );
 
-    this.v = new THREE.Vector3( 0, 0 ,0 );//movable
+    //this.v = new THREE.Vector3();//movable
 
     this.fJet = null;//jet force
     this.sTurn = null;//turn rad per sec
@@ -16,7 +16,6 @@ function Vessel(pos, mass, color) {
     this.trailWidth = 4;
 
     this.hits = 1;//toughness
-    //this.importedHits = 999999999999;
 
     this.color = color;
 
@@ -26,6 +25,13 @@ function Vessel(pos, mass, color) {
 extend( Vessel, MatObj );
 
 Vessel.prototype.V3_FWD = new THREE.Vector3( 0, 0, 1 );
+
+Vessel.prototype.init = function() {
+
+    this.v = new THREE.Vector3();
+    this.pos = new THREE.Vector3();
+    this.turn = new THREE.Vector3();
+};
 
 Vessel.prototype.pack = function() {
 
@@ -47,14 +53,14 @@ Vessel.prototype.unpack = function( data ) {
         to && from_array && to.fromArray( from_array );
     }
 
-    //hard
-    //set( this.pos, data.p );
-    //set( this.turn, data.t );
+    //hard init
+    ( !this.pos || !this.turn || !this.v ) && ( this.init() || set( this.pos, data.p ) || set( this.turn, data.t ) );// && this.initTrail();
 
+    //soft update
     set( this.v, data.v );
     set( this.to, data.to );
 
-
+    //alignment impulse
     var x = new THREE.Vector3();
     set( x, data.p );
     x.sub( this.pos ).multiplyScalar( 1 / SEC_TO_PEER_PT );
@@ -130,6 +136,7 @@ Vessel.prototype.newVelocity = function( f, dt ) {
 Vessel.prototype.updateTrail = function(dt) {
 
     var self = this;
+    var pos = this.pos || V3_ZERO;
 
     var matrix = new THREE.Matrix4();
     matrix.extractRotation( self.mesh.matrix );
@@ -143,7 +150,7 @@ Vessel.prototype.updateTrail = function(dt) {
     this.ptJet.forEach( function(item, i) {
 
         var pt = item.clone().applyMatrix4( matrix );
-        self.trailLines[i].advance( pt.add( self.pos ) );
+        self.trailLines[i].advance( pt.add( pos ) );
     });
 };
 
@@ -165,6 +172,7 @@ Vessel.prototype.initTrail = function () {
 
 
     var self = this;
+    var pos = this.pos || V3_ZERO;
 
     this.ptJet.forEach( function( item ) {
 
@@ -172,7 +180,7 @@ Vessel.prototype.initTrail = function () {
 
         for ( var i = 0; i < 100; i++ ) {
 
-            geom.vertices.push( item.clone().add( self.pos ) );
+            geom.vertices.push( item.clone().add( pos ) );
         }
 
         var line = new THREE.MeshLine();
@@ -210,7 +218,7 @@ function Fighter(pos, mass, color) {
     this.mesh.geometry = box1;
     this.mesh.material = new THREE.MeshLambertMaterial({color: color, side: 2, shading: THREE.FlatShading});
 
-    this.ptJet = [ new THREE.Vector3( -size * 0.5 , 0, -size * 1.5), new THREE.Vector3( size * 0.5, 0, -size * 1.5), ];
+    this.ptJet = [ new THREE.Vector3( -size * 0.5 , 0, -size * 1.5), new THREE.Vector3( size * 0.5, 0, -size * 1.5) ];
 }
 
 extend ( Fighter, Vessel );

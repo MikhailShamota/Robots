@@ -1,6 +1,8 @@
-function Fleet() {
+function Fleet( color ) {
 
     //obj property added due initialization
+    this.color = color;
+
     this.vesselsList = [
 
         {
@@ -43,18 +45,27 @@ Fleet.prototype.update = function( mousePos ) {
     });
 };
 
-Fleet.prototype.init = function( scene, octree, color ) {
+Fleet.prototype.start = function() {
 
-    function startPos( i ) {
+    this.vesselsList.forEach( function( item, i ) {
 
-        return new THREE.Vector3( 0, 20 * ( i + 1 ), -500 );
-    }
+        var obj = item.obj;
 
-    //var q = this.vesselsList.length;
+        obj.init();
+        obj.pos = MathHelper.v3Random( WORLD_SIZE );
+    });
+};
+
+Fleet.prototype.init = function( scene, octree ) {
+
+    /*function startPos( i ) {
+
+        return MathHelper.v3Random( WORLD_SIZE * 0.5 );
+    }*/
 
     this.vesselsList.forEach( (item, i ) => {
 
-        var obj = item.f( startPos( i ), color );
+        var obj = item.f( /*startPos( i )*/null, this.color );
 
         scene.add( obj.mesh );
         octree.add( obj.mesh );

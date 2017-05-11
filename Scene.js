@@ -151,6 +151,12 @@ var Scene = (function () {
             return fGravity.add( fJet ).sub( fResist );
         }
 
+        //ECLIPTIC PLANE INEXORABLE PULL
+        function goEcliptic( obj ) {
+
+            obj.pos.y *= 0.099;
+        }
+
         octree.objectsData.forEach( octreeObj => {
 
             //var mesh = octreeObj.object;
@@ -161,13 +167,11 @@ var Scene = (function () {
             obj.hits <= 0 && killObject( obj );
 
             //TURN
-            obj.turn.y += ( obj.turnVec && obj.turnVec() || V3_ZERO ).multiplyScalar( obj.sTurn * dt ).y;
+            if ( obj.turn )
+                obj.turn.y += ( obj.turnVec && obj.turnVec() || V3_ZERO ).multiplyScalar( obj.sTurn * dt ).y;
 
             //VELOCITY & POSITION
-            obj.v && obj.v.add( obj.velocityDelta( getForces( obj ), dt ).clampLength( 0, VELOCITY_LIMIT_PER_SEC * dt ) ) && obj.pos.copy( obj.newPos( dt ) );
-
-            //ECLIPTIC PLANE INEXORABLE PULL
-            obj.pos.y *= 0.099;
+            obj.v && obj.pos && obj.v.add( obj.velocityDelta( getForces( obj ), dt ).clampLength( 0, VELOCITY_LIMIT_PER_SEC * dt ) ) && obj.pos.copy( obj.newPos( dt ) ) && goEcliptic( obj );
 
             obj.updateMesh();
             obj.updateSpec();
@@ -213,7 +217,7 @@ var Scene = (function () {
         var dt = clock.getDelta();//its in seconds
         clock.start();
 
-        controls.update(); // required if controls.enableDamping = true, or if controls.autoRotate = true
+        //controls.update(); // required if controls.enableDamping = true, or if controls.autoRotate = true
         stats.update();
 
         ////
@@ -289,7 +293,6 @@ var Scene = (function () {
         from.lastFired = nowTime;
     }
 
-    //TODO: mouse flat cursor on ecliptic plane
     function onMouseUpdate( event ) {
 
         v2MousePoint.x = ( ( event.pageX - renderer.context.canvas.offsetLeft ) / window.innerWidth ) * 2 - 1;
@@ -317,9 +320,13 @@ var Scene = (function () {
         var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
 
         camera = new THREE.PerspectiveCamera(75, window.width / window.height, 0.1, WORLD_SIZE * 10);
-        camera.position.z = WORLD_SIZE * 2;
         camera.aspect = WIDTH / HEIGHT;
         camera.updateProjectionMatrix();
+
+        camera.position.set( 0, WORLD_SIZE * 2, 0 );
+        camera.up = new THREE.Vector3( 0, 0, 1 );
+        camera.lookAt( new THREE.Vector3( 0 ,0 ,0 ) );
+
 
         window.addEventListener('resize', function () {
             var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
@@ -415,8 +422,8 @@ var Scene = (function () {
 
         var player = new Player( id );
 
-        player.fleet = new Fleet();
-        player.fleet.init( scene, octree, player.color );
+        player.fleet = new Fleet( player.color );
+        player.fleet.init( scene, octree );
 
         players[ id ] = player;
 
@@ -427,7 +434,7 @@ var Scene = (function () {
 
         initializeGL();
         initStats();
-        initControls();
+        //initControls();
         initOctree();
 
         starSystem.init( scene, octree );
@@ -435,11 +442,19 @@ var Scene = (function () {
         iPlayer.id = PeerServer.getMyPeerId();
         initPlayer( iPlayer.id );
         iPlayer().changeCallback = iPlayer.onChange;
+        iPlayer().fleet.start();//start from new random pos
 
         octree.update();
 
         Textures.add( 'res/cursor.png', initCursor );
         Textures.add( 'res/blue_particle.jpg' );
+    }
+
+    function getDataFromPeer( peer, data ) {
+
+        !(peer in players) && initPlayer( peer );
+
+        players[ peer ].unpack( data );
     }
 
     function paintScene() {
@@ -448,13 +463,6 @@ var Scene = (function () {
 
         requestAnimationFrame(paintScene);
         renderer.render(scene, camera);
-    }
-
-    function getDataFromPeer( peer, data ) {
-
-        !(peer in players) && initPlayer( peer );
-
-        players[ peer ].unpack( data );
     }
 
     return {
