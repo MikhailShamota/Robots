@@ -1,4 +1,4 @@
-function Vessel(pos, mass, color) {
+function Vessel( pos, mass, color ) {
 
     MatObj.apply( this, arguments );
 
@@ -64,7 +64,6 @@ Vessel.prototype.unpack = function( data ) {
     var x = new THREE.Vector3();
     set( x, data.p );
     x.sub( this.pos ).multiplyScalar( 1 / SEC_TO_PEER_PT );
-
     this.v.add( x );
 
     this.isFiring = data.f;
@@ -117,21 +116,6 @@ Vessel.prototype.jetVec = function() {
 
     return v3z.multiplyScalar( this.fJet );
 };
-
-/*Vessel.prototype.resistVec = function() {
-
-    return this.v.clone().multiplyScalar( -this.v.length() * this.K_SPACE_RESIST );
-};*/
-
-//override
-/*
-Vessel.prototype.newVelocity = function( f, dt ) {
-
-    var vNew = f.clone().multiplyScalar( dt / this.mass ).add( this.v );
-
-    return vNew.clone().multiplyScalar( Math.max( 0, 1 - ( vNew.length() * this.K_SPACE_RESIST * dt / this.mass ) ) );
-};
-*/
 
 Vessel.prototype.updateTrail = function(dt) {
 

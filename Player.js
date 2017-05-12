@@ -41,7 +41,7 @@ Player.prototype.pack = function() {
 
 Player.prototype.unpack = function( data ) {
 
-    data.id && this.getVessel().unpack( data );
+    data.id && data.id == this.id && this.getVessel().unpack( data );
 };
 
 Player.prototype.change = function() {
@@ -49,3 +49,17 @@ Player.prototype.change = function() {
     this.changeCallback && this.changeCallback();
 };
 
+/*
+function OtherPlayer(id) {
+
+    Player.apply( this, arguments );
+}
+
+function OtherPlayer.prototype.pack = function() {
+
+
+};
+
+extend( OtherPlayer, Player );
+
+*/

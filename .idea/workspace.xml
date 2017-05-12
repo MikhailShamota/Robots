@@ -4,10 +4,8 @@
     <list default="true" id="510eed05-ed6a-4361-9ef3-ef26ad0cd624" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Fleet.js" afterPath="$PROJECT_DIR$/Fleet.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/MatObj.js" afterPath="$PROJECT_DIR$/MatObj.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Player.js" afterPath="$PROJECT_DIR$/Player.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Scene.js" afterPath="$PROJECT_DIR$/Scene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/StarSystem.js" afterPath="$PROJECT_DIR$/StarSystem.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Vessels.js" afterPath="$PROJECT_DIR$/Vessels.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/constants.js" afterPath="$PROJECT_DIR$/constants.js" />
     </list>
@@ -44,10 +42,9 @@
         <entry file="file://$PROJECT_DIR$/Scene.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="165" column="35" selection-start-line="165" selection-start-column="35" selection-end-line="165" selection-end-column="35" />
+              <caret line="256" column="183" selection-start-line="256" selection-start-column="183" selection-end-line="256" selection-end-column="183" />
               <folding>
                 <element signature="e#417#496#0" expanded="false" />
-                <element signature="e#519#706#0" expanded="false" />
                 <element signature="e#731#949#0" expanded="false" />
                 <element signature="e#1002#1077#0" expanded="false" />
                 <element signature="e#1117#1287#0" expanded="false" />
@@ -62,28 +59,25 @@
                 <element signature="e#5014#5081#0" expanded="false" />
                 <element signature="e#5115#5187#0" expanded="false" />
                 <element signature="e#5211#5969#0" expanded="false" />
-                <element signature="e#6005#6403#0" expanded="false" />
-                <element signature="e#6431#7340#0" expanded="false" />
-                <element signature="e#7378#7610#0" expanded="false" />
-                <element signature="e#7647#7655#0" expanded="false" />
-                <element signature="e#7691#7733#0" expanded="false" />
-                <element signature="e#7767#7834#0" expanded="false" />
-                <element signature="e#7864#9264#0" expanded="false" />
-                <element signature="e#9543#9871#0" expanded="false" />
-                <element signature="e#9901#10224#0" expanded="false" />
-                <element signature="e#10252#11003#0" expanded="false" />
-                <element signature="e#11040#11283#0" expanded="false" />
-                <element signature="e#12199#12352#0" expanded="false" />
+                <element signature="e#7474#7706#0" expanded="false" />
+                <element signature="e#7743#7751#0" expanded="false" />
+                <element signature="e#7787#7829#0" expanded="false" />
+                <element signature="e#7863#7930#0" expanded="false" />
+                <element signature="e#7960#9360#0" expanded="false" />
+                <element signature="e#9639#9967#0" expanded="false" />
+                <element signature="e#9997#10320#0" expanded="false" />
+                <element signature="e#10348#11099#0" expanded="false" />
+                <element signature="e#11136#11379#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="constants.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="constants.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/constants.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="15" column="24" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
+            <state vertical-scroll-proportion="0.24419889">
+              <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -93,22 +87,21 @@
         <entry file="file://$PROJECT_DIR$/Player.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
+              <caret line="64" column="2" selection-start-line="64" selection-start-column="2" selection-end-line="64" selection-end-column="2" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Vessels.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Vessels.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Vessels.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.09392265">
-              <caret line="56" column="94" selection-start-line="56" selection-start-column="94" selection-end-line="56" selection-end-column="94" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
               <folding>
-                <element signature="e#1654#1730#0" expanded="false" />
-                <element signature="e#1771#2455#0" expanded="false" />
-                <element signature="e#2510#2548#0" expanded="false" />
-                <element signature="e#2588#2795#0" expanded="false" />
+                <element signature="e#1655#1731#0" expanded="false" />
+                <element signature="e#2511#2549#0" expanded="false" />
+                <element signature="e#2589#2796#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -118,7 +111,7 @@
         <entry file="file://$PROJECT_DIR$/Fleet.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="54" column="49" selection-start-line="54" selection-start-column="49" selection-end-line="54" selection-end-column="49" />
+              <caret line="49" column="44" selection-start-line="49" selection-start-column="44" selection-end-line="49" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -167,13 +160,13 @@
         <option value="$PROJECT_DIR$/PeerJS/PeerJSOps.js" />
         <option value="$PROJECT_DIR$/main.html" />
         <option value="$PROJECT_DIR$/draw.js" />
-        <option value="$PROJECT_DIR$/constants.js" />
         <option value="$PROJECT_DIR$/StarSystem.js" />
         <option value="$PROJECT_DIR$/MatObj.js" />
-        <option value="$PROJECT_DIR$/Fleet.js" />
         <option value="$PROJECT_DIR$/Player.js" />
-        <option value="$PROJECT_DIR$/Scene.js" />
+        <option value="$PROJECT_DIR$/Fleet.js" />
         <option value="$PROJECT_DIR$/Vessels.js" />
+        <option value="$PROJECT_DIR$/Scene.js" />
+        <option value="$PROJECT_DIR$/constants.js" />
       </list>
     </option>
   </component>
@@ -382,12 +375,6 @@
       <workItem from="1483040499861" duration="204000" />
       <workItem from="1483808321278" duration="830000" />
       <workItem from="1483883140725" duration="7448000" />
-    </task>
-    <task id="LOCAL-00005" summary="new class: Scene">
-      <created>1484152928455</created>
-      <option name="number" value="00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1484152928455</updated>
     </task>
     <task id="LOCAL-00006" summary="new class: Vessel">
       <created>1484306751011</created>
@@ -677,7 +664,13 @@
       <option name="project" value="LOCAL" />
       <updated>1494505552611</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="hard start position &amp; turn&#10;soft update positions&#10;&#10;plain initializing">
+      <created>1494522247572</created>
+      <option name="number" value="00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1494522247572</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -751,7 +744,6 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="false" />
-    <MESSAGE value="Laser beam - alpha&#10;PeerJs test" />
     <MESSAGE value="Laser beam snap shots with movement" />
     <MESSAGE value="Looped array" />
     <MESSAGE value="First flares appear" />
@@ -776,7 +768,8 @@
     <MESSAGE value="peer to peer movement &amp; fire &amp; kill" />
     <MESSAGE value="smooth turning" />
     <MESSAGE value="random colors&#10;smooth point position" />
-    <option name="LAST_COMMIT_MESSAGE" value="random colors&#10;smooth point position" />
+    <MESSAGE value="hard start position &amp; turn&#10;soft update positions&#10;&#10;plain initializing" />
+    <option name="LAST_COMMIT_MESSAGE" value="hard start position &amp; turn&#10;soft update positions&#10;&#10;plain initializing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1144,14 +1137,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/constants.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="15" column="24" selection-start-line="15" selection-start-column="24" selection-end-line="15" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/StarSystem.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1179,7 +1164,7 @@
     <entry file="file://$PROJECT_DIR$/Player.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="36" column="19" selection-start-line="36" selection-start-column="19" selection-end-line="36" selection-end-column="19" />
+          <caret line="64" column="2" selection-start-line="64" selection-start-column="2" selection-end-line="64" selection-end-column="2" />
           <folding />
         </state>
       </provider>
@@ -1187,18 +1172,29 @@
     <entry file="file://$PROJECT_DIR$/Fleet.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="54" column="49" selection-start-line="54" selection-start-column="49" selection-end-line="54" selection-end-column="49" />
+          <caret line="49" column="44" selection-start-line="49" selection-start-column="44" selection-end-line="49" selection-end-column="44" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Vessels.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="19" column="17" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
+          <folding>
+            <element signature="e#1655#1731#0" expanded="false" />
+            <element signature="e#2511#2549#0" expanded="false" />
+            <element signature="e#2589#2796#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Scene.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="165" column="35" selection-start-line="165" selection-start-column="35" selection-end-line="165" selection-end-column="35" />
+          <caret line="256" column="183" selection-start-line="256" selection-start-column="183" selection-end-line="256" selection-end-column="183" />
           <folding>
             <element signature="e#417#496#0" expanded="false" />
-            <element signature="e#519#706#0" expanded="false" />
             <element signature="e#731#949#0" expanded="false" />
             <element signature="e#1002#1077#0" expanded="false" />
             <element signature="e#1117#1287#0" expanded="false" />
@@ -1213,32 +1209,24 @@
             <element signature="e#5014#5081#0" expanded="false" />
             <element signature="e#5115#5187#0" expanded="false" />
             <element signature="e#5211#5969#0" expanded="false" />
-            <element signature="e#6005#6403#0" expanded="false" />
-            <element signature="e#6431#7340#0" expanded="false" />
-            <element signature="e#7378#7610#0" expanded="false" />
-            <element signature="e#7647#7655#0" expanded="false" />
-            <element signature="e#7691#7733#0" expanded="false" />
-            <element signature="e#7767#7834#0" expanded="false" />
-            <element signature="e#7864#9264#0" expanded="false" />
-            <element signature="e#9543#9871#0" expanded="false" />
-            <element signature="e#9901#10224#0" expanded="false" />
-            <element signature="e#10252#11003#0" expanded="false" />
-            <element signature="e#11040#11283#0" expanded="false" />
-            <element signature="e#12199#12352#0" expanded="false" />
+            <element signature="e#7474#7706#0" expanded="false" />
+            <element signature="e#7743#7751#0" expanded="false" />
+            <element signature="e#7787#7829#0" expanded="false" />
+            <element signature="e#7863#7930#0" expanded="false" />
+            <element signature="e#7960#9360#0" expanded="false" />
+            <element signature="e#9639#9967#0" expanded="false" />
+            <element signature="e#9997#10320#0" expanded="false" />
+            <element signature="e#10348#11099#0" expanded="false" />
+            <element signature="e#11136#11379#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Vessels.js">
+    <entry file="file://$PROJECT_DIR$/constants.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.09392265">
-          <caret line="56" column="94" selection-start-line="56" selection-start-column="94" selection-end-line="56" selection-end-column="94" />
-          <folding>
-            <element signature="e#1654#1730#0" expanded="false" />
-            <element signature="e#1771#2455#0" expanded="false" />
-            <element signature="e#2510#2548#0" expanded="false" />
-            <element signature="e#2588#2795#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.24419889">
+          <caret line="13" column="27" selection-start-line="13" selection-start-column="27" selection-end-line="13" selection-end-column="27" />
+          <folding />
         </state>
       </provider>
     </entry>

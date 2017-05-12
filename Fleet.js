@@ -47,7 +47,7 @@ Fleet.prototype.update = function( mousePos ) {
 
 Fleet.prototype.start = function() {
 
-    this.vesselsList.forEach( function( item, i ) {
+    this.vesselsList.forEach( function( item ) {
 
         var obj = item.obj;
 

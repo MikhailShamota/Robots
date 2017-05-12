@@ -254,10 +254,10 @@ var Scene = (function () {
 
         var vessel = player.getVessel();
 
-        vessel.isFiring && ( nowTime - vessel.lastFired > 50 || ! vessel.lastFired ) && fire( vessel, null );
+        vessel.isFiring && ( nowTime - vessel.lastFired > 50 || ! vessel.lastFired ) && fire( vessel, player.id != iPlayer.id );//do not calc damage from my vessels, only on my vessel
     }
 
-    function fire( from ) {
+    function fire( from, doDamage ) {
 
         var raycaster = new THREE.Raycaster( from.pos, from.fwd() );
 
@@ -280,7 +280,7 @@ var Scene = (function () {
             if ( intersects.length > 0) {
 
                 hits++;
-                mesh.userData.hits--;
+                doDamage && mesh.userData.hits--;
                 dist = intersects[ 0 ].distance;
 
                 addHit( intersects[ 0 ].point );
@@ -454,7 +454,7 @@ var Scene = (function () {
 
         !(peer in players) && initPlayer( peer );
 
-        players[ peer ].unpack( data );
+        data.id && players[ /*peer*/ data.id ].unpack( data );
     }
 
     function paintScene() {
