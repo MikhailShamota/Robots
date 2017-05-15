@@ -4,16 +4,22 @@ function StarSystem() {
 
     this.celestialsList = [
         {
-            f: SunBlack,
+            /*f: SunBlack,
             g: true,
             l: LightWhite,
-            r: 1000,
+            r: 1000,*/
+
+            f: PlanetArid,
+            g: true,
+            r: 100,
+            l: RandomLightWhite,
+
             sputniks: [
-              /*  {
+                {
                     f: PlanetArid,
                     g: true,
                     r: 100
-                },
+                }/*,
                 {
                     f: PlanetArid,
                     g: true,
@@ -114,9 +120,14 @@ function StarSystem() {
     function LightWhite( pos ) {
 
         var light = new THREE.PointLight( 0xFFFFFF, 1, 0 );
-        light.position = pos;
+        light.position.copy( pos );
 
         return light;
+    }
+
+    function RandomLightWhite( pos ) {
+
+        return LightWhite( MathHelper.v3Random( WORLD_SIZE ).multiply( new THREE.Vector3( 1, 0.5, 1 ) ) );
     }
 }
 
