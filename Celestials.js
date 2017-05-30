@@ -7,7 +7,7 @@ function Celestial (pos, mass, color) {
     this.mesh.geometry = new THREE.SphereGeometry(radius, 32, 32);
     this.mesh.material = new THREE.MeshLambertMaterial({color: color, side: 2, shading: THREE.FlatShading});
 
-    this.rWorld = 0;
+    //this.rWorld = 0;
 
     this.parent = null;
 }

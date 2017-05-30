@@ -10,9 +10,26 @@ String.prototype.hashCode = function(){
         hash = hash & hash; // Convert to 32bit integer
     }
     return hash;
+};
+
+function RandomPool( seed ) {
+
+    this.seed = seed;
+
+    this.get = function( max, min ) {
+
+        max = max || 1;
+        min = min || 0;
+
+        this.seed = (this.seed * 9301 + 49297) % 233280;
+        var rnd = this.seed / 233280;
+
+        return min + rnd * (max - min);
+    }
 }
 
 var MathHelper = {
+
     // Get a value between two values
     clamp: function (value, min, max) {
 

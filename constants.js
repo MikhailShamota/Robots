@@ -10,6 +10,10 @@ const WORLD_SIZE = 1000;
 const K_GRAVITY = 2;
 const K_SPACE_RESIST = 10;
 const VELOCITY_LIMIT_PER_SEC = 100;
+const K_CENTER_FORCE = 20;//force pulling to ecliptic plane
+
+const R_PLANET_MIN = 30;
+const R_PLANET_MAX = 130;
 
 const SEC_EXCH_PERIOD = 0.1;//peer-to-peer message send period
 

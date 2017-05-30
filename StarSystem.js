@@ -1,13 +1,15 @@
-function StarSystem() {
+function StarSystem( id ) {
 
-    var K_CENTER_FORCE = 20;//force pulling to ecliptic plane
+    this.id = id;
+    this.Random = new RandomPool( this.id );
 
+    /*
     this.celestialsList = [
         {
-            /*f: SunBlack,
+            f: SunBlack,
             g: true,
             l: LightWhite,
-            r: 1000,*/
+            r: 1000,
 
             f: PlanetArid,
             g: true,
@@ -19,7 +21,7 @@ function StarSystem() {
                     f: PlanetArid,
                     g: true,
                     r: 100
-                }/*,
+                },
                 {
                     f: PlanetArid,
                     g: true,
@@ -52,10 +54,10 @@ function StarSystem() {
                 {
                     f: PlanetArid,
                     g: true
-                }*/
+                }
             ]
         }
-    ];
+    ];*/
 
     this.gravities = [];
     this.gravities.f = function(obj) {
@@ -74,20 +76,7 @@ function StarSystem() {
         return f;
     };
 
-    function r2m(r) {
 
-        return r * r * r;
-    }
-
-    function randomFromTo(min, max) {
-
-        return ( Math.random() * (max - min) ) + min;
-    }
-
-    function randomMassFromRadius(min, max) {
-
-        return r2m( randomFromTo( min, max ) );
-    }
 
     function AsteroidPlain(p) {
 
@@ -130,6 +119,43 @@ function StarSystem() {
         return LightWhite( MathHelper.v3Random( WORLD_SIZE ).multiply( new THREE.Vector3( 1, 0.5, 1 ) ) );
     }
 }
+
+StarSystem.prototype.rand = function( min, max ) {
+
+    return this.Random.get( min, max );
+};
+
+StarSystem.prototype.v3rand = function( length ) {
+
+    return V3_UNIT_X.clone().applyEuler(
+        new THREE.Euler(
+            this.rand() * 2 * Math.PI,
+            this.rand() * 2 * Math.PI,
+            this.rand() * 2 * Math.PI,
+            'XYZ')
+    ).multiplyScalar( length || 1 );
+};
+
+StarSystem.prototype.init = function( scene, octree ) {
+
+    function r2m(r) { return r * r * r; }
+
+    var planet = new Planet( V3_ZERO.clone(), r2m( this.rand( R_PLANET_MIN, R_PLANET_MAX ) ), 0x105030 );
+
+    scene.add( planet.mesh );
+    octree.add( planet.mesh );
+
+    this.gravities.push( planet );//add to gravity field
+
+    //obj.v = !item.g && parent && orbitVelocity( parent, obj );//velocity
+    //planet.parent = parent;
+
+    //LIGHT
+    var light = new THREE.PointLight( 0xFFFFFF, 1, 0 );
+    light.position.copy( this.v3rand( WORLD_SIZE ).multiply( new THREE.Vector3( 1, 0.5, 1 ) ) );
+
+    scene.add( light );
+};
 
 StarSystem.prototype.init = function(scene, octree) {
 
