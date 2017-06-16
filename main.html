@@ -10,21 +10,8 @@
     <script src="js/THREE.MeshLine.js"></script>
 
     <script src="http://cdn.peerjs.com/0.3/peer.min.js"></script>
-    <script src="PeerJS/PeerJSOps.js"></script>
 
-    <script src="constants.js"></script>
-    <script src="Player.js"></script>
-    <script src="Textures.js"></script>
-    <script src="LoopedArray.js"></script>
-    <script src="flare.js"></script>
-    <script src="Fleet.js"></script>
-    <script src="StarSystem.js"></script>
-    <script src="Scene.js"></script>
-    <script src="MatObj.js"></script>
-    <script src="Celestials.js"></script>
-    <script src="Vessels.js"></script>
-
-    <script src="draw.js"></script>
+    <script src="js/Scene.js"></script>
 
     <link rel="stylesheet" type="text/css" href="main.css">
 </head>
@@ -76,7 +63,7 @@
         PeerServer.open();
     }
 
-    function drawScene() {
+    function drawScene( starSystemSeedId ) {
 
         if ( sceneDraw )
             return;
@@ -85,10 +72,12 @@
         document.getElementById('dMenu').style.display = 'none';
         document.getElementById('dScene').style.display = 'block';
 
-        Scene.init();
+        var myId = PeerServer.getMyPeerId();
+
+        Scene.init( starSystemSeedId || myId.hashCode() );
         Scene.paint();
 
-        document.getElementById('myPeerId').value = PeerServer.getMyPeerId();
+        document.getElementById('myPeerId').value = myId;
     }
 
     function newGame() {
@@ -102,7 +91,7 @@
 
         PeerServer.connect( id );
 
-        drawScene();
+        drawScene( id.hashCode() );//star system id
     }
 
 </script>

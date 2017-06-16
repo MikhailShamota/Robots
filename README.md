@@ -1,2 +1,0 @@
-# Robots
-Machine learning
