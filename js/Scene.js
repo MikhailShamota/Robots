@@ -258,6 +258,8 @@ var Scene = (function () {
 
             obj.updateMesh();
             obj.updateSpec();
+
+            obj.toFire && fire( obj );//do not calc damage from my vessels, only on my vessel
         });
     }
 
@@ -318,7 +320,7 @@ var Scene = (function () {
         octree.rebuild();
     }
 
-    function fire( from, doDamage ) {
+    function fire( from ) {
 
         var raycaster = new THREE.Raycaster( from.pos, from.fwd() );
 
@@ -341,7 +343,7 @@ var Scene = (function () {
             if ( intersects.length > 0) {
 
                 hits++;
-                doDamage && mesh.userData.hits--;
+                from.doDamage && mesh.userData.hits--;
                 dist = intersects[ 0 ].distance;
 
                 addHit( intersects[ 0 ].point );
@@ -535,8 +537,10 @@ var Scene = (function () {
 
         iPlayer.id = PeerServer.getMyPeerId();
         initPlayer( iPlayer.id );
+        iPlayer().I = true;
         iPlayer().changeCallback = iPlayer.onChange;
         iPlayer().fleet.start();//start from new random pos
+
 
         octree.update();
 

@@ -10,6 +10,8 @@ function Player( id ) {
 
     this.fleet = new Fleet();
 
+    this.I = false;
+
     function Fleet() {
 
         this.vesselsList = [
@@ -87,6 +89,8 @@ function Player( id ) {
             });
 
             item.obj = obj;//a link to vessel
+
+            item.obj.doDamage = !this.I;
         });
 
         //octree.update();
@@ -104,7 +108,7 @@ Player.prototype.update = function( dt ) {
 
         obj.updateTrail && obj.updateTrail( dt );
 
-        obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > 50 || ! obj.lastFired ) && fire( obj, self.id != iPlayer.id );//do not calc damage from my vessels, only on my vessel
+        obj.toFire = obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > 50 || ! obj.lastFired );
     });
 
 };
@@ -279,6 +283,8 @@ function Vessel( pos, mass, color ) {
     this.color = color;
 
     this.isFiring = false;
+    this.toFire = false;
+    this.doDamage = false;
 }
 
 extend( Vessel, MatObj );
