@@ -260,7 +260,7 @@ var Scene = (function () {
         return new THREE.Color( r(), r(), r() );
     };
 
-    StarSystem.prototype.init = function( scene, octree ) {
+    StarSystem.prototype.initMeshes = function() {
 
         const R_PLANET_MIN = 70;
         const R_PLANET_MAX = 100;
@@ -289,11 +289,14 @@ var Scene = (function () {
         ];
 
         var self = this;
+        var meshes = [];
 
         function add( obj ) {
 
-            scene.add( obj.mesh );
-            octree.add( obj. mesh );
+            //scene.add( obj.mesh );
+            //octree.add( obj. mesh );
+            obj.mesh.setToOctree = true;
+            meshes.push( obj.mesh );
 
             return {
 
@@ -374,7 +377,8 @@ var Scene = (function () {
                 dotGeometry.vertices.push( self.randV3( R_GALAXY ) );
             }
             var dot = new THREE.Points( dotGeometry, dotMaterial );
-            scene.add( dot );
+            //scene.add( dot );
+            meshes.push( dot );
         });
 
 
@@ -397,7 +401,11 @@ var Scene = (function () {
         var light = new THREE.PointLight( 0xFFFFFF, 1, 0 );
         light.position.copy( this.randV3( R_WORLD ).setY( this.rand( -K_SUN_ECLISPE_ASCEND, K_SUN_ECLISPE_ASCEND ) * R_WORLD ) );
 
-        scene.add( light );
+        //scene.add( light );
+        meshes.push( light );
+
+
+        return meshes;
     };
 
     function Flare( pos, size, color, texture ) {
@@ -600,8 +608,6 @@ var Scene = (function () {
             //octree.update();
             return meshes;
         };
-
-
     }
 
     Player.prototype.update = function( dt ) {
@@ -1149,17 +1155,7 @@ var Scene = (function () {
             obj.updateSpec();
         });
     }
-/*
-    function updateTrails( player, dt ) {
 
-        player.fleet.vesselsList.forEach(function ( item ) {
-
-            var obj = item.obj;
-
-            obj.updateTrail && obj.updateTrail( dt );
-        });
-    }
-*/
     function updateMouse() {
 
         var raycaster = new THREE.Raycaster();
@@ -1216,18 +1212,7 @@ var Scene = (function () {
 
         octree.rebuild();
     }
-/*
-    function updateFire( player ) {
 
-        //var myObj = players[ thisPlayerId ].fleet.vesselsList[0].obj;
-        //isMouseDown > 0 && ( nowTime - myObj.lastFired > 50 || ! myObj.lastFired ) && fire( myObj, null );
-        //var vessel = player.fleet.vesselsList[0].obj;
-
-        var vessel = player.getVessel();
-
-        vessel.hits > 0 && vessel.isFiring && ( nowTime - vessel.lastFired > 50 || ! vessel.lastFired ) && fire( vessel, player.id != iPlayer.id );//do not calc damage from my vessels, only on my vessel
-    }
-*/
     function fire( from, doDamage ) {
 
         var raycaster = new THREE.Raycaster( from.pos, from.fwd() );
@@ -1355,6 +1340,14 @@ var Scene = (function () {
      renderer.setSize(canvas.width, canvas.height);
      }
      */
+    function initMeshes( meshes_arr ) {
+
+        meshes_arr && meshes_arr.forEach( function( mesh ) {
+
+            scene.add( mesh );
+            mesh.setToOctree && octree.add( mesh );
+        });
+    }
 
     function initStats() {
 
@@ -1416,13 +1409,7 @@ var Scene = (function () {
 
         var player = new Player( id );
 
-        var meshes = player.initMeshes();
-
-        meshes && meshes.forEach( function( mesh ) {
-
-            scene.add( mesh );
-            mesh.setToOctree && octree.add( mesh );
-        });
+        initMeshes( player.initMeshes() );
 
         players[ id ] = player;
 
@@ -1437,7 +1424,9 @@ var Scene = (function () {
         initOctree();
 
         starSystem = new StarSystem( starSystemId );
-        starSystem.init( scene, octree );
+        //starSystem.initMeshes();
+        initMeshes( starSystem.initMeshes() );
+
 
         iPlayer.id = PeerServer.getMyPeerId();
         initPlayer( iPlayer.id );
