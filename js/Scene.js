@@ -573,38 +573,56 @@ var Scene = (function () {
             });
         };
 
-        Fleet.prototype.init = function( scene, octree, color ) {
+        Fleet.prototype.initMeshes = function( color ) {
 
-            /*function startPos( i ) {
-
-             return MathHelper.v3Random( R_WORLD * 0.5 );
-             }*/
+            var meshes = [];
 
             this.vesselsList.forEach( (item, i ) => {
 
                 var obj = item.f( /*startPos( i )*/null, color );
 
-                scene.add( obj.mesh );
-                octree.add( obj.mesh );
+                //scene.add( obj.mesh );
+                //octree.add( obj.mesh );
+                obj.mesh.setToOctree = true;
+                meshes.push( obj.mesh );
 
                 //trail
                 obj.initTrail();
                 obj.trailMeshes.forEach( function(item) {
 
-                    scene.add( item );
+                    //scene.add( item );
+                    meshes.push( item );
                 });
 
                 item.obj = obj;//a link to vessel
             });
 
-            octree.update();
+            //octree.update();
+            return meshes;
         };
+
 
     }
 
-    Player.prototype.init = function( scene, octree ) {
+    Player.prototype.update = function( dt ) {
 
-        this.fleet.init( scene, octree, this.color );
+        var self = this;
+
+        this.fleet.vesselsList.forEach( function ( item ) {
+
+            var obj = item.obj;
+
+            obj.updateTrail && obj.updateTrail( dt );
+
+            obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > 50 || ! obj.lastFired ) && fire( obj, self.id != iPlayer.id );//do not calc damage from my vessels, only on my vessel
+        });
+
+    };
+
+    Player.prototype.initMeshes = function() {
+
+        //this.fleet.init( scene, octree, this.color );
+        return this.fleet.initMeshes( this.color );
     };
 
     Player.prototype.getVessel = function() {
@@ -688,13 +706,6 @@ var Scene = (function () {
 
         return new THREE.Vector2( ( p.x * widthHalf ) + widthHalf, - ( p.y * heightHalf ) + heightHalf );
     };
-
-    /*
-     MatObj.prototype.newTurn = function( dt ) {
-
-     return this.vTurn.clone().multiplyScalar( dt ).add( this.turn );
-     };
-     */
 
     MatObj.prototype.gravity = function(obj) {
 
@@ -1138,7 +1149,7 @@ var Scene = (function () {
             obj.updateSpec();
         });
     }
-
+/*
     function updateTrails( player, dt ) {
 
         player.fleet.vesselsList.forEach(function ( item ) {
@@ -1148,7 +1159,7 @@ var Scene = (function () {
             obj.updateTrail && obj.updateTrail( dt );
         });
     }
-
+*/
     function updateMouse() {
 
         var raycaster = new THREE.Raycaster();
@@ -1196,10 +1207,7 @@ var Scene = (function () {
 
         for ( var playerId in players ) {
 
-            var player = players[ playerId ];
-
-            updateTrails( player, dt );
-            updateFire( player );
+            players[ playerId ].update( dt );
         }
 
         updateLasersMove();
@@ -1208,7 +1216,7 @@ var Scene = (function () {
 
         octree.rebuild();
     }
-
+/*
     function updateFire( player ) {
 
         //var myObj = players[ thisPlayerId ].fleet.vesselsList[0].obj;
@@ -1217,9 +1225,9 @@ var Scene = (function () {
 
         var vessel = player.getVessel();
 
-        vessel.isFiring && ( nowTime - vessel.lastFired > 50 || ! vessel.lastFired ) && fire( vessel, player.id != iPlayer.id );//do not calc damage from my vessels, only on my vessel
+        vessel.hits > 0 && vessel.isFiring && ( nowTime - vessel.lastFired > 50 || ! vessel.lastFired ) && fire( vessel, player.id != iPlayer.id );//do not calc damage from my vessels, only on my vessel
     }
-
+*/
     function fire( from, doDamage ) {
 
         var raycaster = new THREE.Raycaster( from.pos, from.fwd() );
@@ -1408,7 +1416,13 @@ var Scene = (function () {
 
         var player = new Player( id );
 
-        player.init( scene, octree );
+        var meshes = player.initMeshes();
+
+        meshes && meshes.forEach( function( mesh ) {
+
+            scene.add( mesh );
+            mesh.setToOctree && octree.add( mesh );
+        });
 
         players[ id ] = player;
 
