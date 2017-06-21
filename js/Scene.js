@@ -259,7 +259,7 @@ var Scene = (function () {
             obj.updateMesh();
             obj.updateSpec();
 
-            obj.toFire && fire( obj );//do not calc damage from my vessels, only on my vessel
+            obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > 50 || ! obj.lastFired ) && fire( obj );//do not calc damage from my vessels, only on my vessel
         });
     }
 
@@ -343,7 +343,8 @@ var Scene = (function () {
             if ( intersects.length > 0) {
 
                 hits++;
-                from.doDamage && mesh.userData.hits--;
+                здесь нужно убрать doDamage и ориентироваться на прокси
+                from.doDamage && mesh.userData.hits--;//TODO:doDamage -> isProxy
                 dist = intersects[ 0 ].distance;
 
                 addHit( intersects[ 0 ].point );
@@ -512,9 +513,9 @@ var Scene = (function () {
         scene.add( cursor );
     }
 
-    function initPlayer( id ) {
+    function initPlayer( id, isProxy ) {
 
-        var player = new Player( id );
+        var player = new Player( id, isProxy );
 
         initMeshes( player.initMeshes() );
 
@@ -522,7 +523,7 @@ var Scene = (function () {
 
         console.log( id + ' entered' );
     }
-
+//TODO: Player.I, Vessel.doDamage
     function initScene( starSystemId ) {
 
         initializeGL();
@@ -536,8 +537,7 @@ var Scene = (function () {
 
 
         iPlayer.id = PeerServer.getMyPeerId();
-        initPlayer( iPlayer.id );
-        iPlayer().I = true;
+        initPlayer( iPlayer.id, false );
         iPlayer().changeCallback = iPlayer.onChange;
         iPlayer().fleet.start();//start from new random pos
 
@@ -550,7 +550,7 @@ var Scene = (function () {
 
     function getDataFromPeer( peer, data ) {
 
-        !(peer in players) && initPlayer( peer );
+        !(peer in players) && initPlayer( peer, true );
 
         data.id && players[ /*peer*/ data.id ].unpack( data );
     }

@@ -1,4 +1,4 @@
-function Player( id ) {
+function Player( id, isProxy ) {
 
     this.id = id;
 
@@ -10,7 +10,7 @@ function Player( id ) {
 
     this.fleet = new Fleet();
 
-    this.I = false;
+    this.isProxy = isProxy;
 
     function Fleet() {
 
@@ -107,8 +107,6 @@ Player.prototype.update = function( dt ) {
         var obj = item.obj;
 
         obj.updateTrail && obj.updateTrail( dt );
-
-        obj.toFire = obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > 50 || ! obj.lastFired );
     });
 
 };
@@ -283,8 +281,6 @@ function Vessel( pos, mass, color ) {
     this.color = color;
 
     this.isFiring = false;
-    this.toFire = false;
-    this.doDamage = false;
 }
 
 extend( Vessel, MatObj );
