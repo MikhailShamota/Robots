@@ -343,8 +343,8 @@ var Scene = (function () {
             if ( intersects.length > 0) {
 
                 hits++;
-                здесь нужно убрать doDamage и ориентироваться на прокси
-                from.doDamage && mesh.userData.hits--;//TODO:doDamage -> isProxy
+
+                from.player.isProxy && mesh.userData.hits--;//TODO:doDamage -> isProxy
                 dist = intersects[ 0 ].distance;
 
                 addHit( intersects[ 0 ].point );
@@ -455,6 +455,8 @@ var Scene = (function () {
             scene.add( mesh );
             mesh.setToOctree && octree.add( mesh );
         });
+
+        octree.update();
     }
 
     function initStats() {
@@ -523,7 +525,7 @@ var Scene = (function () {
 
         console.log( id + ' entered' );
     }
-//TODO: Player.I, Vessel.doDamage
+
     function initScene( starSystemId ) {
 
         initializeGL();

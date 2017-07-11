@@ -8,11 +8,13 @@ function Player( id, isProxy ) {
 
     this.color = new THREE.Color().setHSL( ( Math.sin( id.hashCode() ) + 1 ) * 0.5 /*0..1*/ , 0.5, 0.5 );
 
-    this.fleet = new Fleet();
-
     this.isProxy = isProxy;
 
-    function Fleet() {
+    this.fleet = new Fleet( this );
+
+    function Fleet( player ) {
+
+        this.player = player;
 
         this.vesselsList = [
 
@@ -70,18 +72,19 @@ function Player( id, isProxy ) {
     Fleet.prototype.initMeshes = function( color ) {
 
         var meshes = [];
+        var self = this;
 
-        this.vesselsList.forEach( (item, i ) => {
+        this.vesselsList.forEach( (item ) => {
 
-            var obj = item.f( /*startPos( i )*/null, color );
+            var obj = item.f( null, color );
 
-            //scene.add( obj.mesh );
-            //octree.add( obj.mesh );
             obj.mesh.setToOctree = true;
             meshes.push( obj.mesh );
 
             //trail
             obj.initTrail();
+            obj.player = self.player;
+
             obj.trailMeshes.forEach( function(item) {
 
                 //scene.add( item );
@@ -89,18 +92,13 @@ function Player( id, isProxy ) {
             });
 
             item.obj = obj;//a link to vessel
-
-            item.obj.doDamage = !this.I;
         });
 
-        //octree.update();
         return meshes;
     };
 }
 
 Player.prototype.update = function( dt ) {
-
-    var self = this;
 
     this.fleet.vesselsList.forEach( function ( item ) {
 
