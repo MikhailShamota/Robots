@@ -27,6 +27,42 @@ var V2_RESOLUTION;
 var clock = new THREE.Clock();
 var nowTime = Date.now();
 
+var CouchDB = ( function() {
+
+    function send( data ) {
+
+        $.ajax({
+
+            type: "POST",
+            url: 'https://couchdb.cloudno.de/aspacegame',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify( data ),
+            success: function () {
+
+                console.log('saved in couchdb')
+            },
+            error: function () {
+
+                console.log('failed to save in couchdb');
+            },
+            dataType: 'json'
+        });
+    }
+
+    return {
+
+        addNewGameId: function ( id ) {
+
+            send({
+
+                PeerId: id
+            });
+        }
+    }
+} () );
 
 var PeerServer = ( function() {
 
