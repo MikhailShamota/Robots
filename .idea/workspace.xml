@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="510eed05-ed6a-4361-9ef3-ef26ad0cd624" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Globals.js" afterPath="$PROJECT_DIR$/js/Globals.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.html" afterPath="$PROJECT_DIR$/main.html" />
     </list>
     <ignored path="Robots.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -23,11 +25,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-14.538462">
-              <caret line="83" column="23" selection-start-line="83" selection-start-column="23" selection-end-line="83" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.5114943">
+              <caret line="95" column="12" selection-start-line="95" selection-start-column="12" selection-end-line="95" selection-end-column="12" />
               <folding>
                 <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -63,11 +65,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Globals.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Globals.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Globals.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4888393">
-              <caret line="62" column="9" selection-start-line="62" selection-start-column="9" selection-end-line="62" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="74" column="28" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -157,8 +159,8 @@
         <option value="$PROJECT_DIR$/draw.js" />
         <option value="$PROJECT_DIR$/js/Classes.js" />
         <option value="$PROJECT_DIR$/js/Scene.js" />
-        <option value="$PROJECT_DIR$/main.html" />
         <option value="$PROJECT_DIR$/js/Globals.js" />
+        <option value="$PROJECT_DIR$/main.html" />
       </list>
     </option>
   </component>
@@ -353,12 +355,6 @@
       <workItem from="1483040499861" duration="204000" />
       <workItem from="1483808321278" duration="830000" />
       <workItem from="1483883140725" duration="7448000" />
-    </task>
-    <task id="LOCAL-00014" summary="update move refactoring">
-      <created>1485269401237</created>
-      <option name="number" value="00014" />
-      <option name="project" value="LOCAL" />
-      <updated>1485269401237</updated>
     </task>
     <task id="LOCAL-00015" summary="meshline as jet trail">
       <created>1485449996754</created>
@@ -648,7 +644,13 @@
       <option name="project" value="LOCAL" />
       <updated>1500377332356</updated>
     </task>
-    <option name="localTasksCounter" value="63" />
+    <task id="LOCAL-00063" summary="save game id to CouchDB &#10;CloudNo.de">
+      <created>1500377338844</created>
+      <option name="number" value="00063" />
+      <option name="project" value="LOCAL" />
+      <updated>1500377338844</updated>
+    </task>
+    <option name="localTasksCounter" value="64" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -1256,21 +1258,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.html">
+    <entry file="file://$PROJECT_DIR$/js/Globals.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-14.538462">
-          <caret line="83" column="23" selection-start-line="83" selection-start-column="23" selection-end-line="83" selection-end-column="23" />
-          <folding>
-            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="0.0">
+          <caret line="74" column="28" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Globals.js">
+    <entry file="file://$PROJECT_DIR$/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4888393">
-          <caret line="62" column="9" selection-start-line="62" selection-start-column="9" selection-end-line="62" selection-end-column="9" />
-          <folding />
+        <state vertical-scroll-proportion="0.5114943">
+          <caret line="95" column="12" selection-start-line="95" selection-start-column="12" selection-end-line="95" selection-end-column="12" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

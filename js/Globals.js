@@ -29,12 +29,15 @@ var nowTime = Date.now();
 
 var CouchDB = ( function() {
 
-    function send( data ) {
+    const dbUrl = 'https://couchdb.cloudno.de/aspacegame';
+    const dbUrlActiveGames = 'https://couchdb.cloudno.de/aspacegame/_design/games/_view/active';
+
+    function send( data, url ) {
 
         $.ajax({
 
             type: "POST",
-            url: 'https://couchdb.cloudno.de/aspacegame',
+            url: url,
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -52,14 +55,53 @@ var CouchDB = ( function() {
         });
     }
 
+    function get( url, funcOk, funcFail ) {
+
+        $.ajax({
+
+            type: "GET",
+            url: url,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            success: function ( data ) {
+
+                funcOk && funcOk( data );
+                console.log( 'get from couchdb ' + url );
+            },
+            error: function () {
+
+                funcFail && funcFail();
+                console.log( 'failed to get from couchdb ' + url );
+            },
+            dataType: 'json'
+        });
+    }
+
     return {
 
-        addNewGameId: function ( id ) {
+        newGame: function( myPeerId ) {
 
             send({
 
-                PeerId: id
-            });
+                MyPeerId: myPeerId,
+                GameId: myPeerId
+            }, dbUrl );
+        },
+
+        joinGame: function( myPeerId, gameId ) {
+
+            send({
+
+                MyPeerId: myPeerId,
+                GameId: gameId
+            }, dbUrl );
+        },
+
+        getActiveGames: function( funcOk, funcFail ) {
+
+            return get( dbUrlActiveGames, funcOk, funcFail );
         }
     }
 } () );

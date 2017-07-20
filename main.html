@@ -28,10 +28,11 @@
             <h1>A space game</h1>
             <h2 id="hConnStatus">connecting...</h2>
             <ul>
+
+                <!--<li><input class="input" type="text" id="inpPeerId" value="Enter peer id" onclick="this.value=''"/></li>
+                <li><a href="javascript:void(0)" onclick="joinGame()" id="btnJoin" class="button">Join</a></li>-->
+                <ul id="gamesList"></ul>
                 <li><a href="javascript:void(0)" onclick="newGame()" class="button">New</a></li>
-                <li> <h2>OR</h2></li>
-                <li><input class="input" type="text" id="inpPeerId" value="Enter peer id" onclick="this.value=''"/></li>
-                <li><a href="javascript:void(0)" onclick="joinGame()" id="btnJoin" class="button">Join</a></li>
             </ul>
         </div>
     </div>
@@ -52,6 +53,7 @@
 
     initConnect();
     //drawScene();
+    CouchDB.getActiveGames( drawGamesList );
 
     function initConnect() {
 
@@ -81,19 +83,43 @@
         Scene.init( starSystemSeedId || myId.hashCode() );
         Scene.paint();
 
-        CouchDB.addNewGameId( myId );
+        CouchDB.newGame( myId );
 
         document.getElementById('myPeerId').value = myId;
     }
+
+    function drawGamesList( data ) {
+
+        function button( item, i ) {
+
+            var newBtn = document.createElement( "a" );
+
+            newBtn.id = "join_" + i;
+            newBtn.href = "javascript:void(0)";
+            newBtn.onclick = function () { joinGame( item.key ) };
+            newBtn.class = "button";
+            newBtn.innerHTML = item.key;
+
+            return newBtn;
+        }
+
+        data && data.rows.forEach( function( item, i ) {
+
+            var li = $("#gamesList").append("<li></li>").append( button( item, i ) );
+            console.log( item );
+        });
+
+    }
+
 
     function newGame() {
 
         drawScene();
     }
 
-    function joinGame() {
+    function joinGame( id ) {
 
-        var id = document.getElementById("inpPeerId").value;
+        //var id = document.getElementById("inpPeerId").value;
 
         PeerServer.connect( id );
 
