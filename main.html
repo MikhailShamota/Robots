@@ -25,7 +25,7 @@
     <div id="menu">
         <div id="main">
 
-            <h1>A space game</h1>
+            <h1>Space</h1>
             <h2 id="hConnStatus">connecting...</h2>
             <ul>
 
@@ -124,6 +124,8 @@
         PeerServer.connect( id );
 
         drawScene( id.hashCode() );//star system id
+
+        CouchDB.joinGame( PeerServer.getMyPeerId(), id );
     }
 
 </script>

@@ -30,7 +30,7 @@ var nowTime = Date.now();
 var CouchDB = ( function() {
 
     const dbUrl = 'https://couchdb.cloudno.de/aspacegame';
-    const dbUrlActiveGames = 'https://couchdb.cloudno.de/aspacegame/_design/games/_view/active';
+    const dbUrlActiveGames = 'https://couchdb.cloudno.de/aspacegame/_design/games/_view/active?group=true';
 
     function send( data, url ) {
 
@@ -86,7 +86,9 @@ var CouchDB = ( function() {
             send({
 
                 MyPeerId: myPeerId,
-                GameId: myPeerId
+                GameId: myPeerId,
+                Start: Date.now(),
+                Duration: 60
             }, dbUrl );
         },
 
