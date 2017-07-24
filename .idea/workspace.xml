@@ -4,7 +4,6 @@
     <list default="true" id="510eed05-ed6a-4361-9ef3-ef26ad0cd624" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Globals.js" afterPath="$PROJECT_DIR$/js/Globals.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.html" afterPath="$PROJECT_DIR$/main.html" />
     </list>
     <ignored path="Robots.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,11 +24,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="main.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="main.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5114943">
-              <caret line="95" column="12" selection-start-line="95" selection-start-column="12" selection-end-line="95" selection-end-column="12" />
+            <state vertical-scroll-proportion="-5.8846154">
+              <caret line="9" column="28" selection-start-line="9" selection-start-column="26" selection-end-line="9" selection-end-column="28" />
               <folding>
                 <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
@@ -40,8 +39,8 @@
       <file leaf-file-name="Scene.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Scene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="594" column="36" selection-start-line="594" selection-start-column="32" selection-end-line="594" selection-end-column="36" />
+            <state vertical-scroll-proportion="-17.0">
+              <caret line="289" column="29" selection-start-line="289" selection-start-column="18" selection-end-line="289" selection-end-column="29" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#1588#2299#0" expanded="false" />
@@ -65,11 +64,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Globals.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Globals.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/Globals.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="74" column="28" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
+            <state vertical-scroll-proportion="0.7647059">
+              <caret line="96" column="30" selection-start-line="96" selection-start-column="30" selection-end-line="96" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -78,8 +77,8 @@
       <file leaf-file-name="Classes.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Classes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="287" column="0" selection-start-line="287" selection-start-column="0" selection-end-line="287" selection-end-column="0" />
+            <state vertical-scroll-proportion="-9.965517">
+              <caret line="724" column="28" selection-start-line="724" selection-start-column="26" selection-end-line="724" selection-end-column="28" />
               <folding>
                 <element signature="e#975#1146#0" expanded="false" />
                 <element signature="e#2214#2318#0" expanded="false" />
@@ -159,8 +158,8 @@
         <option value="$PROJECT_DIR$/draw.js" />
         <option value="$PROJECT_DIR$/js/Classes.js" />
         <option value="$PROJECT_DIR$/js/Scene.js" />
-        <option value="$PROJECT_DIR$/js/Globals.js" />
         <option value="$PROJECT_DIR$/main.html" />
+        <option value="$PROJECT_DIR$/js/Globals.js" />
       </list>
     </option>
   </component>
@@ -355,18 +354,6 @@
       <workItem from="1483040499861" duration="204000" />
       <workItem from="1483808321278" duration="830000" />
       <workItem from="1483883140725" duration="7448000" />
-    </task>
-    <task id="LOCAL-00015" summary="meshline as jet trail">
-      <created>1485449996754</created>
-      <option name="number" value="00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1485449996754</updated>
-    </task>
-    <task id="LOCAL-00016" summary="smooth trail&#10;ecliplic grav">
-      <created>1485531240247</created>
-      <option name="number" value="00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1485531240247</updated>
     </task>
     <task id="LOCAL-00017" summary="cursor draft">
       <created>1485536259665</created>
@@ -650,7 +637,19 @@
       <option name="project" value="LOCAL" />
       <updated>1500377338844</updated>
     </task>
-    <option name="localTasksCounter" value="64" />
+    <task id="LOCAL-00064" summary="get CouchDB games list">
+      <created>1500573269468</created>
+      <option name="number" value="00064" />
+      <option name="project" value="LOCAL" />
+      <updated>1500573269468</updated>
+    </task>
+    <task id="LOCAL-00065" summary="get CouchDB games list group by">
+      <created>1500651478297</created>
+      <option name="number" value="00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1500651478297</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -673,6 +672,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -684,7 +684,6 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -724,8 +723,6 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="false" />
-    <MESSAGE value="ships are killable now" />
-    <MESSAGE value="explosions&#10;fix removing oldest items for LoopedArrays&#10;" />
     <MESSAGE value="dynamic loop through LoopedArray collection" />
     <MESSAGE value="trails are updating separatly and fading" />
     <MESSAGE value="Adding peerJS functions&#10;MainMenu" />
@@ -749,7 +746,9 @@
     <MESSAGE value="Player.isProxy" />
     <MESSAGE value="set players to vessels by link&#10;update octree on every player mesh init" />
     <MESSAGE value="save game id to CouchDB &#10;CloudNo.de" />
-    <option name="LAST_COMMIT_MESSAGE" value="save game id to CouchDB &#10;CloudNo.de" />
+    <MESSAGE value="get CouchDB games list" />
+    <MESSAGE value="get CouchDB games list group by" />
+    <option name="LAST_COMMIT_MESSAGE" value="get CouchDB games list group by" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1184,17 +1183,46 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/EcmaScript.js">
+    <entry file="file://$PROJECT_DIR$/js/Scene.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3325967">
-          <caret line="566" column="0" selection-start-line="566" selection-start-column="0" selection-end-line="566" selection-end-column="0" />
+        <state vertical-scroll-proportion="-17.0">
+          <caret line="289" column="29" selection-start-line="289" selection-start-column="18" selection-end-line="289" selection-end-column="29" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#1588#2299#0" expanded="false" />
+            <element signature="e#3347#3665#0" expanded="false" />
+            <element signature="e#4725#4861#0" expanded="false" />
+            <element signature="e#4895#5037#0" expanded="false" />
+            <element signature="e#5073#5178#0" expanded="false" />
+            <element signature="e#6898#7161#0" expanded="false" />
+            <element signature="e#7191#7258#0" expanded="false" />
+            <element signature="e#7292#7364#0" expanded="false" />
+            <element signature="e#9131#9363#0" expanded="false" />
+            <element signature="e#9400#9479#0" expanded="false" />
+            <element signature="e#9515#9557#0" expanded="false" />
+            <element signature="e#9591#9658#0" expanded="false" />
+            <element signature="e#9688#11941#0" expanded="false" />
+            <element signature="e#12450#12778#0" expanded="false" />
+            <element signature="e#12808#13131#0" expanded="false" />
+            <element signature="e#13947#14190#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-5.8846154">
+          <caret line="9" column="28" selection-start-line="9" selection-start-column="26" selection-end-line="9" selection-end-column="28" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/Classes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="287" column="0" selection-start-line="287" selection-start-column="0" selection-end-line="287" selection-end-column="0" />
+        <state vertical-scroll-proportion="-9.965517">
+          <caret line="724" column="28" selection-start-line="724" selection-start-column="26" selection-end-line="724" selection-end-column="28" />
           <folding>
             <element signature="e#975#1146#0" expanded="false" />
             <element signature="e#2214#2318#0" expanded="false" />
@@ -1232,47 +1260,19 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Scene.js">
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/EcmaScript.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="594" column="36" selection-start-line="594" selection-start-column="32" selection-end-line="594" selection-end-column="36" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#1588#2299#0" expanded="false" />
-            <element signature="e#3347#3665#0" expanded="false" />
-            <element signature="e#4725#4861#0" expanded="false" />
-            <element signature="e#4895#5037#0" expanded="false" />
-            <element signature="e#5073#5178#0" expanded="false" />
-            <element signature="e#6898#7161#0" expanded="false" />
-            <element signature="e#7191#7258#0" expanded="false" />
-            <element signature="e#7292#7364#0" expanded="false" />
-            <element signature="e#9131#9363#0" expanded="false" />
-            <element signature="e#9400#9479#0" expanded="false" />
-            <element signature="e#9515#9557#0" expanded="false" />
-            <element signature="e#9591#9658#0" expanded="false" />
-            <element signature="e#9688#11941#0" expanded="false" />
-            <element signature="e#12450#12778#0" expanded="false" />
-            <element signature="e#12808#13131#0" expanded="false" />
-            <element signature="e#13947#14190#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.3705357">
+          <caret line="313" column="20" selection-start-line="313" selection-start-column="20" selection-end-line="313" selection-end-column="20" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/Globals.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="74" column="28" selection-start-line="74" selection-start-column="28" selection-end-line="74" selection-end-column="28" />
+        <state vertical-scroll-proportion="0.7647059">
+          <caret line="96" column="30" selection-start-line="96" selection-start-column="30" selection-end-line="96" selection-end-column="30" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5114943">
-          <caret line="95" column="12" selection-start-line="95" selection-start-column="12" selection-end-line="95" selection-end-column="12" />
-          <folding>
-            <element signature="n#style#0;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
