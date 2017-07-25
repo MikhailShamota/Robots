@@ -83,18 +83,16 @@ var CouchDB = ( function() {
 
         enterGame: function( myPeerId, game ) {
 
-            var duration = game ? 0 : 60;
-            var start = new Date().getTime();
-            var finish = game ? game.time : start + duration * MSEC_IN_SEC;
-            //finish
+            var t = new Date().getTime();
+            var duration = 60;
 
             send({
 
                 MyPeerId: myPeerId,
-                GameId: myPeerId,
-                Start: start,
-                Duration: duration,
-                Finish: finish
+                GameId: game ? game.id : myPeerId,
+                Start: t,
+                Duration: game ? 0 : duration,
+                Finish: game ? game.time : t + duration * MSEC_IN_SEC
             }, dbUrl );
         },
 

@@ -4,8 +4,6 @@
     <list default="true" id="510eed05-ed6a-4361-9ef3-ef26ad0cd624" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Globals.js" afterPath="$PROJECT_DIR$/js/Globals.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Scene.js" afterPath="$PROJECT_DIR$/js/Scene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.html" afterPath="$PROJECT_DIR$/main.html" />
     </list>
     <ignored path="Robots.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -69,8 +67,8 @@
       <file leaf-file-name="Globals.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/Globals.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5294118">
-              <caret line="87" column="74" selection-start-line="87" selection-start-column="74" selection-end-line="87" selection-end-column="74" />
+            <state vertical-scroll-proportion="0.33333334">
+              <caret line="86" column="30" selection-start-line="86" selection-start-column="30" selection-end-line="86" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -356,12 +354,6 @@
       <workItem from="1483040499861" duration="204000" />
       <workItem from="1483808321278" duration="830000" />
       <workItem from="1483883140725" duration="7448000" />
-    </task>
-    <task id="LOCAL-00018" summary="doing gravity parents">
-      <created>1485794430763</created>
-      <option name="number" value="00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1485794430763</updated>
     </task>
     <task id="LOCAL-00019" summary="moon">
       <created>1486055681550</created>
@@ -651,7 +643,13 @@
       <option name="project" value="LOCAL" />
       <updated>1500915884906</updated>
     </task>
-    <option name="localTasksCounter" value="67" />
+    <task id="LOCAL-00067" summary="join games">
+      <created>1500990635349</created>
+      <option name="number" value="00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1500990635349</updated>
+    </task>
+    <option name="localTasksCounter" value="68" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -725,7 +723,6 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="false" />
-    <MESSAGE value="trails are updating separatly and fading" />
     <MESSAGE value="Adding peerJS functions&#10;MainMenu" />
     <MESSAGE value="menu moved in main.html&#10;connection established&#10;" />
     <MESSAGE value="multiple calls fix" />
@@ -750,7 +747,8 @@
     <MESSAGE value="get CouchDB games list" />
     <MESSAGE value="get CouchDB games list group by" />
     <MESSAGE value="start and finish" />
-    <option name="LAST_COMMIT_MESSAGE" value="start and finish" />
+    <MESSAGE value="join games" />
+    <option name="LAST_COMMIT_MESSAGE" value="join games" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1272,8 +1270,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/Globals.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5294118">
-          <caret line="87" column="74" selection-start-line="87" selection-start-column="74" selection-end-line="87" selection-end-column="74" />
+        <state vertical-scroll-proportion="0.33333334">
+          <caret line="86" column="30" selection-start-line="86" selection-start-column="30" selection-end-line="86" selection-end-column="30" />
           <folding />
         </state>
       </provider>
