@@ -582,9 +582,9 @@ var Scene = (function () {
             }
         },
 
-        init : function( starSystemId ) {
+        init : function( starSystemStr ) {
 
-            initScene( starSystemId );
+            initScene( starSystemStr.hashCode() );
         },
 
         paint : function() {

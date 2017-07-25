@@ -30,7 +30,7 @@ var nowTime = Date.now();
 var CouchDB = ( function() {
 
     const dbUrl = 'https://couchdb.cloudno.de/aspacegame';
-    const dbUrlActiveGames = 'https://couchdb.cloudno.de/aspacegame/_design/games/_view/active?group=true';
+    const dbUrlActiveGames = function ( datenow ) { return 'https://couchdb.cloudno.de/aspacegame/_design/games/_view/active?group=true&startkey=[' + datenow + ']' };
 
     function send( data, url ) {
 
@@ -81,12 +81,12 @@ var CouchDB = ( function() {
 
     return {
 
-        newGame: function( myPeerId ) {
+        enterGame: function( myPeerId, game ) {
 
-            var duration = 60;
-            var start = new Date();
-            var finish = new Date();
-            finish.setSeconds(start.getSeconds() + duration);
+            var duration = game ? 0 : 60;
+            var start = new Date().getTime();
+            var finish = game ? game.time : start + duration * MSEC_IN_SEC;
+            //finish
 
             send({
 
@@ -98,18 +98,19 @@ var CouchDB = ( function() {
             }, dbUrl );
         },
 
-        joinGame: function( myPeerId, gameId ) {
+        /*joinGame: function( myPeerId, game ) {
 
             send({
 
                 MyPeerId: myPeerId,
-                GameId: gameId
+                GameId: game.id,
+                Finish: game.time
             }, dbUrl );
-        },
+        },*/
 
         getActiveGames: function( funcOk, funcFail ) {
 
-            return get( dbUrlActiveGames, funcOk, funcFail );
+            return get( dbUrlActiveGames( Date.now() ), funcOk, funcFail );
         }
     }
 } () );
