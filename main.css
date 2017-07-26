@@ -1,3 +1,6 @@
+
+
+/*
 body {
     font-family: arial, sans-serif;
     font-size: 16px;
@@ -19,8 +22,8 @@ li {
 
 a {
     text-decoration: none;
-    color: inherit;
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    color: whitesmoke;
+    text-shadow: none;
 }
 
 .wrapper {
@@ -42,11 +45,11 @@ a {
 }
 
 #menu.main {
-    /*background-image: url('imgs/menu-bg.png');*/
+    //background-image: url('imgs/menu-bg.png');
     background-color: red;
 }
 #main {
-    /*display: none;*/
+    //display: none;
     height: 60%;
     overflow: auto;
     margin: auto;
@@ -107,7 +110,7 @@ a {
 }
 
 .button:hover {
-    /*background: linear-gradient(#678834 50%, #093905 50%);*/
+    //background: linear-gradient(#678834 50%, #093905 50%);
     background-color: #EB7723;
 }
 .button:active {
@@ -141,3 +144,4 @@ a {
     visibility: visible;
     display: block
 }
+*/

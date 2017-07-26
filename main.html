@@ -17,22 +17,25 @@
     <script src="js/Classes.js"></script>
     <script src="js/Scene.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="main.css">
+    <link rel="stylesheet" href="material.min.css">
+    <script src="material.min.js"></script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 </head>
 <body>
-
+<p class="mdl-spinner mdl-js-spinner mdl-spinner--single-color is-active"></p>
 <div class="wrapper" id="dMenu">
     <div id="menu">
         <div id="main">
 
-            <h1>Space</h1>
+            <h1>Material design</h1>
+            <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
             <h2 id="hConnStatus">connecting...</h2>
-            <ul>
+            <ul class="demo-list-item mdl-list">
 
-                <!--<li><input class="input" type="text" id="inpPeerId" value="Enter peer id" onclick="this.value=''"/></li>
-                <li><a href="javascript:void(0)" onclick="joinGame()" id="btnJoin" class="button">Join</a></li>-->
-                <ul id="gamesList"></ul>
-                <li><a href="javascript:void(0)" onclick="enterGame()" class="button">New</a></li>
+                <ul class="demo-list-item mdl-list" id="gamesList"></ul>
+                <li class="mdl-list__item">
+                    <span class="mdl-list__item-primary-content"><a href="javascript:void(0)" onclick="enterGame()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">New</a></span>
+                </li>
             </ul>
         </div>
     </div>
@@ -92,20 +95,24 @@
 
             var gameId = item.key[ 1 ];
             var gameTime = item.key[ 0 ];
-            var newBtn = document.createElement( "a" );
+            var newBtn = document.createElement( "li" );
 
             newBtn.id = "join_" + i;
             newBtn.href = "javascript:void(0)";
             newBtn.onclick = function () { enterGame( { id: gameId, time: gameTime } ) };
-            newBtn.class = "button";
-            newBtn.innerHTML = gameId;
+            //newBtn.innerHTML = gameId+'  '+item.value;
+            newBtn.innerHTML =
+                    '<span class="mdl-list__item-primary-content">' +
+                    '<div class="material-icons mdl-badge mdl-badge--overlap" data-badge="'+item.value+'">' + '<a href="#">' + gameId + '</a>' + '</div>' +
+                    '</span>';
+            newBtn.class = "mdl-list__item";
 
             return newBtn;
         }
 
         data && data.rows.forEach( function( item, i ) {
 
-            var li = $("#gamesList").append("<li></li>").append( button( item, i ) );
+            var li = $("#gamesList").append( button( item, i )).append();
             console.log( item );
         });
 
