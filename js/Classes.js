@@ -6,7 +6,7 @@ function Player( id, isProxy ) {
 
     this.changeCallback = null;
 
-    this.color = new THREE.Color().setHSL( ( Math.sin( id.hashCode() ) + 1 ) * 0.5 /*0..1*/ , 0.5, 0.5 );
+    this.color = new THREE.Color().setHSL( ( Math.sin( id.toString().hashCode() ) + 1 ) * 0.5 /*0..1*/ , 0.5, 0.5 );
 
     this.isProxy = isProxy;
 
@@ -804,8 +804,6 @@ String.prototype.hashCode = function(){
     }
     return hash;
 };
-//
-
 
 function RandomPool( seed ) {
 
