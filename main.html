@@ -19,22 +19,23 @@
 
     <link rel="stylesheet" href="material.min.css">
     <script src="material.min.js"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <!--<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">-->
 </head>
-<body>
-<p class="mdl-spinner mdl-js-spinner mdl-spinner--single-color is-active"></p>
+<body style="background-color:#888888">
+
 <div class="wrapper" id="dMenu">
-    <div id="menu">
+    <div id="menu" align="center">
         <div id="main">
 
             <h1>Material design</h1>
-            <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
-            <h2 id="hConnStatus">connecting...</h2>
-            <ul class="demo-list-item mdl-list">
+            <h2 id="hConnStatus"><div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div></h2>
+            <ul class="mdl-list" >
 
-                <ul class="demo-list-item mdl-list" id="gamesList"></ul>
+                <ul class="mdl-list" id="gamesList"></ul>
                 <li class="mdl-list__item">
-                    <span class="mdl-list__item-primary-content"><a href="javascript:void(0)" onclick="enterGame()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">New</a></span>
+                    <span  class="mdl-list__item-primary-content" >
+                        <div style="width: 100%"><button onclick="enterGame()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">New</button></div>
+                    </span>
                 </li>
             </ul>
         </div>
@@ -98,7 +99,7 @@
             var newBtn = document.createElement( "li" );
 
             newBtn.id = "join_" + i;
-            newBtn.href = "javascript:void(0)";
+            //newBtn.href = "javascript:void(0)";
             newBtn.onclick = function () { enterGame( { id: gameId, time: gameTime } ) };
             //newBtn.innerHTML = gameId+'  '+item.value;
             newBtn.innerHTML =
