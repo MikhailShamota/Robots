@@ -427,10 +427,17 @@ var Scene = (function () {
         renderer = new THREE.WebGLRenderer({antialias: true});
         renderer.setSize(WIDTH, HEIGHT);
         renderer.sortObjects = false;
+
+        //var dScene = dom;//document.getElementById("dScene");
+
         renderer.domElement.addEventListener("click", onMouseClick);
         renderer.domElement.addEventListener('mousemove', onMouseUpdate, false);
         renderer.domElement.addEventListener('mousedown', onMouseDown, false);
         renderer.domElement.addEventListener('mouseup', onMouseUp, false);
+        /*dScene.addEventListener("click", onMouseClick);
+        dScene.addEventListener('mousemove', onMouseUpdate, false);
+        dScene.addEventListener('mousedown', onMouseDown, false);
+        dScene.addEventListener('mouseup', onMouseUp, false);*/
 
         document.body.appendChild(renderer.domElement);
 
@@ -528,7 +535,6 @@ var Scene = (function () {
 
     function initScene( starSystemId ) {
 
-        initializeGL();
         initStats();
         //initControls();
         initOctree();
@@ -584,6 +590,7 @@ var Scene = (function () {
 
         init : function( starSystemStr ) {
 
+            initializeGL();
             initScene( starSystemStr.hashCode() );
         },
 
