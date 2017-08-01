@@ -359,23 +359,25 @@ var Scene = (function () {
 
     function onMouseUpdate( event ) {
 
+        //event.preventDefault();
         v2MousePoint.x = ( ( event.pageX - renderer.context.canvas.offsetLeft ) / window.innerWidth ) * 2 - 1;
         v2MousePoint.y = - ( ( event.pageY - renderer.context.canvas.offsetTop ) / window.innerHeight ) * 2 + 1;
     }
 
-    function onMouseClick( event ) {
+    //function onMouseClick( event ) {
 
         //console.log( iPlayer().getVessel().getScreenPos( camera ) );
-    }
+    //}
 
     function onMouseDown( event ) {
 
+        //event.preventDefault();
         iPlayer().setMouseDown();
     }
 
     function onMouseUp( event ) {
 
-        //isMouseDown = 0;
+        //event.preventDefault();
         iPlayer().setMouseUp();
     }
 
@@ -430,10 +432,16 @@ var Scene = (function () {
 
         //var dScene = dom;//document.getElementById("dScene");
 
-        renderer.domElement.addEventListener("click", onMouseClick);
-        renderer.domElement.addEventListener('mousemove', onMouseUpdate, false);
-        renderer.domElement.addEventListener('mousedown', onMouseDown, false);
-        renderer.domElement.addEventListener('mouseup', onMouseUp, false);
+        var dom = renderer.domElement;
+
+        dom.addEventListener('mousemove', onMouseUpdate, false);
+        dom.addEventListener('mousedown', onMouseDown, false);
+        dom.addEventListener('mouseup', onMouseUp, false);
+
+        dom.addEventListener("touchstart", onMouseDown, false);
+        dom.addEventListener("touchend", onMouseUp, false);
+        dom.addEventListener("touchmove", onMouseUpdate, false);
+
         /*dScene.addEventListener("click", onMouseClick);
         dScene.addEventListener('mousemove', onMouseUpdate, false);
         dScene.addEventListener('mousedown', onMouseDown, false);
