@@ -231,6 +231,9 @@ var Scene = (function () {
 
             scene.remove( obj.mesh );
             octree.remove( obj.mesh );
+
+            obj.lastHitBy.player.score++;
+            updateScore();
         }
 
         function getForces( obj ) {
@@ -294,6 +297,11 @@ var Scene = (function () {
         loopedArrays.collection[ "lasers" ].mapAll( BeamMove );
     }
 
+    function updateScore() {
+
+        document.getElementById("Score").innerHTML = players[0].score + ":" + players[1].score;
+    }
+
     function update() {
 
         nowTime = Date.now();
@@ -353,7 +361,9 @@ var Scene = (function () {
 
                 hits++;
 
-                from.player.isProxy && mesh.userData.hits--;//TODO:doDamage -> isProxy
+                var vessel = mesh.userData;
+                from.player.isProxy && vessel.hits > 0 && vessel.hits-- && (vessel.lastHitBy = from);//doDamage -> isProxy
+
                 dist = intersects[ 0 ].distance;
 
                 addHit( intersects[ 0 ].point );
