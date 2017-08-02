@@ -58,6 +58,15 @@ var Scene = (function () {
 
     var eclipticPlane = new THREE.Plane( new THREE.Vector3( 0, 1, 0 ) );
     var v2MousePoint = new THREE.Vector2();
+    v2MousePoint.getX = function( pageX ) {
+
+        return ( ( pageX - renderer.context.canvas.offsetLeft ) / window.innerWidth ) * 2 - 1;
+    };
+    v2MousePoint.getY = function( pageY ) {
+
+        return - ( ( pageY - renderer.context.canvas.offsetTop ) / window.innerHeight ) * 2 + 1;
+    };
+
     var v3MousePoint = new THREE.Vector3();
 
     var cursor = new THREE.Mesh( new THREE.PlaneGeometry( 50, 50 ) );
@@ -357,27 +366,46 @@ var Scene = (function () {
         from.lastFired = nowTime;
     }
 
-    function onMouseUpdate( event ) {
+    function onMouseMove( event ) {
 
-        //event.preventDefault();
-        v2MousePoint.x = ( ( event.pageX - renderer.context.canvas.offsetLeft ) / window.innerWidth ) * 2 - 1;
-        v2MousePoint.y = - ( ( event.pageY - renderer.context.canvas.offsetTop ) / window.innerHeight ) * 2 + 1;
+        event.preventDefault();
+        //v2MousePoint.x = ( ( event.pageX - renderer.context.canvas.offsetLeft ) / window.innerWidth ) * 2 - 1;
+        //v2MousePoint.y = - ( ( event.pageY - renderer.context.canvas.offsetTop ) / window.innerHeight ) * 2 + 1;
+        v2MousePoint.x = v2MousePoint.getX( event.pageX );
+        v2MousePoint.y = v2MousePoint.getY( event.pageY );
     }
-
-    //function onMouseClick( event ) {
-
-        //console.log( iPlayer().getVessel().getScreenPos( camera ) );
-    //}
 
     function onMouseDown( event ) {
 
-        //event.preventDefault();
+        event.preventDefault();
         iPlayer().setMouseDown();
     }
 
     function onMouseUp( event ) {
 
-        //event.preventDefault();
+        event.preventDefault();
+        iPlayer().setMouseUp();
+    }
+
+    function onTouchMove( event ) {
+
+        event.preventDefault();
+        //if (event.targetTouches.length == 1) {
+        var touch = event.targetTouches[0];
+
+        v2MousePoint.x = v2MousePoint.getX( touch.pageX );
+        v2MousePoint.y = v2MousePoint.getY( touch.pageY );
+    }
+
+    function onTouchStart( event ) {
+
+        event.preventDefault();
+        iPlayer().setMouseDown();
+    }
+
+    function onTouchEnd( event ) {
+
+        event.preventDefault();
         iPlayer().setMouseUp();
     }
 
@@ -434,13 +462,13 @@ var Scene = (function () {
 
         var dom = renderer.domElement;
 
-        dom.addEventListener('mousemove', onMouseUpdate, false);
+        dom.addEventListener('mousemove', onMouseMove, false);
         dom.addEventListener('mousedown', onMouseDown, false);
         dom.addEventListener('mouseup', onMouseUp, false);
 
-        dom.addEventListener("touchstart", onMouseDown, false);
-        dom.addEventListener("touchend", onMouseUp, false);
-        dom.addEventListener("touchmove", onMouseUpdate, false);
+        dom.addEventListener("touchstart", onTouchStart, false);
+        dom.addEventListener("touchend", onTouchEnd, false);
+        dom.addEventListener("touchmove", onTouchMove, false);
 
         /*dScene.addEventListener("click", onMouseClick);
         dScene.addEventListener('mousemove', onMouseUpdate, false);

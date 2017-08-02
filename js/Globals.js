@@ -32,6 +32,21 @@ var CouchDB = ( function() {
     const dbUrl = 'https://couchdb.cloudno.de/aspacegame';
     const dbUrlActiveGames = function ( datenow ) { return 'https://couchdb.cloudno.de/aspacegame/_design/games/_view/active?group=true&startkey=[' + datenow + ']' };
 
+    //couchdb view
+    /*
+     {
+     "_id": "_design/games",
+     "_rev": "27-f94dec91321ef930fb14ce33baee5af0",
+     "views": {
+     "active": {
+     "map": "function(doc) {\n\tif ( doc.GameId ) \n\t\temit( [doc.Finish,doc.GameId], 1) \n}",
+     "reduce": "_count"
+     }
+     },
+     "language": "javascript"
+     }
+     */
+
     function send( data, url ) {
 
         $.ajax({
