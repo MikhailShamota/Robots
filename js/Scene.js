@@ -366,6 +366,7 @@ var Scene = (function () {
         from.lastFired = nowTime;
     }
 
+    /*
     function onMouseMove( event ) {
 
         event.preventDefault();
@@ -407,7 +408,7 @@ var Scene = (function () {
 
         event.preventDefault();
         iPlayer().setMouseUp();
-    }
+    }*/
 
     function initializeGL() {
 
@@ -448,34 +449,82 @@ var Scene = (function () {
         window.addEventListener('resize', function () {
             var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
 
-            renderer.setSize(WIDTH, HEIGHT);
+            renderer.setPixelRatio( window.devicePixelRatio );
+            renderer.setSize( WIDTH, HEIGHT );
+
             camera.aspect = WIDTH / HEIGHT;
             camera.updateProjectionMatrix();
+            V2_RESOLUTION.set( renderer.context.canvas.width, renderer.context.canvas.height );
         });
 
 
         renderer = new THREE.WebGLRenderer({antialias: true});
+        renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize(WIDTH, HEIGHT);
         renderer.sortObjects = false;
 
-        //var dScene = dom;//document.getElementById("dScene");
-
         var dom = renderer.domElement;
 
-        dom.addEventListener('mousemove', onMouseMove, false);
-        dom.addEventListener('mousedown', onMouseDown, false);
-        dom.addEventListener('mouseup', onMouseUp, false);
+        dom.addEventListener(
+            'mousemove',
+            function onMouseMove( event ) {
 
-        dom.addEventListener("touchstart", onTouchStart, false);
-        dom.addEventListener("touchend", onTouchEnd, false);
-        dom.addEventListener("touchmove", onTouchMove, false);
+                event.preventDefault();
+                //v2MousePoint.x = ( ( event.pageX - renderer.context.canvas.offsetLeft ) / window.innerWidth ) * 2 - 1;
+                //v2MousePoint.y = - ( ( event.pageY - renderer.context.canvas.offsetTop ) / window.innerHeight ) * 2 + 1;
+                v2MousePoint.x = v2MousePoint.getX( event.pageX );
+                v2MousePoint.y = v2MousePoint.getY( event.pageY );
+            },
+            false);
 
-        /*dScene.addEventListener("click", onMouseClick);
-        dScene.addEventListener('mousemove', onMouseUpdate, false);
-        dScene.addEventListener('mousedown', onMouseDown, false);
-        dScene.addEventListener('mouseup', onMouseUp, false);*/
+        dom.addEventListener(
+            'mousedown',
+            function ( event ) {
 
-        document.body.appendChild(renderer.domElement);
+                event.preventDefault();
+                iPlayer().setMouseDown();
+            },
+            false);
+
+        dom.addEventListener(
+            'mouseup',
+            function ( event ) {
+
+                event.preventDefault();
+                iPlayer().setMouseUp();
+            },
+            false);
+
+        dom.addEventListener("touchstart",
+            function ( event ) {
+
+                event.preventDefault();
+                iPlayer().setMouseDown();
+            },
+            false);
+
+        dom.addEventListener(
+            "touchend",
+            function ( event ) {
+
+                event.preventDefault();
+                iPlayer().setMouseUp();
+            }
+            , false);
+
+        dom.addEventListener("touchmove",
+            function onTouchMove( event ) {
+
+                event.preventDefault();
+                //if (event.targetTouches.length == 1) {
+                var touch = event.targetTouches[0];
+
+                v2MousePoint.x = v2MousePoint.getX( touch.pageX );
+                v2MousePoint.y = v2MousePoint.getY( touch.pageY );
+        }
+            , false);
+
+        document.body.appendChild( renderer.domElement );
 
         scene.background = new THREE.Color( C_BACKGROUND );
 
