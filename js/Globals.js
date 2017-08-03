@@ -11,6 +11,7 @@ const VELOCITY_LIMIT_PER_SEC = 100;
 const K_CENTER_FORCE = 20;//force pulling to ecliptic plane
 
 const SEC_EXCH_PERIOD = 0.1;//peer-to-peer message send period
+const MSEC_RESPAWN_DELAY = 2000;//respawn delay
 
 const SEC_TO_PEER_PT = 3;//seconds to reach peer point. More to smooth, less to precision
 

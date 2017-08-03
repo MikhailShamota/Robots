@@ -452,7 +452,7 @@ Vessel.prototype.initTrail = function () {
         line.setGeometry( geom, function(p) { return p; } ); // makes width thinner
 
         var meshTrail = new THREE.Mesh( line.geometry, material ); // this syntax could definitely be improved!
-        //trail_mesh.frustumCulled = false;
+        meshTrail.frustumCulled = false;//need because it save camera frustum at moment of creation
 
         self.trailLines.push( line );
         self.trailMeshes.push( meshTrail );

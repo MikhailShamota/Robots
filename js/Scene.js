@@ -237,10 +237,9 @@ var Scene = (function () {
             updateScore();
 
             //if my last was killed respawn me at 2 sec
-            !obj.player.isProxy && obj.player.fleet.totalHits() < 1 && setTimeout( function() { iPlayer().fleet.start(); }, 2000);
+            !obj.player.isProxy && obj.player.fleet.totalHits() < 1 && setTimeout( function() { iPlayer().fleet.start(); }, MSEC_RESPAWN_DELAY );
             //iPlayer().fleet.totalHits() < 1 && //initFleet( player );//respawn
             //iPlayer().fleet.start();
-
         }
 
         function getForces( obj ) {
@@ -340,7 +339,7 @@ var Scene = (function () {
 
         updateMove( dt );//update MatObj physics
 
-        camera.position.add( camera.y() );
+        //camera.position.add( camera.y() );
 
         loopedArrays.update();
 
@@ -354,6 +353,16 @@ var Scene = (function () {
         send();
 
         octree.rebuild();
+
+        updateCamera();
+    }
+
+    function updateCamera() {
+
+        var v3target = iPlayer().getVessel().pos.clone();
+        camera.position.copy( v3target.setY( R_CAMERA_MIN*0.75 ) );
+        //camera.up = new THREE.Vector3( 0, 0, 1 );
+        //camera.lookAt( v3target );
     }
 
     function fire( from ) {
@@ -400,14 +409,15 @@ var Scene = (function () {
         scene = new THREE.Scene();
         var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
 
-        camera = new THREE.PerspectiveCamera(75, window.width / window.height, 0.1, R_GALAXY * 2 );
+        camera = new THREE.PerspectiveCamera(75, window.width / window.height, 1, R_GALAXY * 2 );
         camera.aspect = WIDTH / HEIGHT;
         camera.updateProjectionMatrix();
 
         camera.position.set( 0, R_CAMERA_MIN * 2, 0 );
         camera.up = new THREE.Vector3( 0, 0, 1 );
-        camera.lookAt( new THREE.Vector3( 0 ,0 ,0 ) );
+        camera.lookAt( new THREE.Vector3( 0, 0 ,0 ) );
 
+        /*
         camera.y = function() {
 
             var self = this;
@@ -430,6 +440,7 @@ var Scene = (function () {
 
             return V3_UNIT_Y.clone().multiplyScalar( V_CAMERA * ( -acceleration + ( x * x * 2 ) ) );
         };
+        */
 
         window.addEventListener('resize', function () {
             var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
@@ -455,8 +466,6 @@ var Scene = (function () {
             function onMouseMove( event ) {
 
                 event.preventDefault();
-                //v2MousePoint.x = ( ( event.pageX - renderer.context.canvas.offsetLeft ) / window.innerWidth ) * 2 - 1;
-                //v2MousePoint.y = - ( ( event.pageY - renderer.context.canvas.offsetTop ) / window.innerHeight ) * 2 + 1;
                 v2MousePoint.x = v2MousePoint.getX( event.pageX );
                 v2MousePoint.y = v2MousePoint.getY( event.pageY );
             },
