@@ -71,13 +71,16 @@ function Player( id, isProxy ) {
         });
     };
 
-    Fleet.prototype.listAlive = function() {
+    Fleet.prototype.totalHits = function() {
 
-        return this.vesselsList.filter( function( item ) {
+        var hits = 0;
 
-            //return item.obj.v != null;
-            return item.obj.hits > 0;
+        this.vesselsList.forEach( function( item ) {
+
+            hits += item.obj.hits;
         });
+
+        return hits;
     };
 
     Fleet.prototype.initMeshes = function( color ) {
@@ -305,6 +308,7 @@ Vessel.prototype.init = function() {
     this.turn = new THREE.Vector3();
     this.hits = this.toughness;
     this.lastHitBy = null;
+    this.mesh.visible = true;
 };
 
 Vessel.prototype.pack = function() {
@@ -329,7 +333,7 @@ Vessel.prototype.unpack = function( data ) {
     }
 
     //hard init
-    ( !this.pos || !this.turn || !this.v ) && ( this.init() || set( this.pos, data.p ) || set( this.turn, data.t ) );// && this.initTrail();
+    ( !this.pos || !this.turn || !this.v || ( !this.mesh.visible && data.h > 0 ) ) && ( this.init() || set( this.pos, data.p ) || set( this.turn, data.t ) );// && this.initTrail();
 
     //soft update
     set( this.v, data.v );

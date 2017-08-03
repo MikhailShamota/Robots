@@ -162,7 +162,7 @@ var Scene = (function () {
             var mesh = octreeObj.object;
             var matObj = mesh.userData;
 
-            if ( !matObj.v )//immovable
+            if ( !matObj.v || !mesh.visible )//immovable or invisible
                 return;
 
             octree.search( octreeObj.position, octreeObj.radius ).forEach( octreeObj2 => {
@@ -229,11 +229,18 @@ var Scene = (function () {
 
             addExplosion( obj.pos );
 
-            scene.remove( obj.mesh );
-            octree.remove( obj.mesh );
+            //scene.remove( obj.mesh );
+            //octree.remove( obj.mesh );
+            obj.mesh.visible = false;
 
             obj.lastHitBy && players[ obj.lastHitBy ].score++;
             updateScore();
+
+            //if my last was killed respawn me at 2 sec
+            !obj.player.isProxy && obj.player.fleet.totalHits() < 1 && setTimeout( function() { iPlayer().fleet.start(); }, 2000);
+            //iPlayer().fleet.totalHits() < 1 && //initFleet( player );//respawn
+            //iPlayer().fleet.start();
+
         }
 
         function getForces( obj ) {
@@ -257,6 +264,9 @@ var Scene = (function () {
             //var mesh = octreeObj.object;
             //var obj = mesh.userData;//mesh.userData => MatObj
             var obj = octreeObj.object.userData;//octree -> object -> mesh -> userData => MatObj
+
+            if ( !obj.mesh.visible )
+                return;
 
             //CHECK & KILL & REMOVE
             obj.hits <= 0 && killObject( obj );
@@ -336,16 +346,7 @@ var Scene = (function () {
 
         for ( var playerId in players ) {
 
-            var player = players[ playerId ];
-            player.update( dt );
-            //player.fleet.listAlive().length < 1 && initFleet( player );//respawn
-            /*player.fleet.vesselsList.forEach( function( item ) {
-
-                scene.add( item.obj.mesh );
-                octree.add( item.obj.mesh );
-                !player.isProxy && player.fleet.start();//set new pos and restore hits
-            }) && octree.update();*/
-
+            players[ playerId ].update( dt );
         }
 
         updateLasersMove();
