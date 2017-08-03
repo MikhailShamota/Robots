@@ -75,7 +75,8 @@ function Player( id, isProxy ) {
 
         return this.vesselsList.filter( function( item ) {
 
-            return item.obj.v != null;
+            //return item.obj.v != null;
+            return item.obj.hits > 0;
         });
     };
 
@@ -116,8 +117,6 @@ Player.prototype.update = function( dt ) {
 
         obj.updateTrail && obj.updateTrail( dt );
     });
-
-    this.fleet.listAlive().length < 1 && this.fleet.start();//respawn
 };
 
 Player.prototype.initMeshes = function() {
@@ -285,7 +284,8 @@ function Vessel( pos, mass, color ) {
     this.dtJet = 0;
     this.trailWidth = 4;
 
-    this.hits = 1;//toughness
+    this.toughness = 1;
+    this.hits = this.toughness;//toughness
 
     this.color = color;
 
@@ -303,6 +303,8 @@ Vessel.prototype.init = function() {
     this.v = new THREE.Vector3();
     this.pos = new THREE.Vector3();
     this.turn = new THREE.Vector3();
+    this.hits = this.toughness;
+    this.lastHitBy = null;
 };
 
 Vessel.prototype.pack = function() {
@@ -315,7 +317,7 @@ Vessel.prototype.pack = function() {
         to: this.fwd().multiplyScalar( 10000 ).add( this.pos ).toArray(),
         f: this.isFiring,
         h: this.hits,
-        agr: this.lastHitBy
+        agrid: this.lastHitBy
     }
 };
 
@@ -342,7 +344,7 @@ Vessel.prototype.unpack = function( data ) {
     this.isFiring = data.f;
     this.hits = data.h;
 
-    this.lastHitBy = data.agr;
+    this.lastHitBy = data.agrid;
 };
 
 Vessel.prototype.fwd = function() {
@@ -453,10 +455,10 @@ Vessel.prototype.initTrail = function () {
     });
 };
 
-Vessel.prototype.kill = function () {
+/*Vessel.prototype.kill = function () {
 
     this.v = null;
-};
+};*/
 
 function Fighter(pos, mass, color) {
 
@@ -465,7 +467,8 @@ function Fighter(pos, mass, color) {
     this.fJet = 1200000;//this.mass * 80000;
     this.sTurn = 5.25;//radians per sec
     this.trailWidth = 4;
-    this.hits = 3;//toughness
+    //this.hits = 3;//toughness
+    this.toughness = 3;//toughness
 
     var size = Math.cbrt( this.mass );
 

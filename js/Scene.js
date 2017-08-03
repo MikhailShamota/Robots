@@ -225,14 +225,14 @@ var Scene = (function () {
 
         function killObject( obj ) {
 
-            obj.kill();
+            //obj.kill();
 
             addExplosion( obj.pos );
 
             scene.remove( obj.mesh );
             octree.remove( obj.mesh );
 
-            obj.lastHitBy.player.score++;
+            obj.lastHitBy && players[ obj.lastHitBy ].score++;
             updateScore();
         }
 
@@ -299,7 +299,16 @@ var Scene = (function () {
 
     function updateScore() {
 
-        document.getElementById("Score").innerHTML = players[0].score + ":" + players[1].score;
+        var txt = "";
+
+        for ( var playerId in players ) {
+
+            txt += (txt == "" ? "" : " : ") + players[ playerId ].score;
+        }
+
+        var elem = document.getElementById("Score");
+        elem.style.display = 'block';
+        elem.innerHTML = txt;
     }
 
     function update() {
@@ -327,7 +336,16 @@ var Scene = (function () {
 
         for ( var playerId in players ) {
 
-            players[ playerId ].update( dt );
+            var player = players[ playerId ];
+            player.update( dt );
+            //player.fleet.listAlive().length < 1 && initFleet( player );//respawn
+            /*player.fleet.vesselsList.forEach( function( item ) {
+
+                scene.add( item.obj.mesh );
+                octree.add( item.obj.mesh );
+                !player.isProxy && player.fleet.start();//set new pos and restore hits
+            }) && octree.update();*/
+
         }
 
         updateLasersMove();
@@ -362,7 +380,7 @@ var Scene = (function () {
                 hits++;
 
                 var vessel = mesh.userData;
-                from.player.isProxy && vessel.hits > 0 && vessel.hits-- && (vessel.lastHitBy = from);//doDamage -> isProxy
+                from.player.isProxy && vessel.hits > 0 && vessel.hits-- && (vessel.lastHitBy = from.player.id);//doDamage -> isProxy
 
                 dist = intersects[ 0 ].distance;
 
@@ -375,50 +393,6 @@ var Scene = (function () {
 
         from.lastFired = nowTime;
     }
-
-    /*
-    function onMouseMove( event ) {
-
-        event.preventDefault();
-        //v2MousePoint.x = ( ( event.pageX - renderer.context.canvas.offsetLeft ) / window.innerWidth ) * 2 - 1;
-        //v2MousePoint.y = - ( ( event.pageY - renderer.context.canvas.offsetTop ) / window.innerHeight ) * 2 + 1;
-        v2MousePoint.x = v2MousePoint.getX( event.pageX );
-        v2MousePoint.y = v2MousePoint.getY( event.pageY );
-    }
-
-    function onMouseDown( event ) {
-
-        event.preventDefault();
-        iPlayer().setMouseDown();
-    }
-
-    function onMouseUp( event ) {
-
-        event.preventDefault();
-        iPlayer().setMouseUp();
-    }
-
-    function onTouchMove( event ) {
-
-        event.preventDefault();
-        //if (event.targetTouches.length == 1) {
-        var touch = event.targetTouches[0];
-
-        v2MousePoint.x = v2MousePoint.getX( touch.pageX );
-        v2MousePoint.y = v2MousePoint.getY( touch.pageY );
-    }
-
-    function onTouchStart( event ) {
-
-        event.preventDefault();
-        iPlayer().setMouseDown();
-    }
-
-    function onTouchEnd( event ) {
-
-        event.preventDefault();
-        iPlayer().setMouseUp();
-    }*/
 
     function initializeGL() {
 
@@ -541,15 +515,6 @@ var Scene = (function () {
         V2_RESOLUTION = new THREE.Vector2( renderer.context.canvas.width, renderer.context.canvas.height );
     }
 
-    /*
-     function resizeGL(canvas) {
-     camera.aspect = canvas.width / canvas.height;
-     camera.updateProjectionMatrix();
-
-     renderer.setPixelRatio(canvas.devicePixelRatio);
-     renderer.setSize(canvas.width, canvas.height);
-     }
-     */
     function initMeshes( meshes_arr ) {
 
         meshes_arr && meshes_arr.forEach( function( mesh ) {
@@ -617,11 +582,19 @@ var Scene = (function () {
         scene.add( cursor );
     }
 
+    function initFleet( player ) {
+
+        initMeshes( player.initMeshes() );
+        !player.isProxy && player.fleet.start();//start my fleet from new random pos
+    }
+
     function initPlayer( id, isProxy ) {
 
         var player = new Player( id, isProxy );
 
-        initMeshes( player.initMeshes() );
+        initFleet( player );
+        //initMeshes( player.initMeshes() );
+        //!isProxy && player.fleet.start();//start my fleet from new random pos
 
         players[ id ] = player;
 
@@ -642,7 +615,7 @@ var Scene = (function () {
         iPlayer.id = PeerServer.getMyPeerId();
         initPlayer( iPlayer.id, false );
         iPlayer().changeCallback = iPlayer.onChange;
-        iPlayer().fleet.start();//start from new random pos
+        //iPlayer().fleet.start();//start from new random pos
 
 
         octree.update();
