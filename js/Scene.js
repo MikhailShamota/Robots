@@ -1,4 +1,3 @@
-//TODO:возраждаться и не стрелять пока умер
 //TODO:autoscale - сделать все крупнее
 //TODO:autorotate
 var Scene = (function () {

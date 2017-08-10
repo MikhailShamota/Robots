@@ -620,16 +620,11 @@ StarSystem.prototype.initMeshes = function() {
     const R_STARS_MIN = 0.3;
     const R_STARS_MAX = 3;
     const P_STARS = [
-        { size: 0.5, minQty: 5000, maxQty: 10000},
-        { size: 1.0, minQty: 2000,  maxQty: 5000},
-        { size: 2.0, minQty: 500,  maxQty: 2000}
+        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -5000, color: 0x888899 },
+        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -4000, color: 0xaaaabb },
+        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -3000, color: 0xf0f0ff }
     ];
-    const L_STARS = [
-        -2000,
-        -3000,
-        -4000
-    ];
-    L_STARS.getAny = function() { return this[ Math.round( Math.random() * ( L_STARS.length - 1 ) ) ]; };
+    //L_STARS.getAny = function() { return this[ Math.round( Math.random() * ( L_STARS.length - 1 ) ) ]; };
 
     var self = this;
     var meshes = [];
@@ -708,20 +703,20 @@ StarSystem.prototype.initMeshes = function() {
         add( asteroid ).setV( this.randV3( this.rand( 0, V_ASTEROID_MAX ) ) );//.setAxis( rotationUp ).setParent( planet );
     }
 
-    var qStars = this.rand( Q_STARS_MIN, Q_STARS_MAX );
-
     P_STARS.forEach( function( item ) {
 
         var qty = self.rand( item.minQty, item.maxQty );
-        var dotMaterial = new THREE.PointsMaterial( { color: 0xffffff, size: item.size, sizeAttenuation: false } );
+
+        var dotMaterial = new THREE.PointsMaterial( { color: item.color, size: item.size, sizeAttenuation: false } );
         var dotGeometry = new THREE.Geometry();
         for (var s = 0; s < qty; s++) {
 
             //dotGeometry.vertices.push( self.randV3( R_GALAXY ) );//like a sphere
-            dotGeometry.vertices.push( new THREE.Vector3( self.rand( -R_GALAXY, R_GALAXY ), L_STARS.getAny(), self.rand( -R_GALAXY, R_GALAXY ) ) );//like a sheet
+            dotGeometry.vertices.push( new THREE.Vector3( self.rand( -R_GALAXY, R_GALAXY ), item.dist, self.rand( -R_GALAXY, R_GALAXY ) ) );//like a sheet
         }
         var dot = new THREE.Points( dotGeometry, dotMaterial );
-        //scene.add( dot );
+        dot.frustumCulled = false;//need because it save camera frustum at moment of creation
+
         meshes.push( dot );
     });
 
