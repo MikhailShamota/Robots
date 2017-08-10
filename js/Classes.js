@@ -443,7 +443,7 @@ Vessel.prototype.initTrail = function () {
 
         var geom = new THREE.Geometry();
 
-        for ( var i = 0; i < 100; i++ ) {
+        for ( var i = 0; i < Q_TRAIL_LEN; i++ ) {
 
             geom.vertices.push( item.clone().add( pos ) );
         }
@@ -624,6 +624,12 @@ StarSystem.prototype.initMeshes = function() {
         { size: 1.0, minQty: 2000,  maxQty: 5000},
         { size: 2.0, minQty: 500,  maxQty: 2000}
     ];
+    const L_STARS = [
+        -2000,
+        -3000,
+        -4000
+    ];
+    L_STARS.getAny = function() { return this[ Math.round( Math.random() * ( L_STARS.length - 1 ) ) ]; };
 
     var self = this;
     var meshes = [];
@@ -711,7 +717,8 @@ StarSystem.prototype.initMeshes = function() {
         var dotGeometry = new THREE.Geometry();
         for (var s = 0; s < qty; s++) {
 
-            dotGeometry.vertices.push( self.randV3( R_GALAXY ) );
+            //dotGeometry.vertices.push( self.randV3( R_GALAXY ) );//like a sphere
+            dotGeometry.vertices.push( new THREE.Vector3( self.rand( -R_GALAXY, R_GALAXY ), L_STARS.getAny(), self.rand( -R_GALAXY, R_GALAXY ) ) );//like a sheet
         }
         var dot = new THREE.Points( dotGeometry, dotMaterial );
         //scene.add( dot );

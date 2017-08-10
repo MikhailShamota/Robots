@@ -360,9 +360,25 @@ var Scene = (function () {
     function updateCamera() {
 
         var v3target = iPlayer().getVessel().pos.clone();
-        camera.position.copy( v3target.setY( R_CAMERA_MIN*0.75 ) );
+        camera.position.copy( v3target.setY( Y_CAMERA ) );
+
         //camera.up = new THREE.Vector3( 0, 0, 1 );
         //camera.lookAt( v3target );
+
+        /*var dist = 0;
+        var i = iPlayer().getVessel().getCameraPos( camera );
+        for ( var playerId in players ) {
+
+            players[ playerId ].fleet.vesselsList.forEach( function( vessel ) {
+
+                var obj = vessel.obj;
+                var p = obj.getCameraPos( camera );
+                dist = Math.max( dist, p.distanceTo( i ) );
+            });
+        }*/
+
+
+
     }
 
     function fire( from ) {
@@ -413,34 +429,9 @@ var Scene = (function () {
         camera.aspect = WIDTH / HEIGHT;
         camera.updateProjectionMatrix();
 
-        camera.position.set( 0, R_CAMERA_MIN * 2, 0 );
+        camera.position.set( 0, Y_CAMERA, 0 );
         camera.up = new THREE.Vector3( 0, 0, 1 );
         camera.lookAt( new THREE.Vector3( 0, 0 ,0 ) );
-
-        /*
-        camera.y = function() {
-
-            var self = this;
-            var x = 0;
-
-            for ( var playerId in players ) {
-
-                players[ playerId ].fleet.vesselsList.forEach( function( vessel ) {
-
-                    var obj = vessel.obj;
-                    var p = obj.getCameraPos( self );
-                    x = MathHelper.clamp( Math.max( x, Math.abs( p.x ), Math.abs( p.y ) ), 0, 1 );//0 - center, 1 bounds
-                });
-            }
-
-            //var p = iPlayer().getVessel().getCameraPos( this );
-            //var x = Math.max( Math.abs( p.x ), Math.abs( p.y ) );// 0 .. 1
-
-            var acceleration = MathHelper.clamp( ( this.position.y - R_CAMERA_MIN ) / R_CAMERA_FADE_DIST, 0, 1 );//0..1
-
-            return V3_UNIT_Y.clone().multiplyScalar( V_CAMERA * ( -acceleration + ( x * x * 2 ) ) );
-        };
-        */
 
         window.addEventListener('resize', function () {
             var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;

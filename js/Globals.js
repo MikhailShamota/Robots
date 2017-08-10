@@ -1,14 +1,16 @@
-const R_WORLD = 1000;
-const R_GALAXY = 100000;
+const R_WORLD  = 1000;
+const R_GALAXY = 10000;
 const C_BACKGROUND = 0x181818;
-const V_CAMERA = 10;//camera speed to zoom
-const R_CAMERA_MIN = 2000;//base camera pos Y
-const R_CAMERA_FADE_DIST = 500;//slowing going dist
+//const V_CAMERA = 10;//camera speed to zoom
+const Y_CAMERA = 1400;//base camera pos Y
+//const R_CAMERA_FADE_DIST = 500;//slowing going dist
 
 const K_GRAVITY = 2;
 const K_SPACE_RESIST = 10;
 const VELOCITY_LIMIT_PER_SEC = 100;
 const K_CENTER_FORCE = 20;//force pulling to ecliptic plane
+
+const Q_TRAIL_LEN = 100;//mesh line trail segments
 
 const SEC_EXCH_PERIOD = 0.1;//peer-to-peer message send period
 const MSEC_RESPAWN_DELAY = 2000;//respawn delay
