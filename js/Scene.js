@@ -152,46 +152,6 @@ var Scene = (function () {
         mesh.position.add( add );//move
     }
 
-    function updateCollision() {
-
-        var setter = [];
-
-        octree.objectsData.forEach( octreeObj => {
-
-            var mesh = octreeObj.object;
-            var matObj = mesh.userData;
-
-            if ( !matObj.v || !mesh.visible )//immovable or invisible
-                return;
-
-            octree.search( octreeObj.position, octreeObj.radius ).forEach( octreeObj2 => {
-
-                var mesh2 = octreeObj2.object;
-                var matObj2 = mesh2.userData;
-
-                if (mesh.id == mesh2.id)
-                    return;
-
-                var depth = octreeObj2.radius + octreeObj.radius - mesh.position.distanceTo( mesh2.position );
-
-                if ( depth > 0 ) {//bounce
-
-                    matObj.pos.add( matObj.dive( matObj2, depth ) );
-
-                    setter.push({
-                        obj: matObj,
-                        v: matObj.bounce( matObj2 )
-                    });
-                }
-            });
-        });
-
-        setter.forEach(function (obj) {
-
-            obj.obj.v.copy( obj.v );
-        });
-    }
-
     function addHit( pt ) {
 
         loopedArrays.add2scene(
@@ -255,6 +215,8 @@ var Scene = (function () {
         function goEcliptic( obj ) {
 
             obj.pos.y *= 0.099;
+            //var p = obj.pos.clone().normalize().multiplyScalar( R_WORLD );
+            //obj.pos.normalize().multiplyScalar( R_WORLD );
         }
 
         octree.objectsData.forEach( octreeObj => {
@@ -283,28 +245,6 @@ var Scene = (function () {
         });
     }
 
-    function updateMouse() {
-
-        var raycaster = new THREE.Raycaster();
-
-        raycaster.setFromCamera( v2MousePoint, camera );
-
-        v3MousePoint = raycaster.ray.intersectPlane( eclipticPlane );
-
-        if ( v3MousePoint )
-            cursor.position.copy( v3MousePoint );
-    }
-
-    function updateTarget() {
-
-        iPlayer().fleet.update( v3MousePoint || V3_ZERO );
-    }
-
-    function updateLasersMove() {
-
-        loopedArrays.collection[ "lasers" ].mapAll( BeamMove );
-    }
-
     function updateScore() {
 
         var txt = "";
@@ -320,6 +260,93 @@ var Scene = (function () {
     }
 
     function update() {
+
+        function updateCollision() {
+
+            var setter = [];
+
+            octree.objectsData.forEach( octreeObj => {
+
+                var mesh = octreeObj.object;
+                var matObj = mesh.userData;
+
+                if ( !matObj.v || !mesh.visible )//immovable or invisible
+                    return;
+
+                octree.search( octreeObj.position, octreeObj.radius ).forEach( octreeObj2 => {
+
+                    var mesh2 = octreeObj2.object;
+                    var matObj2 = mesh2.userData;
+
+                    if (mesh.id == mesh2.id)
+                        return;
+
+                    var depth = octreeObj2.radius + octreeObj.radius - mesh.position.distanceTo( mesh2.position );
+
+                    if ( depth > 0 ) {//bounce
+
+                        matObj.pos.add( matObj.dive( matObj2, depth ) );
+
+                        setter.push({
+                            obj: matObj,
+                            v: matObj.bounce( matObj2 )
+                        });
+                    }
+                });
+            });
+
+            setter.forEach(function (obj) {
+
+                obj.obj.v.copy( obj.v );
+            });
+        }
+
+        function updateCamera() {
+
+            var v3target = iPlayer().getVessel().pos.clone();
+            camera.position.copy( v3target.setY( Y_CAMERA ) );
+
+            //camera.up = new THREE.Vector3( 0, 0, 1 );
+            //camera.lookAt( v3target );
+
+            /*var dist = 0;
+             var i = iPlayer().getVessel().getCameraPos( camera );
+             for ( var playerId in players ) {
+
+             players[ playerId ].fleet.vesselsList.forEach( function( vessel ) {
+
+             var obj = vessel.obj;
+             var p = obj.getCameraPos( camera );
+             dist = Math.max( dist, p.distanceTo( i ) );
+             });
+             }*/
+
+
+
+        }
+
+        function updateLasersMove() {
+
+            loopedArrays.collection[ "lasers" ].mapAll( BeamMove );
+        }
+
+        function updateMouse() {
+
+            var raycaster = new THREE.Raycaster();
+
+            raycaster.setFromCamera( v2MousePoint, camera );
+
+            v3MousePoint = raycaster.ray.intersectPlane( eclipticPlane );
+            //v3MousePoint = raycaster.ray.intersectSphere( new THREE.Sphere( V3_ZERO.clone(), R_WORLD ) );
+
+            if ( v3MousePoint )
+                cursor.position.copy( v3MousePoint );
+        }
+
+        function updateTarget() {
+
+            iPlayer().fleet.update( v3MousePoint || V3_ZERO );
+        }
 
         nowTime = Date.now();
 
@@ -338,8 +365,6 @@ var Scene = (function () {
 
         updateMove( dt );//update MatObj physics
 
-        //camera.position.add( camera.y() );
-
         loopedArrays.update();
 
         for ( var playerId in players ) {
@@ -354,30 +379,6 @@ var Scene = (function () {
         octree.rebuild();
 
         updateCamera();
-    }
-
-    function updateCamera() {
-
-        var v3target = iPlayer().getVessel().pos.clone();
-        camera.position.copy( v3target.setY( Y_CAMERA ) );
-
-        //camera.up = new THREE.Vector3( 0, 0, 1 );
-        //camera.lookAt( v3target );
-
-        /*var dist = 0;
-        var i = iPlayer().getVessel().getCameraPos( camera );
-        for ( var playerId in players ) {
-
-            players[ playerId ].fleet.vesselsList.forEach( function( vessel ) {
-
-                var obj = vessel.obj;
-                var p = obj.getCameraPos( camera );
-                dist = Math.max( dist, p.distanceTo( i ) );
-            });
-        }*/
-
-
-
     }
 
     function fire( from ) {
