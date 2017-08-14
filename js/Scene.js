@@ -214,7 +214,8 @@ var Scene = (function () {
         //ECLIPTIC PLANE INEXORABLE PULL
         function goEcliptic( obj ) {
 
-            obj.pos.y *= 0.099;
+            obj.pos.y = 0;
+            //obj.pos.y *= 0.099;
             //var p = obj.pos.clone().normalize().multiplyScalar( R_WORLD );
             //obj.pos.normalize().multiplyScalar( R_WORLD );
         }
@@ -303,8 +304,9 @@ var Scene = (function () {
 
         function updateCamera() {
 
-            var v3target = iPlayer().getVessel().pos.clone();
-            camera.position.copy( v3target.setY( Y_CAMERA ) );
+            /*var v3target = iPlayer().getVessel().pos.clone();
+            camera.position.copy( v3target.setY( Y_CAMERA ) );*/
+            //camera.position.copy( V3_UNIT_Y.multiplyScalar( R_WORLD ) );
 
             //camera.up = new THREE.Vector3( 0, 0, 1 );
             //camera.lookAt( v3target );
@@ -429,7 +431,7 @@ var Scene = (function () {
         camera.aspect = WIDTH / HEIGHT;
         camera.updateProjectionMatrix();
 
-        camera.position.set( 0, Y_CAMERA, 0 );
+        camera.position.set( 0, 3*Y_CAMERA, 0 );
         camera.up = new THREE.Vector3( 0, 0, 1 );
         camera.lookAt( new THREE.Vector3( 0, 0 ,0 ) );
 

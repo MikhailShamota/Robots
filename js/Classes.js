@@ -93,6 +93,7 @@ function Player( id, isProxy ) {
             var obj = item.f( null, color );
 
             obj.mesh.setToOctree = true;
+
             meshes.push( obj.mesh );
 
             //trail
@@ -250,11 +251,35 @@ MatObj.prototype.bounce = function(obj2) {
 
 MatObj.prototype.updateMesh = function() {
 
-    this.turn && this.mesh.rotation.setFromVector3( this.turn );
-    this.pos && this.mesh.position.copy( this.pos );
+    //TODO:движение по сфере-->
+    function grad2rad( grad ) {
 
-    //this.mesh.rotation.setFromVector3( this.mesh.rotation.toVector3().lerp( this.turn, 0.03 ) );
-    //this.mesh.position.lerp( this.pos, 0.03 );
+        return grad * Math.PI / 180;
+    }
+
+    var s = this.pos.length();//путь от центра
+    var alpha = s * 180 / ( Math.PI * R_WORLD );//возвышение
+    var epsilon = this.pos.angleTo( V3_UNIT_X ) || 0;//азимут
+
+    var omega = new THREE.Euler( 0, -epsilon, grad2rad( alpha ), 'YZX' );
+
+    /*var beta = ( 180 - alpha ) * 0.5;
+
+    var gamma = grad2rad( 90 - beta );
+
+    var a = s.x * Math.cos( gammaX );
+    var b = s.x * Math.sin( gammaX );
+
+    var v = new THREE.Vector2( a, b );*/
+    //<--TODO:движение по сфере
+
+
+
+
+
+    this.turn && this.mesh.rotation.setFromVector3( this.turn );
+    //this.pos && this.mesh.position.copy( this.pos );
+    this.pos && this.mesh.position.copy( V3_UNIT_Y.clone().multiplyScalar( -R_WORLD ).applyEuler( omega ) );
 };
 
 MatObj.prototype.updateSpec = function() {
@@ -353,7 +378,9 @@ Vessel.prototype.unpack = function( data ) {
 
 Vessel.prototype.fwd = function() {
 
-    return this.V3_FWD.clone().applyQuaternion( this.mesh.quaternion );
+    //TODO:
+    //return this.V3_FWD.clone().applyQuaternion( this.mesh.quaternion );
+    return this.V3_FWD.clone().applyEuler( this.turn );
 };
 
 Vessel.prototype.turnVec = function() {
@@ -401,7 +428,8 @@ Vessel.prototype.jetVec = function() {
 Vessel.prototype.updateTrail = function(dt) {
 
     var self = this;
-    var pos = this.pos || V3_ZERO;
+    //var pos = this.pos || V3_ZERO;
+    var pos = this.mesh.position.clone() || V3_ZERO;
 
     var matrix = new THREE.Matrix4();
     matrix.extractRotation( self.mesh.matrix );
@@ -412,7 +440,7 @@ Vessel.prototype.updateTrail = function(dt) {
 
     this.dtJet = 0;
 
-    this.ptJet.forEach( function(item, i) {
+    this.ptJet.forEach( function( item, i ) {
 
         var pt = item.clone().applyMatrix4( matrix );
         self.trailLines[i].advance( pt.add( pos ) );
@@ -602,23 +630,16 @@ StarSystem.prototype.initMeshes = function() {
     const R_PLANET_MIN = 70;
     const R_PLANET_MAX = 100;
     const K_SUN_ECLISPE_ASCEND = 0.5;
-    const Q_MOONS_MAX = 5;
+    const Q_MOONS_MAX = 0;
     const R_MOON_MIN = 10;
     const R_MOON_MAX = 20;
     const K_MOON_SPARSE_MIN = 3;
     const K_MOON_SPARSE_MAX = 4;
-//const K_MOON_ECLIPSE_ASCEND = 0.15;
     const AXIS_MOON_MAX = 0.8;//rad
-    const Q_ASTEROIDS_MAX = 100;
-    const R_ASTEROID_MIN = 3;
-    const R_ASTEROID_MAX = 5;
-//const AXIS_ASTEROID_MAX = 1.0;//rad
-//const R_ASTEROID_SPARSE = 20;//disperse
-    const V_ASTEROID_MAX = 20;//per sec
-    const Q_STARS_MIN = 400;
-    const Q_STARS_MAX = 4000;
-    const R_STARS_MIN = 0.3;
-    const R_STARS_MAX = 3;
+    const Q_ASTEROIDS_MAX = 0;
+    const R_ASTEROID_MIN = 0;
+    const R_ASTEROID_MAX = 0;
+    const V_ASTEROID_MAX = 0;//per sec
     const P_STARS = [
         { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -5000, color: 0x888899 },
         { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -4000, color: 0xaaaabb },
