@@ -276,7 +276,7 @@ var MathHelper = {
                 Math.random() * 2 * Math.PI,
                 Math.random() * 2 * Math.PI,
                 'XYZ')
-        ).multiplyScalar(length);
+        ).multiplyScalar( length );
     },
 
     //random between min and max
