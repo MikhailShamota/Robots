@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="510eed05-ed6a-4361-9ef3-ef26ad0cd624" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Classes.js" afterPath="$PROJECT_DIR$/js/Classes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Scene.js" afterPath="$PROJECT_DIR$/js/Scene.js" />
     </list>
     <ignored path="Robots.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -17,7 +15,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CreatePatchCommitExecutor">
-    <option name="PATCH_PATH" value="" />
+    <option name="PATCH_PATH" value="C:\Users\mshamota\Documents\GitHub2\Robots" />
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
@@ -28,7 +26,7 @@
       <file leaf-file-name="main.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-12.461538">
+            <state vertical-scroll-proportion="0.0">
               <caret line="42" column="14" selection-start-line="42" selection-start-column="14" selection-end-line="42" selection-end-column="14" />
               <folding>
                 <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -47,14 +45,13 @@
       <file leaf-file-name="Scene.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Scene.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="433" column="33" selection-start-line="433" selection-start-column="33" selection-end-line="433" selection-end-column="33" />
+            <state vertical-scroll-proportion="-9.965517">
+              <caret line="222" column="31" selection-start-line="222" selection-start-column="27" selection-end-line="222" selection-end-column="31" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#390#469#0" expanded="false" />
                 <element signature="e#492#679#0" expanded="false" />
                 <element signature="e#975#1050#0" expanded="false" />
-                <element signature="e#1090#1260#0" expanded="false" />
                 <element signature="e#1136#1254#0" expanded="false" />
                 <element signature="e#1841#2552#0" expanded="false" />
                 <element signature="e#2587#3568#0" expanded="false" />
@@ -91,7 +88,7 @@
         <entry file="file://$PROJECT_DIR$/js/Globals.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="278" column="33" selection-start-line="278" selection-start-column="33" selection-end-line="278" selection-end-column="33" />
+              <caret line="34" column="18" selection-start-line="34" selection-start-column="18" selection-end-line="34" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -100,14 +97,13 @@
       <file leaf-file-name="Classes.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/Classes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.66220737">
+            <state vertical-scroll-proportion="2.2578125">
               <caret line="382" column="55" selection-start-line="382" selection-start-column="55" selection-end-line="382" selection-end-column="55" />
               <folding>
                 <element signature="e#2593#2639#0" expanded="false" />
                 <element signature="e#2865#2951#0" expanded="false" />
                 <element signature="e#2997#3071#0" expanded="false" />
                 <element signature="e#3111#3165#0" expanded="false" />
-                <element signature="n#!!block;n#MatObj#0" expanded="false" />
                 <element signature="e#3554#3626#0" expanded="false" />
                 <element signature="e#3680#3739#0" expanded="false" />
                 <element signature="e#4041#4277#0" expanded="false" />
@@ -387,12 +383,6 @@
       <workItem from="1483040499861" duration="204000" />
       <workItem from="1483808321278" duration="830000" />
       <workItem from="1483883140725" duration="7448000" />
-    </task>
-    <task id="LOCAL-00033" summary="Flares&#10;TextureLoader factory">
-      <created>1490289155555</created>
-      <option name="number" value="00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1490289155555</updated>
     </task>
     <task id="LOCAL-00034" summary="Laser beam by MeshLine">
       <created>1490337696440</created>
@@ -682,7 +672,13 @@
       <option name="project" value="LOCAL" />
       <updated>1502368080647</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="SPHERICAL MOVEMENT!">
+      <created>1502734561613</created>
+      <option name="number" value="00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1502734561613</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -701,23 +697,23 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12381454" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12381454" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32792208" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -756,7 +752,6 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="false" />
-    <MESSAGE value="Change player update and fleet init" />
     <MESSAGE value="initMeshes" />
     <MESSAGE value="Globals, Classes" />
     <MESSAGE value="I" />
@@ -781,7 +776,8 @@
     <MESSAGE value="respawn works!" />
     <MESSAGE value="camera follows v1" />
     <MESSAGE value="stars" />
-    <option name="LAST_COMMIT_MESSAGE" value="stars" />
+    <MESSAGE value="SPHERICAL MOVEMENT!" />
+    <option name="LAST_COMMIT_MESSAGE" value="SPHERICAL MOVEMENT!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -799,7 +795,6 @@
             <element signature="e#2865#2951#0" expanded="false" />
             <element signature="e#2997#3071#0" expanded="false" />
             <element signature="e#3111#3165#0" expanded="false" />
-            <element signature="n#!!block;n#MatObj#0" expanded="false" />
             <element signature="e#3554#3626#0" expanded="false" />
             <element signature="e#3680#3739#0" expanded="false" />
             <element signature="e#4041#4277#0" expanded="false" />
@@ -866,7 +861,6 @@
             <element signature="e#390#469#0" expanded="false" />
             <element signature="e#492#679#0" expanded="false" />
             <element signature="e#975#1050#0" expanded="false" />
-            <element signature="e#1090#1260#0" expanded="false" />
             <element signature="e#1136#1254#0" expanded="false" />
             <element signature="e#1841#2552#0" expanded="false" />
             <element signature="e#2587#3568#0" expanded="false" />
@@ -915,7 +909,6 @@
             <element signature="e#2865#2951#0" expanded="false" />
             <element signature="e#2997#3071#0" expanded="false" />
             <element signature="e#3111#3165#0" expanded="false" />
-            <element signature="n#!!block;n#MatObj#0" expanded="false" />
             <element signature="e#3554#3626#0" expanded="false" />
             <element signature="e#3680#3739#0" expanded="false" />
             <element signature="e#4041#4277#0" expanded="false" />
@@ -982,7 +975,6 @@
             <element signature="e#390#469#0" expanded="false" />
             <element signature="e#492#679#0" expanded="false" />
             <element signature="e#975#1050#0" expanded="false" />
-            <element signature="e#1090#1260#0" expanded="false" />
             <element signature="e#1136#1254#0" expanded="false" />
             <element signature="e#1841#2552#0" expanded="false" />
             <element signature="e#2587#3568#0" expanded="false" />
@@ -1031,7 +1023,6 @@
             <element signature="e#2865#2951#0" expanded="false" />
             <element signature="e#2997#3071#0" expanded="false" />
             <element signature="e#3111#3165#0" expanded="false" />
-            <element signature="n#!!block;n#MatObj#0" expanded="false" />
             <element signature="e#3554#3626#0" expanded="false" />
             <element signature="e#3680#3739#0" expanded="false" />
             <element signature="e#4041#4277#0" expanded="false" />
@@ -1105,7 +1096,6 @@
             <element signature="e#390#469#0" expanded="false" />
             <element signature="e#492#679#0" expanded="false" />
             <element signature="e#975#1050#0" expanded="false" />
-            <element signature="e#1090#1260#0" expanded="false" />
             <element signature="e#1136#1254#0" expanded="false" />
             <element signature="e#1841#2552#0" expanded="false" />
             <element signature="e#2587#3568#0" expanded="false" />
@@ -1154,7 +1144,6 @@
             <element signature="e#2865#2951#0" expanded="false" />
             <element signature="e#2997#3071#0" expanded="false" />
             <element signature="e#3111#3165#0" expanded="false" />
-            <element signature="n#!!block;n#MatObj#0" expanded="false" />
             <element signature="e#3554#3626#0" expanded="false" />
             <element signature="e#3680#3739#0" expanded="false" />
             <element signature="e#4041#4277#0" expanded="false" />
@@ -1221,7 +1210,6 @@
             <element signature="e#390#469#0" expanded="false" />
             <element signature="e#492#679#0" expanded="false" />
             <element signature="e#975#1050#0" expanded="false" />
-            <element signature="e#1090#1260#0" expanded="false" />
             <element signature="e#1136#1254#0" expanded="false" />
             <element signature="e#1841#2552#0" expanded="false" />
             <element signature="e#2587#3568#0" expanded="false" />
@@ -1270,7 +1258,6 @@
             <element signature="e#2865#2951#0" expanded="false" />
             <element signature="e#2997#3071#0" expanded="false" />
             <element signature="e#3111#3165#0" expanded="false" />
-            <element signature="n#!!block;n#MatObj#0" expanded="false" />
             <element signature="e#3554#3626#0" expanded="false" />
             <element signature="e#3680#3739#0" expanded="false" />
             <element signature="e#4041#4277#0" expanded="false" />
@@ -1337,7 +1324,6 @@
             <element signature="e#390#469#0" expanded="false" />
             <element signature="e#492#679#0" expanded="false" />
             <element signature="e#975#1050#0" expanded="false" />
-            <element signature="e#1090#1260#0" expanded="false" />
             <element signature="e#1136#1254#0" expanded="false" />
             <element signature="e#1841#2552#0" expanded="false" />
             <element signature="e#2587#3568#0" expanded="false" />
@@ -1386,7 +1372,6 @@
             <element signature="e#2865#2951#0" expanded="false" />
             <element signature="e#2997#3071#0" expanded="false" />
             <element signature="e#3111#3165#0" expanded="false" />
-            <element signature="n#!!block;n#MatObj#0" expanded="false" />
             <element signature="e#3554#3626#0" expanded="false" />
             <element signature="e#3680#3739#0" expanded="false" />
             <element signature="e#4041#4277#0" expanded="false" />
@@ -1453,7 +1438,6 @@
             <element signature="e#390#469#0" expanded="false" />
             <element signature="e#492#679#0" expanded="false" />
             <element signature="e#975#1050#0" expanded="false" />
-            <element signature="e#1090#1260#0" expanded="false" />
             <element signature="e#1136#1254#0" expanded="false" />
             <element signature="e#1841#2552#0" expanded="false" />
             <element signature="e#2587#3568#0" expanded="false" />
@@ -1502,7 +1486,6 @@
             <element signature="e#2865#2951#0" expanded="false" />
             <element signature="e#2997#3071#0" expanded="false" />
             <element signature="e#3111#3165#0" expanded="false" />
-            <element signature="n#!!block;n#MatObj#0" expanded="false" />
             <element signature="e#3554#3626#0" expanded="false" />
             <element signature="e#3680#3739#0" expanded="false" />
             <element signature="e#4041#4277#0" expanded="false" />
@@ -1569,7 +1552,6 @@
             <element signature="e#390#469#0" expanded="false" />
             <element signature="e#492#679#0" expanded="false" />
             <element signature="e#975#1050#0" expanded="false" />
-            <element signature="e#1090#1260#0" expanded="false" />
             <element signature="e#1136#1254#0" expanded="false" />
             <element signature="e#1841#2552#0" expanded="false" />
             <element signature="e#2587#3568#0" expanded="false" />
@@ -1830,7 +1812,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-12.461538">
+        <state vertical-scroll-proportion="0.0">
           <caret line="42" column="14" selection-start-line="42" selection-start-column="14" selection-end-line="42" selection-end-column="14" />
           <folding>
             <element signature="n#style#0;n#body#0;n#html#0;n#!!top" expanded="true" />
@@ -1845,24 +1827,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Globals.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="278" column="33" selection-start-line="278" selection-start-column="33" selection-end-line="278" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/Scene.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="433" column="33" selection-start-line="433" selection-start-column="33" selection-end-line="433" selection-end-column="33" />
+        <state vertical-scroll-proportion="-9.965517">
+          <caret line="222" column="31" selection-start-line="222" selection-start-column="27" selection-end-line="222" selection-end-column="31" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#390#469#0" expanded="false" />
             <element signature="e#492#679#0" expanded="false" />
             <element signature="e#975#1050#0" expanded="false" />
-            <element signature="e#1090#1260#0" expanded="false" />
             <element signature="e#1136#1254#0" expanded="false" />
             <element signature="e#1841#2552#0" expanded="false" />
             <element signature="e#2587#3568#0" expanded="false" />
@@ -1894,16 +1867,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/Globals.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="34" column="18" selection-start-line="34" selection-start-column="18" selection-end-line="34" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/Classes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.66220737">
+        <state vertical-scroll-proportion="2.2578125">
           <caret line="382" column="55" selection-start-line="382" selection-start-column="55" selection-end-line="382" selection-end-column="55" />
           <folding>
             <element signature="e#2593#2639#0" expanded="false" />
             <element signature="e#2865#2951#0" expanded="false" />
             <element signature="e#2997#3071#0" expanded="false" />
             <element signature="e#3111#3165#0" expanded="false" />
-            <element signature="n#!!block;n#MatObj#0" expanded="false" />
             <element signature="e#3554#3626#0" expanded="false" />
             <element signature="e#3680#3739#0" expanded="false" />
             <element signature="e#4041#4277#0" expanded="false" />
