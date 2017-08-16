@@ -251,7 +251,7 @@ MatObj.prototype.bounce = function(obj2) {
 
 MatObj.prototype.updateMesh = function() {
 
-    //TODO:движение по сфере-->
+    /*движение по сфере-->
     function grad2rad( grad ) {
 
         return grad * Math.PI / 180;
@@ -271,15 +271,10 @@ MatObj.prototype.updateMesh = function() {
     var b = s.x * Math.sin( gammaX );
 
     var v = new THREE.Vector2( a, b );*/
-    //<--TODO:движение по сфере
-
-
-
-
 
     this.turn && this.mesh.rotation.setFromVector3( this.turn );
-    //this.pos && this.mesh.position.copy( this.pos );
-    this.pos && this.mesh.position.copy( V3_UNIT_Y.clone().multiplyScalar( -R_WORLD ).applyEuler( omega ) );
+    this.pos && this.mesh.position.copy( this.pos );
+    //this.pos && this.mesh.position.copy( V3_UNIT_Y.clone().multiplyScalar( -R_WORLD ).applyEuler( omega ) );
 };
 
 MatObj.prototype.updateSpec = function() {
@@ -378,9 +373,9 @@ Vessel.prototype.unpack = function( data ) {
 
 Vessel.prototype.fwd = function() {
 
-    //TODO:
-    //return this.V3_FWD.clone().applyQuaternion( this.mesh.quaternion );
-    return this.V3_FWD.clone().applyEuler( this.turn );
+    return this.V3_FWD.clone().applyQuaternion( this.mesh.quaternion );
+
+    //движение по сфере return this.V3_FWD.clone().applyEuler( this.turn );
 };
 
 Vessel.prototype.turnVec = function() {
@@ -630,22 +625,21 @@ StarSystem.prototype.initMeshes = function() {
     const R_PLANET_MIN = 70;
     const R_PLANET_MAX = 100;
     const K_SUN_ECLISPE_ASCEND = 0.5;
-    const Q_MOONS_MAX = 0;
+    const Q_MOONS_MAX = 5;
     const R_MOON_MIN = 10;
     const R_MOON_MAX = 20;
     const K_MOON_SPARSE_MIN = 3;
     const K_MOON_SPARSE_MAX = 4;
     const AXIS_MOON_MAX = 0.8;//rad
-    const Q_ASTEROIDS_MAX = 0;
-    const R_ASTEROID_MIN = 0;
-    const R_ASTEROID_MAX = 0;
-    const V_ASTEROID_MAX = 0;//per sec
+    const Q_ASTEROIDS_MAX = 100;
+    const R_ASTEROID_MIN = 3;
+    const R_ASTEROID_MAX = 5;
+    const V_ASTEROID_MAX = 20;//per sec
     const P_STARS = [
-        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -5000, color: 0x888899 },
-        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -4000, color: 0xaaaabb },
-        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -3000, color: 0xf0f0ff }
+        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -6000, color: 0x888899 },
+        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -5000, color: 0xaaaabb },
+        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -4000, color: 0xf0f0ff }
     ];
-    //L_STARS.getAny = function() { return this[ Math.round( Math.random() * ( L_STARS.length - 1 ) ) ]; };
 
     var self = this;
     var meshes = [];

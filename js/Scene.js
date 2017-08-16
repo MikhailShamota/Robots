@@ -304,8 +304,9 @@ var Scene = (function () {
 
         function updateCamera() {
 
-            /*var v3target = iPlayer().getVessel().pos.clone();
-            camera.position.copy( v3target.setY( Y_CAMERA ) );*/
+            var v3target = iPlayer().getVessel().mesh.position.clone();
+            camera.position.copy( v3target.setY( Y_CAMERA ) );
+            //camera.lookAt( v3target );
             //camera.position.copy( V3_UNIT_Y.multiplyScalar( R_WORLD ) );
 
             //camera.up = new THREE.Vector3( 0, 0, 1 );
@@ -322,15 +323,13 @@ var Scene = (function () {
              dist = Math.max( dist, p.distanceTo( i ) );
              });
              }*/
-
-
-
         }
 
         function updateLasersMove() {
 
             loopedArrays.collection[ "lasers" ].mapAll( BeamMove );
         }
+
 
         function updateMouse() {
 
@@ -347,7 +346,7 @@ var Scene = (function () {
 
         function updateTarget() {
 
-            iPlayer().fleet.update( v3MousePoint || V3_ZERO );
+            iPlayer().fleet.update( v3MousePoint );
         }
 
         nowTime = Date.now();
