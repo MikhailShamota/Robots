@@ -390,6 +390,8 @@ Vessel.prototype.turnVec = function() {
 
     dir.transformDirection( matInv );//now v3Dir is in a vessel coordinate system
 
+    return new THREE.Vector3( 0, dir.x, 0 );
+    /*
     var grip = new THREE.Vector3( -dir.y, dir.x, 0 ).normalize();//x and y change as Y grip is about x-axis rotation
 
     grip.x = 0;//2d restrictions - restrict pitch
@@ -397,10 +399,13 @@ Vessel.prototype.turnVec = function() {
     var dot = dir.normalize().dot( this.V3_FWD );//-1..0..+1
     dot = Math.min( 1 - dot, 1 );//+1..+1..0
 
-    grip.multiplyScalar( Math.sign( dot ) /** this.fTurn*/ );
+    grip.multiplyScalar( Math.sign( dot ) );
     grip.z = -grip.y;//2d restrictions - emulate roll
 
+    //document.getElementById("buttonScreenMode").innerHTML = grip.y;
+
     return grip;
+    */
 };
 
 //override

@@ -305,7 +305,7 @@ var Scene = (function () {
         function updateCamera() {
 
             var v3target = iPlayer().getVessel().mesh.position.clone();
-            camera.position.copy( v3target.setY( Y_CAMERA ) );
+            camera.position.copy( v3target.setY( 1.76*Y_CAMERA ) );
             //camera.lookAt( v3target );
             //camera.position.copy( V3_UNIT_Y.multiplyScalar( R_WORLD ) );
 
@@ -426,11 +426,11 @@ var Scene = (function () {
         scene = new THREE.Scene();
         var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
 
-        camera = new THREE.PerspectiveCamera(75, window.width / window.height, 1, R_GALAXY * 2 );
+        camera = new THREE.PerspectiveCamera(40, window.width / window.height, 1, R_GALAXY * 2 );
         camera.aspect = WIDTH / HEIGHT;
         camera.updateProjectionMatrix();
 
-        camera.position.set( 0, 3*Y_CAMERA, 0 );
+        camera.position.set( 0, 6*Y_CAMERA, 0 );
         camera.up = new THREE.Vector3( 0, 0, 1 );
         camera.lookAt( new THREE.Vector3( 0, 0 ,0 ) );
 
