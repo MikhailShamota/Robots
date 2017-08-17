@@ -180,72 +180,6 @@ var Scene = (function () {
 
     }
 
-    function updateMove(dt) {
-
-        function killObject( obj ) {
-
-            //obj.kill();
-
-            addExplosion( obj.pos );
-
-            //scene.remove( obj.mesh );
-            //octree.remove( obj.mesh );
-            obj.mesh.visible = false;
-
-            obj.lastHitBy && players[ obj.lastHitBy ].score++;
-            updateScore();
-
-            //if my last was killed respawn me at 2 sec
-            !obj.player.isProxy && obj.player.fleet.totalHits() < 1 && setTimeout( function() { iPlayer().fleet.start(); }, MSEC_RESPAWN_DELAY );
-            //iPlayer().fleet.totalHits() < 1 && //initFleet( player );//respawn
-            //iPlayer().fleet.start();
-        }
-
-        function getForces( obj ) {
-
-            var fJet = obj.jetVec && obj.jetVec() || V3_ZERO.clone();
-            var fGravity = starSystem.gravities.f( obj ) || V3_ZERO.clone();
-
-            var fResist = obj.resistForce( obj.v ) || V3_ZERO.clone();
-
-            return fGravity.add( fJet ).sub( fResist );
-        }
-
-        //ECLIPTIC PLANE INEXORABLE PULL
-        function goEcliptic( obj ) {
-
-            obj.pos.y = 0;
-            //obj.pos.y *= 0.099;
-            //var p = obj.pos.clone().normalize().multiplyScalar( R_WORLD );
-            //obj.pos.normalize().multiplyScalar( R_WORLD );
-        }
-
-        octree.objectsData.forEach( octreeObj => {
-
-            //var mesh = octreeObj.object;
-            //var obj = mesh.userData;//mesh.userData => MatObj
-            var obj = octreeObj.object.userData;//octree -> object -> mesh -> userData => MatObj
-
-            if ( !obj.mesh.visible )
-                return;
-
-            //CHECK & KILL & REMOVE
-            obj.hits <= 0 && killObject( obj );
-
-            //TURN
-            if ( obj.turn )
-                obj.turn.y += ( obj.turnVec && obj.turnVec() || V3_ZERO ).multiplyScalar( obj.sTurn * dt ).y;
-
-            //VELOCITY & POSITION
-            obj.v && obj.pos && obj.v.add( obj.velocityDelta( obj.jetVec && getForces( obj ) || V3_ZERO.clone(), dt ).clampLength( 0, VELOCITY_LIMIT_PER_SEC * dt ) ) && obj.pos.copy( obj.newPos( dt ) ) /*&& !obj.axisUp*/ && goEcliptic( obj );
-
-            obj.updateMesh();
-            obj.updateSpec();
-
-            obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > 50 || ! obj.lastFired ) && fire( obj );//do not calc damage from my vessels, only on my vessel
-        });
-    }
-
     function updateScore() {
 
         var txt = "";
@@ -261,6 +195,72 @@ var Scene = (function () {
     }
 
     function update() {
+
+        function updateMove(dt) {
+
+            function killObject( obj ) {
+
+                //obj.kill();
+
+                addExplosion( obj.pos );
+
+                //scene.remove( obj.mesh );
+                //octree.remove( obj.mesh );
+                obj.mesh.visible = false;
+
+                obj.lastHitBy && players[ obj.lastHitBy ].score++;
+                updateScore();
+
+                //if my last was killed respawn me at 2 sec
+                !obj.player.isProxy && obj.player.fleet.totalHits() < 1 && setTimeout( function() { iPlayer().fleet.start(); }, MSEC_RESPAWN_DELAY );
+                //iPlayer().fleet.totalHits() < 1 && //initFleet( player );//respawn
+                //iPlayer().fleet.start();
+            }
+
+            function getForces( obj ) {
+
+                var fJet = obj.jetVec && obj.jetVec() || V3_ZERO.clone();
+                var fGravity = starSystem.gravities.f( obj ) || V3_ZERO.clone();
+
+                var fResist = obj.resistForce( obj.v ) || V3_ZERO.clone();
+
+                return fGravity.add( fJet ).sub( fResist );
+            }
+
+            //ECLIPTIC PLANE INEXORABLE PULL
+            function goEcliptic( obj ) {
+
+                obj.pos.y = 0;
+                //obj.pos.y *= 0.099;
+                //var p = obj.pos.clone().normalize().multiplyScalar( R_WORLD );
+                //obj.pos.normalize().multiplyScalar( R_WORLD );
+            }
+
+            octree.objectsData.forEach( octreeObj => {
+
+                //var mesh = octreeObj.object;
+                //var obj = mesh.userData;//mesh.userData => MatObj
+                var obj = octreeObj.object.userData;//octree -> object -> mesh -> userData => MatObj
+
+                if ( !obj.mesh.visible )
+                    return;
+
+                //CHECK & KILL & REMOVE
+                obj.hits <= 0 && killObject( obj );
+
+                //TURN
+                if ( obj.turn )
+                    obj.turn.y += ( obj.turnVec && obj.turnVec() || V3_ZERO ).multiplyScalar( obj.sTurn * dt ).y;
+
+                //VELOCITY & POSITION
+                obj.v && obj.pos && obj.v.add( obj.velocityDelta( obj.jetVec && getForces( obj ) || V3_ZERO.clone(), dt ).clampLength( 0, VELOCITY_LIMIT_PER_SEC * dt ) ) && obj.pos.copy( obj.newPos( dt ) ) /*&& !obj.axisUp*/ && goEcliptic( obj );
+
+                obj.updateMesh();
+                obj.updateSpec();
+
+                obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > 50 || ! obj.lastFired ) && fire( obj );//do not calc damage from my vessels, only on my vessel
+            });
+        }
 
         function updateCollision() {
 
