@@ -259,6 +259,11 @@ var Scene = (function () {
                 obj.updateSpec();
 
                 obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > 50 || ! obj.lastFired ) && fire( obj );//do not calc damage from my vessels, only on my vessel
+
+                //TODO:
+                /*infinine map*/
+                var dist = camera.position.clone().setY(0).clone().sub( obj.pos ).multiplyScalar( 1 / R_GALAXY ).roundToZero();
+                obj.pos.add( dist.multiplyScalar( 2 * R_GALAXY ) );
             });
         }
 
@@ -305,7 +310,9 @@ var Scene = (function () {
         function updateCamera() {
 
             var v3target = iPlayer().getVessel().mesh.position.clone();
-            camera.position.copy( v3target.setY( 1.76*Y_CAMERA ) );
+            camera.lookAt( v3target );
+            camera.position.lerp( v3target.setY( 1.76*Y_CAMERA ), 0.05 );
+
             //camera.lookAt( v3target );
             //camera.position.copy( V3_UNIT_Y.multiplyScalar( R_WORLD ) );
 
@@ -329,7 +336,6 @@ var Scene = (function () {
 
             loopedArrays.collection[ "lasers" ].mapAll( BeamMove );
         }
-
 
         function updateMouse() {
 
@@ -362,9 +368,11 @@ var Scene = (function () {
 
         updateTarget();//update vessels movement direction
 
-        updateCollision();//check and process MatObj collisions
+        updateCollision();//check and process MatObj collisions*/
 
         updateMove( dt );//update MatObj physics
+
+        updateCamera();
 
         loopedArrays.update();
 
@@ -378,8 +386,6 @@ var Scene = (function () {
         send();
 
         octree.rebuild();
-
-        updateCamera();
     }
 
     function fire( from ) {
@@ -426,7 +432,7 @@ var Scene = (function () {
         scene = new THREE.Scene();
         var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
 
-        camera = new THREE.PerspectiveCamera(40, window.width / window.height, 1, R_GALAXY * 2 );
+        camera = new THREE.PerspectiveCamera(40, window.width / window.height, 1, R_GALAXY * 5 );
         camera.aspect = WIDTH / HEIGHT;
         camera.updateProjectionMatrix();
 

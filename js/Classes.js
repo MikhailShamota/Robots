@@ -67,7 +67,7 @@ function Player( id, isProxy ) {
             var obj = item.obj;
 
             obj.init();
-            obj.pos = MathHelper.v3Random( R_WORLD );
+            obj.pos = MathHelper.v3Random( R_START_DROP );
         });
     };
 
@@ -579,10 +579,11 @@ function StarSystem( id ) {
     this.gravities = [];
     this.gravities.f = function(obj) {
 
-        //var f = V3_ZERO.clone();
-
+        var f = V3_ZERO.clone();
         //var f = new THREE.Vector3( 0, -obj.pos.y * K_ECLIPTIC_FORCE * obj.mass, 0 );//go to ecliplic plane
-        var f = obj.pos.clone().multiplyScalar( -K_CENTER_FORCE * obj.mass / R_WORLD );
+
+
+        //var f = obj.pos.clone().multiplyScalar( -K_CENTER_FORCE * obj.mass / R_WORLD );
 
         this.forEach( function (grav) {
 
@@ -627,10 +628,12 @@ StarSystem.prototype.randColor = function() {
 
 StarSystem.prototype.initMeshes = function() {
 
+    const Q_PLANETS_MIN = 3;
+    const Q_PLANETS_MAX = 8;
     const R_PLANET_MIN = 70;
     const R_PLANET_MAX = 100;
     const K_SUN_ECLISPE_ASCEND = 0.5;
-    const Q_MOONS_MAX = 5;
+    const Q_MOONS_MAX = 4;
     const R_MOON_MIN = 10;
     const R_MOON_MAX = 20;
     const K_MOON_SPARSE_MIN = 3;
@@ -641,8 +644,8 @@ StarSystem.prototype.initMeshes = function() {
     const R_ASTEROID_MAX = 5;
     const V_ASTEROID_MAX = 20;//per sec
     const P_STARS = [
-        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -6000, color: 0x888899 },
-        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -5000, color: 0xaaaabb },
+        //{ size: 2.0, minQty: 1000,  maxQty: 2000, dist: -5000, color: 0x888899 },
+        //{ size: 2.0, minQty: 1000,  maxQty: 2000, dist: -5000, color: 0xaaaabb },
         { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -4000, color: 0xf0f0ff }
     ];
 
@@ -651,8 +654,6 @@ StarSystem.prototype.initMeshes = function() {
 
     function add( obj ) {
 
-        //scene.add( obj.mesh );
-        //octree.add( obj. mesh );
         obj.mesh.setToOctree = true;
         meshes.push( obj.mesh );
 
@@ -698,31 +699,39 @@ StarSystem.prototype.initMeshes = function() {
         return new THREE.Euler( self.rand( min, max ), self.rand() * 2 * Math.PI, 0 );
     }
 
-    var radius = this.rand( R_PLANET_MIN, R_PLANET_MAX );
-    var planet = new Planet( V3_ZERO.clone(), radius, this.randColor() );
-    add( planet ).setG();
+    /**PLANETS!*/
+    var qPlanets = Math.floor( this.rand( Q_PLANETS_MIN, Q_PLANETS_MAX ) );
 
-    var qMoons = Math.floor( this.rand( 0, Q_MOONS_MAX ) );
-    var orbit = planet.radius;
+    for ( var j = 0; j < qPlanets; j++ ) {
 
-    for ( var i = 0; i < qMoons; i++ ) {
+        var radius = this.rand(R_PLANET_MIN, R_PLANET_MAX);
+        var planet = new Planet( this.randV3( R_GALAXY ).setY( 0 ), radius, this.randColor());
+        add(planet).setG();
 
-        radius = this.rand( R_MOON_MIN, R_MOON_MAX );
-        orbit += radius * this.rand( K_MOON_SPARSE_MIN, K_MOON_SPARSE_MAX );
-        var moon = new Planet( randOrbit( orbit ).applyEuler( randAxis( 0, AXIS_MOON_MAX ) ), radius, this.randColor() );
-        add( moon ).setG();
+        /**Mooons*/
+        var qMoons = Math.floor(this.rand(0, Q_MOONS_MAX));
+        var orbit = planet.radius;
+
+        for (var i = 0; i < qMoons; i++) {
+
+            radius = this.rand(R_MOON_MIN, R_MOON_MAX);
+            orbit += radius * this.rand(K_MOON_SPARSE_MIN, K_MOON_SPARSE_MAX);
+            var moon = new Planet( randOrbit(orbit).applyEuler(randAxis(0, AXIS_MOON_MAX)).add( planet.pos ), radius, this.randColor());
+            add(moon).setG();
+        }
     }
-
+    /**ASTEROIDS!*/
     var qAsteroids = Math.floor( this.rand( 0, Q_ASTEROIDS_MAX ) );
 
     for ( var j = 0; j < qAsteroids; j++ ) {
 
         //var pos = randOrbit( orbit ).applyEuler( asteroidEuler ).add( this.randV3( R_ASTEROID_SPARSE ) );
 
-        var asteroid = new Asteroid( this.randV3( this.rand( orbit, R_WORLD ) ), this.rand( R_ASTEROID_MIN, R_ASTEROID_MAX ), this.randColor() );
+        var asteroid = new Asteroid( this.randV3( this.rand( orbit, R_GALAXY ) ), this.rand( R_ASTEROID_MIN, R_ASTEROID_MAX ), this.randColor() );
         add( asteroid ).setV( this.randV3( this.rand( 0, V_ASTEROID_MAX ) ) );//.setAxis( rotationUp ).setParent( planet );
     }
 
+    /**STARS!*/
     P_STARS.forEach( function( item ) {
 
         var qty = self.rand( item.minQty, item.maxQty );
@@ -758,7 +767,7 @@ StarSystem.prototype.initMeshes = function() {
 
     //LIGHT
     var light = new THREE.PointLight( 0xFFFFFF, 1, 0 );
-    light.position.copy( this.randV3( R_WORLD ).setY( this.rand( -K_SUN_ECLISPE_ASCEND, K_SUN_ECLISPE_ASCEND ) * R_WORLD ) );
+    light.position.copy( this.randV3( R_GALAXY ).setY( this.rand( K_SUN_ECLISPE_ASCEND ) * R_GALAXY ) );
 
     //scene.add( light );
     meshes.push( light );

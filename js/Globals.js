@@ -1,5 +1,6 @@
-const R_WORLD  = 1000;
-const R_GALAXY = 10000;
+//const R_WORLD  = 1000;
+const R_GALAXY = 3000;
+const R_START_DROP = 1500;
 const C_BACKGROUND = 0x181818;
 //const V_CAMERA = 10;//camera speed to zoom
 const Y_CAMERA = 1400;//base camera pos Y
