@@ -7,7 +7,7 @@ var Scene = (function () {
     var stats, controls, camera, renderer;
     var scene, octree;
 
-    var starSystem;
+    var starSystem, skyBox;
 
     var players = [];
 
@@ -313,6 +313,11 @@ var Scene = (function () {
             camera.lookAt( v3target );
             camera.position.lerp( v3target.setY( 1.76*Y_CAMERA ), 0.05 );
 
+            skyBox.forEach( function( mesh ) {
+
+                mesh.position.copy( camera.position );
+            });
+
             //camera.lookAt( v3target );
             //camera.position.copy( V3_UNIT_Y.multiplyScalar( R_WORLD ) );
 
@@ -432,7 +437,7 @@ var Scene = (function () {
         scene = new THREE.Scene();
         var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
 
-        camera = new THREE.PerspectiveCamera(40, window.width / window.height, 1, R_GALAXY * 5 );
+        camera = new THREE.PerspectiveCamera(40, window.width / window.height, 1, R_GALAXY * 10 );
         camera.aspect = WIDTH / HEIGHT;
         camera.updateProjectionMatrix();
 
@@ -618,7 +623,8 @@ var Scene = (function () {
         starSystem = new StarSystem( starSystemId );
         //starSystem.initMeshes();
         initMeshes( starSystem.initMeshes() );
-
+        skyBox = starSystem.initSkybox();
+        initMeshes( skyBox );
 
         iPlayer.id = PeerServer.getMyPeerId();
         initPlayer( iPlayer.id, false );

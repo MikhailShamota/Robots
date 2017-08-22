@@ -626,7 +626,41 @@ StarSystem.prototype.randColor = function() {
     return new THREE.Color( r(), r(), r() );
 };
 
-StarSystem.prototype.initMeshes = function() {
+StarSystem.prototype.initSkybox = function() {
+
+    var self = this;
+    var ret = [];
+
+    const P_STARS = [
+        //{ size: 2.0, minQty: 1000,  maxQty: 2000, dist: -5000, color: 0x888899 },
+        //{ size: 2.0, minQty: 1000,  maxQty: 2000, dist: -5000, color: 0xaaaabb },
+        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -14000, color: 0xf0f0ff }
+    ];
+
+    /**STARS!*/
+    P_STARS.forEach( function( item ) {
+
+         var qty = self.rand( item.minQty, item.maxQty );
+
+         var dotMaterial = new THREE.PointsMaterial( { color: item.color, size: item.size, sizeAttenuation: false } );
+         var dotGeometry = new THREE.Geometry();
+
+         for (var s = 0; s < qty; s++) {
+
+             dotGeometry.vertices.push( self.randV3( item.dist ) );//like a sphere
+             //dotGeometry.vertices.push( new THREE.Vector3( self.rand( -R_GALAXY, R_GALAXY ), item.dist, self.rand( -R_GALAXY, R_GALAXY ) ) );//like a sheet
+         }
+
+         var dot = new THREE.Points( dotGeometry, dotMaterial );
+         dot.frustumCulled = false;//need because it save camera frustum at moment of creation
+
+        ret.push( dot );
+    });
+
+    return ret;
+};
+
+StarSystem.prototype.initMeshes = function( camera ) {
 
     const Q_PLANETS_MIN = 3;
     const Q_PLANETS_MAX = 8;
@@ -643,11 +677,6 @@ StarSystem.prototype.initMeshes = function() {
     const R_ASTEROID_MIN = 3;
     const R_ASTEROID_MAX = 5;
     const V_ASTEROID_MAX = 20;//per sec
-    const P_STARS = [
-        //{ size: 2.0, minQty: 1000,  maxQty: 2000, dist: -5000, color: 0x888899 },
-        //{ size: 2.0, minQty: 1000,  maxQty: 2000, dist: -5000, color: 0xaaaabb },
-        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -4000, color: 0xf0f0ff }
-    ];
 
     var self = this;
     var meshes = [];
@@ -704,9 +733,9 @@ StarSystem.prototype.initMeshes = function() {
 
     for ( var j = 0; j < qPlanets; j++ ) {
 
-        var radius = this.rand(R_PLANET_MIN, R_PLANET_MAX);
-        var planet = new Planet( this.randV3( R_GALAXY ).setY( 0 ), radius, this.randColor());
-        add(planet).setG();
+        var radius = this.rand( R_PLANET_MIN, R_PLANET_MAX );
+        var planet = new Planet( this.randV3( R_GALAXY ).setY( 0 ), radius, this.randColor() );
+        add( planet ).setG();
 
         /**Mooons*/
         var qMoons = Math.floor(this.rand(0, Q_MOONS_MAX));
@@ -730,26 +759,6 @@ StarSystem.prototype.initMeshes = function() {
         var asteroid = new Asteroid( this.randV3( this.rand( orbit, R_GALAXY ) ), this.rand( R_ASTEROID_MIN, R_ASTEROID_MAX ), this.randColor() );
         add( asteroid ).setV( this.randV3( this.rand( 0, V_ASTEROID_MAX ) ) );//.setAxis( rotationUp ).setParent( planet );
     }
-
-    /**STARS!*/
-    P_STARS.forEach( function( item ) {
-
-        var qty = self.rand( item.minQty, item.maxQty );
-
-        var dotMaterial = new THREE.PointsMaterial( { color: item.color, size: item.size, sizeAttenuation: false } );
-        var dotGeometry = new THREE.Geometry();
-        for (var s = 0; s < qty; s++) {
-
-            //dotGeometry.vertices.push( self.randV3( R_GALAXY ) );//like a sphere
-            dotGeometry.vertices.push( new THREE.Vector3( self.rand( -R_GALAXY, R_GALAXY ), item.dist, self.rand( -R_GALAXY, R_GALAXY ) ) );//like a sheet
-        }
-        var dot = new THREE.Points( dotGeometry, dotMaterial );
-        dot.frustumCulled = false;//need because it save camera frustum at moment of creation
-
-        meshes.push( dot );
-    });
-
-
 
     /*var asteroidEuler = randAxis( 0, AXIS_ASTEROID_MAX );
      var rotationUp = V3_UNIT_Y.clone().applyEuler( asteroidEuler ).normalize();
