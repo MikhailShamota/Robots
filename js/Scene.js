@@ -307,11 +307,16 @@ var Scene = (function () {
             });
         }
 
-        function updateCamera() {
+        function updateCamera(dt) {
 
-            var v3target = iPlayer().getVessel().mesh.position.clone();
-            camera.lookAt( v3target );
-            camera.position.lerp( v3target.setY( 1.76*Y_CAMERA ), 0.05 );
+            var vessel = iPlayer().getVessel();
+            var vesselPos = vessel.mesh.position.clone();
+
+            var cameraToPos = vesselPos.clone().setY( Y_CAMERA );
+            var dir = cameraToPos.sub( camera.position ).clampLength ( 0, V_CAMERA_LIMIT );
+            dir.lengthSq() && camera.position.add( dir.multiplyScalar( V_CAMERA * dt ) );
+
+
 
             skyBox.forEach( function( mesh ) {
 
@@ -377,7 +382,7 @@ var Scene = (function () {
 
         updateMove( dt );//update MatObj physics
 
-        updateCamera();
+        updateCamera( dt );
 
         loopedArrays.update();
 
@@ -441,7 +446,7 @@ var Scene = (function () {
         camera.aspect = WIDTH / HEIGHT;
         camera.updateProjectionMatrix();
 
-        camera.position.set( 0, 6*Y_CAMERA, 0 );
+        camera.position.set( 0, Y_CAMERA_START, 0 );
         camera.up = new THREE.Vector3( 0, 0, 1 );
         camera.lookAt( new THREE.Vector3( 0, 0 ,0 ) );
 
