@@ -611,6 +611,17 @@ StarSystem.prototype.randV3 = function( length ) {
     ).multiplyScalar( length || 1 );
 };
 
+StarSystem.prototype.randX0Z = function( length ) {
+
+    return V3_UNIT_X.clone().applyEuler(
+        new THREE.Euler(
+            0,
+            this.rand() * 2 * Math.PI,
+            0,
+            'YXZ')
+    ).multiplyScalar( length || 1 );
+};
+
 StarSystem.prototype.randColor = function() {
 
     var min = 0.2;
@@ -632,9 +643,9 @@ StarSystem.prototype.initSkybox = function() {
     var ret = [];
 
     const P_STARS = [
-        //{ size: 2.0, minQty: 1000,  maxQty: 2000, dist: -5000, color: 0x888899 },
-        //{ size: 2.0, minQty: 1000,  maxQty: 2000, dist: -5000, color: 0xaaaabb },
-        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -14000, color: 0xf0f0ff }
+        { size: 1.0, minQty: 1000,  maxQty: 2000, dist: -4000, color: 0xf0f0ff },
+        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -10000, color: 0xd0d0df },
+        { size: 8.0, minQty: 1000,  maxQty: 2000, dist: -14000, color:  0xa0a0af }
     ];
 
     /**STARS!*/
@@ -642,13 +653,12 @@ StarSystem.prototype.initSkybox = function() {
 
          var qty = self.rand( item.minQty, item.maxQty );
 
-         var dotMaterial = new THREE.PointsMaterial( { color: item.color, size: item.size, sizeAttenuation: false } );
+         var dotMaterial = new THREE.PointsMaterial( { color: item.color, size: item.size, sizeAttenuation: true } );
          var dotGeometry = new THREE.Geometry();
 
          for (var s = 0; s < qty; s++) {
 
              dotGeometry.vertices.push( self.randV3( item.dist ) );//like a sphere
-             //dotGeometry.vertices.push( new THREE.Vector3( self.rand( -R_GALAXY, R_GALAXY ), item.dist, self.rand( -R_GALAXY, R_GALAXY ) ) );//like a sheet
          }
 
          var dot = new THREE.Points( dotGeometry, dotMaterial );
@@ -666,7 +676,7 @@ StarSystem.prototype.initMeshes = function( camera ) {
     const Q_PLANETS_MAX = 8;
     const R_PLANET_MIN = 70;
     const R_PLANET_MAX = 100;
-    const K_SUN_ECLISPE_ASCEND = 0.5;
+    const V3_SUN = new THREE.Vector3( 0, R_GALAXY * 0.25, 0 );
     const Q_MOONS_MAX = 4;
     const R_MOON_MIN = 10;
     const R_MOON_MAX = 20;
@@ -760,6 +770,37 @@ StarSystem.prototype.initMeshes = function( camera ) {
         add( asteroid ).setV( this.randV3( this.rand( 0, V_ASTEROID_MAX ) ) );//.setAxis( rotationUp ).setParent( planet );
     }
 
+    //dust
+    const P_DUST = [
+        { size: 2, minQty: 1000,  maxQty: 2000, dist: 0, color: 0xf0f0f0 },
+        { size: 1.8, minQty: 1000,  maxQty: 2000, dist: -2000, color: 0xd0d0d0 },
+        { size: 1.4, minQty: 1000,  maxQty: 2000, dist: -4000, color: 0xbfbfbf },
+        { size: 1.2, minQty: 1000,  maxQty: 2000, dist: -8000, color: 0xa0a0a0 },
+        { size: 1, minQty: 1000,  maxQty: 2000, dist: -16000, color: 0x888888 }
+    ];
+    P_DUST.forEach( function( item ) {
+
+        var qty = self.rand( item.minQty, item.maxQty );
+
+        var dotMaterial = new THREE.PointsMaterial( { color: item.color, size: item.size, sizeAttenuation: false } );
+        var dotGeometry = new THREE.Geometry();
+
+        for (var s = 0; s < qty; s++) {
+
+            //dotGeometry.vertices.push( self.randV3( item.dist ) );//like a sphere
+            dotGeometry.vertices.push( self.randX0Z( self.rand( R_GALAXY * 10 ) ).setY( item.dist ) );//like a sheet
+        }
+
+        var dot = new THREE.Points( dotGeometry, dotMaterial );
+        dot.frustumCulled = false;//need because it save camera frustum at moment of creation
+
+        meshes.push( dot );
+    });
+    //dust
+
+
+
+
     /*var asteroidEuler = randAxis( 0, AXIS_ASTEROID_MAX );
      var rotationUp = V3_UNIT_Y.clone().applyEuler( asteroidEuler ).normalize();
      orbit = this.rand( planet.radius + radius, orbit + radius );
@@ -776,7 +817,7 @@ StarSystem.prototype.initMeshes = function( camera ) {
 
     //LIGHT
     var light = new THREE.PointLight( 0xFFFFFF, 1, 0 );
-    light.position.copy( this.randV3( R_GALAXY ).setY( this.rand( K_SUN_ECLISPE_ASCEND ) * R_GALAXY ) );
+    light.position.copy( V3_SUN );
 
     //scene.add( light );
     meshes.push( light );

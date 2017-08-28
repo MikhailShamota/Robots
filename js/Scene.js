@@ -238,12 +238,30 @@ var Scene = (function () {
 
             octree.objectsData.forEach( octreeObj => {
 
+
                 //var mesh = octreeObj.object;
                 //var obj = mesh.userData;//mesh.userData => MatObj
                 var obj = octreeObj.object.userData;//octree -> object -> mesh -> userData => MatObj
 
                 if ( !obj.mesh.visible )
                     return;
+
+                /*infinine map*/
+                /*if ( obj.pos ) {
+
+                    function vec2str( v ) {
+
+                        return Math.round( v.x ) + "   " + Math.round( v.y ) + "   " + Math.round( v.z );
+                    }
+
+                    var dist = camera.position.clone().setY(0).clone().sub(obj.pos).multiplyScalar(1 / R_GALAXY).roundToZero();
+
+                    if ( obj.hits && obj.player.isProxy )
+                        document.getElementById("buttonScreenMode").innerHTML =  vec2str( dist );
+
+
+                    obj.pos.add(dist.multiplyScalar(2 * R_GALAXY));
+                }*/
 
                 //CHECK & KILL & REMOVE
                 obj.hits <= 0 && killObject( obj );
@@ -260,10 +278,7 @@ var Scene = (function () {
 
                 obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > 50 || ! obj.lastFired ) && fire( obj );//do not calc damage from my vessels, only on my vessel
 
-                //TODO:
-                /*infinine map*/
-                var dist = camera.position.clone().setY(0).clone().sub( obj.pos ).multiplyScalar( 1 / R_GALAXY ).roundToZero();
-                obj.pos.add( dist.multiplyScalar( 2 * R_GALAXY ) );
+
             });
         }
 
@@ -310,36 +325,31 @@ var Scene = (function () {
         function updateCamera(dt) {
 
             var vessel = iPlayer().getVessel();
+
+            var dist = Number.MAX_SAFE_INTEGER;
+            var i = vessel.getCameraPos( camera );
+
+            for ( var playerId in players ) {
+
+                playerId != iPlayer().id && players[ playerId ].fleet.vesselsList.forEach( function( vessel ) {
+
+                    var obj = vessel.obj;
+                    var p = obj.getCameraPos( camera );
+                    dist = Math.min( dist, p.distanceTo( i ) );
+                });
+            }
+            dist = dist == Number.MAX_SAFE_INTEGER ? 0 : dist;//dist in screens 1 - one screen
+
             var vesselPos = vessel.mesh.position.clone();
 
-            var cameraToPos = vesselPos.clone().setY( Y_CAMERA );
+            var cameraToPos = vesselPos.clone().setY( Y_CAMERA + ( dist * Y_CAMERA) );
             var dir = cameraToPos.sub( camera.position ).clampLength ( 0, V_CAMERA_LIMIT );
             dir.lengthSq() && camera.position.add( dir.multiplyScalar( V_CAMERA * dt ) );
-
-
 
             skyBox.forEach( function( mesh ) {
 
                 mesh.position.copy( camera.position );
             });
-
-            //camera.lookAt( v3target );
-            //camera.position.copy( V3_UNIT_Y.multiplyScalar( R_WORLD ) );
-
-            //camera.up = new THREE.Vector3( 0, 0, 1 );
-            //camera.lookAt( v3target );
-
-            /*var dist = 0;
-             var i = iPlayer().getVessel().getCameraPos( camera );
-             for ( var playerId in players ) {
-
-             players[ playerId ].fleet.vesselsList.forEach( function( vessel ) {
-
-             var obj = vessel.obj;
-             var p = obj.getCameraPos( camera );
-             dist = Math.max( dist, p.distanceTo( i ) );
-             });
-             }*/
         }
 
         function updateLasersMove() {
