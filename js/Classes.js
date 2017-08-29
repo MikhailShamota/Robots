@@ -222,7 +222,7 @@ MatObj.prototype.gravity = function(obj) {
 
 MatObj.prototype.dive = function(obj2, depth) {
 
-    if ( !this.v )//immovable
+    if ( !this.v || !obj2 || !obj2.pos || !this.pos )//immovable
         return;
 
     var vNorm = obj2.pos.clone().sub( this.pos ).normalize();//from this to obj2

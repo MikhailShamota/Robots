@@ -338,11 +338,19 @@ var Scene = (function () {
                     dist = Math.min( dist, p.distanceTo( i ) );
                 });
             }
-            dist = dist == Number.MAX_SAFE_INTEGER ? 0 : dist;//dist in screens 1 - one screen
+
+            function getDist( d ) {
+
+                d = d == Number.MAX_SAFE_INTEGER ? 0.5 : dist;//dist in screens 1 - one screen
+                dist = MathHelper.clamp( dist, 0, 1 );
+                dist *= 0.8;
+
+                return d * d;
+            }
 
             var vesselPos = vessel.mesh.position.clone();
 
-            var cameraToPos = vesselPos.clone().setY( Y_CAMERA + ( dist * Y_CAMERA) );
+            var cameraToPos = vesselPos.clone().setY( MathHelper.lerp( Y_CAMERA_MIN, Y_CAMERA_MAX, getDist( dist ) ) );
             var dir = cameraToPos.sub( camera.position ).clampLength ( 0, V_CAMERA_LIMIT );
             dir.lengthSq() && camera.position.add( dir.multiplyScalar( V_CAMERA * dt ) );
 
