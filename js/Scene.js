@@ -37,7 +37,8 @@ var Scene = (function () {
 
             "lasers": new LoopedArray( 100, 1150 ),//100 qty, 30 ms to live
             "hits": new LoopedArray( 100, 40 ),
-            "explosions": new LoopedArray( 10, 50 )
+            "explosions": new LoopedArray( 10, 50 ),
+            "radar": new LoopedArray( 25, SCAN_SEC_MAX * 1000 * 2 )// x 2 because of delayed start
         }
     };
 
@@ -101,57 +102,6 @@ var Scene = (function () {
         return object3d;
     }
 
-    function Beam( ray, length ) {
-
-        var material = new THREE.MeshLineMaterial( {
-
-            color: new THREE.Color( "rgb( 255, 255, 2 )" ),
-            opacity: 0.5,
-            resolution: V2_RESOLUTION,
-            sizeAttenuation: 1,
-            lineWidth: 2,
-            near: 1,
-            far: 100000,
-            depthTest: true,
-            blending: THREE.AdditiveBlending,
-            transparent: true,
-            side: THREE.DoubleSide
-        } );
-
-        const beamLen = 50;
-        var geom = new THREE.Geometry( );
-
-        geom.vertices.push( ray.origin.clone( ) );
-        geom.vertices.push( ray.origin.clone( ).add( ray.direction.clone( ).multiplyScalar( beamLen ) ) );
-
-        var line = new THREE.MeshLine( );
-        line.setGeometry( geom );
-
-        var mesh = new THREE.Mesh( line.geometry, material ); // this syntax could definitely be improved!*/
-
-        mesh.source_dir = ray.direction.clone();
-        mesh.source_length = length - beamLen;
-
-        return mesh;
-    }
-
-    function BeamMove( mesh ) {
-
-        const speed = 100;
-        var add = mesh.source_dir.clone().multiplyScalar( speed );
-
-        mesh.source_length -= speed;
-
-        //impact
-        if ( mesh.source_length <= 0 ) {
-
-            mesh.position.x = undefined;//hide
-            return;
-        }
-
-        mesh.position.add( add );//move
-    }
-
     function addHit( pt ) {
 
         loopedArrays.add2scene(
@@ -172,12 +122,131 @@ var Scene = (function () {
 
     function addShot( ray, dist ) {
 
+        function Beam( ray, length ) {
+
+            var material = new THREE.MeshLineMaterial( {
+
+                color: new THREE.Color( "rgb( 255, 255, 2 )" ),
+                opacity: 0.5,
+                resolution: V2_RESOLUTION,
+                sizeAttenuation: 1,
+                lineWidth: 2,
+                near: 1,
+                far: 100000,
+                depthTest: true,
+                blending: THREE.AdditiveBlending,
+                transparent: true,
+                side: THREE.DoubleSide
+            } );
+
+            const beamLen = 50;
+            var geom = new THREE.Geometry( );
+
+            geom.vertices.push( ray.origin.clone( ) );
+            geom.vertices.push( ray.origin.clone( ).add( ray.direction.clone( ).multiplyScalar( beamLen ) ) );
+
+            var line = new THREE.MeshLine( );
+            line.setGeometry( geom );
+
+            var mesh = new THREE.Mesh( line.geometry, material ); // this syntax could definitely be improved!*/
+
+            mesh.source_dir = ray.direction.clone();
+            mesh.source_length = length - beamLen;
+
+            return mesh;
+        }
+
         loopedArrays.add2scene(
 
             "lasers",
             Beam( ray, dist )
         );
+    }
 
+    function addRadar( ray, dist ) {
+
+        if ( dist <= 0 )
+            return;
+
+        function Radar( ray, duration ) {
+
+            function mat() {
+
+                return new THREE.MeshLineMaterial( {
+
+                    color: new THREE.Color( "rgb( 0, 255, 0 )" ),
+                    opacity: 0.43,
+                    resolution: V2_RESOLUTION,
+                    sizeAttenuation: 1,
+                    lineWidth: 10,
+                    near: 1,
+                    far: 100000,
+                    depthTest: true,
+                    blending: THREE.AdditiveBlending,
+                    transparent: true,
+                    side: THREE.DoubleSide
+                } );
+            }
+
+            function getPoint( ray, angle, len ) {
+
+                return ray.direction.clone().applyEuler( new THREE.Euler( 0, angle, 0, 'YZX' ) ).multiplyScalar( len );//.add( ray.origin );
+            }
+
+            var v1 = getPoint( ray, 0.5, 10 );
+            var v2 = getPoint( ray, -0.5, 10 );
+            var center = getPoint( ray, 0, 12 );
+
+            var curve = new THREE.QuadraticBezierCurve3(v1, center, v2);
+
+            var geom = new THREE.Geometry( );
+
+            geom.vertices = curve.getPoints(10);
+
+            var line = new THREE.MeshLine( );
+            line.setGeometry( geom );
+
+            var mesh = new THREE.Mesh( line.geometry, mat() );
+            mesh.position.copy( ray.origin );
+
+            var allMesh = new THREE.Mesh();
+            var qty = 4;
+
+            for ( var i = 0; i < qty; i++ ) {
+
+                var m = mesh.clone();
+                m.material = m.material.clone();
+
+                m.dt = - i * duration / qty;
+
+                m.fHide = function() {
+
+                    return duration <= this.dt || this.dt < 0;
+                };
+                m.fMove = function() {
+
+                    return ray.direction.clone().multiplyScalar( 110 * this.dt );
+                };
+                m.fScale = function() {
+
+                    return new THREE.Vector3( 1, 1, 1 ).multiplyScalar ( 6 * this.dt / duration + 1 )
+                };
+                m.fOpacity = function() {
+
+                    return mesh.material.uniforms.opacity.value * ( 1 - this.dt / duration );
+                };
+
+                allMesh.add( m );
+            }
+
+            return allMesh;
+        }
+
+        loopedArrays.add2scene(
+
+            "radar",
+            Radar( ray, MathHelper.lerp( SCAN_SEC_MIN, SCAN_SEC_MAX, dist ) )
+        );
     }
 
     function updateScore() {
@@ -362,7 +431,42 @@ var Scene = (function () {
 
         function updateLasersMove() {
 
-            loopedArrays.collection[ "lasers" ].mapAll( BeamMove );
+            loopedArrays.collection[ "lasers" ].mapAll( function( mesh ) {
+
+                    const speed = 100;
+                    var add = mesh.source_dir.clone().multiplyScalar( speed );
+
+                    mesh.source_length -= speed;
+
+                    //impact
+                    if ( mesh.source_length <= 0 ) {
+
+                        mesh.position.x = undefined;//hide
+                        return;
+                    }
+
+                    mesh.position.add( add );//move
+                } );
+        }
+
+        function updateRadarMove( origin, dt ) {
+
+            loopedArrays.collection[ "radar" ].mapAll( function ( obj ) {
+
+                obj.children.map( function( m, i ) {
+
+                    m.dt += dt;
+                    if ( m.fHide() ) {
+
+                        m.position.x = undefined;//hide
+                        return;
+                    }
+                    m.position.copy( origin ).add( m.fMove() );//relative move
+                    m.scale.copy( m.fScale() );
+                    m.material.uniforms.opacity.value = m.fOpacity();
+                });
+
+            } );
         }
 
         function updateMouse() {
@@ -381,6 +485,11 @@ var Scene = (function () {
         function updateTarget() {
 
             iPlayer().fleet.update( v3MousePoint );
+        }
+
+        function updateScan( obj ) {
+
+            obj.hits > 0 && ( nowTime - obj.lastScan > 5000 || ! obj.lastScan ) && scan( obj );
         }
 
         nowTime = Date.now();
@@ -410,6 +519,10 @@ var Scene = (function () {
         }
 
         updateLasersMove();
+
+        updateRadarMove( iPlayer().getVessel().pos, dt );
+
+        updateScan( iPlayer().getVessel() );
 
         send();
 
@@ -451,8 +564,25 @@ var Scene = (function () {
         });
 
         addShot( raycaster.ray, dist );
-
         from.lastFired = nowTime;
+    }
+
+    function scan( from ) {
+
+        for ( var playerId in players ) {
+
+            from.player.id != playerId && players[ playerId ].fleet.vesselsList.forEach( function( vessel ) {
+
+                if ( !vessel.obj.pos )
+                    return;
+
+                var v3to = vessel.obj.pos.clone().sub( from.pos );
+                var dist = v3to.length();
+
+                addRadar( new THREE.Ray( from.pos, v3to.normalize() ), MathHelper.spectre( dist, SCAN_DIST_MIN, SCAN_DIST_MAX ) );
+                from.lastScan = nowTime;
+            });
+        }
     }
 
     function initializeGL() {

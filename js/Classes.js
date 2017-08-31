@@ -496,8 +496,8 @@ function Fighter(pos, mass, color) {
 
     Vessel.apply( this, arguments );
 
-    this.fJet = 1200000;//this.mass * 80000;
-    this.sTurn = 5.25;//radians per sec
+    this.fJet = 900000;//this.mass * 80000;
+    this.sTurn = 1.25;//radians per sec
     this.trailWidth = 4;
     //this.hits = 3;//toughness
     this.toughness = 3;//toughness
