@@ -1,14 +1,11 @@
-//const R_WORLD  = 1000;
 const R_GALAXY = 4000;
 const R_START_DROP = 1500;
 const C_BACKGROUND = 0x181818;
 const V_CAMERA = 2;//camera speed
 const V_CAMERA_LIMIT = 1000;//camera speed limit
-//const Y_CAMERA = 2464;//base camera pos Y
 const Y_CAMERA_MIN = 1000;//closest camera pos Y
 const Y_CAMERA_MAX = 4000;//farthest camera pos Y
 const Y_CAMERA_START = R_GALAXY * 3;//start camera pos Y
-//const R_CAMERA_FADE_DIST = 500;//slowing going dist
 
 const K_GRAVITY = 2;
 const K_SPACE_RESIST = 10;
@@ -346,4 +343,10 @@ var Textures = {
             }
         );
     }
+};
+
+if (!Array.prototype.last){
+    Array.prototype.last = function(){
+        return this[this.length - 1];
+    };
 };
