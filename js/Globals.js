@@ -145,7 +145,8 @@ var PeerServer = ( function() {
 
     const myKey = 'qxh7qp1coby8ehfr';
     var peer;
-    var conn;
+    var conn = [];
+    //var conn;
 
     var myPeerId;
 
@@ -155,21 +156,22 @@ var PeerServer = ( function() {
 
     function initConn( dataConn ) {
 
-        conn = dataConn;
+        //conn = dataConn;
+        conn.push( dataConn );
 
         //console.log('got connect from: '+dataConn.peer);
-        conn.on('open', function() {
+        conn[ conn.length - 1 ].on('open', function() {
 
             console.log('conn opened');
-            conn.send('hi!');
+            conn[ conn.length - 1 ].send('hi!');
             callbackConnect && callbackConnect();
         });
 
         // Receive messages
-        conn.on('data', function(data) {
+        conn[ conn.length - 1 ].on('data', function( data ) {
 
-            callbackReceive && callbackReceive( conn.peer, data );
-            !callbackReceive && console.log('Received from ' + conn.peer, data);
+            callbackReceive && callbackReceive( conn[ conn.length - 1 ].peer, data );
+            !callbackReceive && console.log('Received from ' + conn[ conn.length - 1 ].peer, data);
         });
     }
 
@@ -198,7 +200,8 @@ var PeerServer = ( function() {
     function peerSend( data ) {
 
         //add some tech data if needed
-        conn && conn.send( data );
+        for ( var i = 0; i < conn.length; i++ )
+            conn[ i ] && conn[ i ].send( data );
     }
 
     return {
