@@ -9,7 +9,7 @@
 
     <script src='http://jeromeetienne.github.io/threex.geometricglow/examples/vendor/three.js/examples/js/libs/dat.gui.min.js'></script>
     <script src="js/threex.atmospherematerialdatgui.js"></script>
-
+    <script src="js/heatmap.min.js"></script>
 
     <script src="js/threex.atmospherematerial.js"></script>
 
@@ -24,7 +24,7 @@
     camera.aspect = WIDTH / HEIGHT;
     camera.updateProjectionMatrix();
 
-    camera.position.set( 0, 2000, 0 );
+    camera.position.set( 100, 2000, 0 );
     camera.up = new THREE.Vector3( 0, 0, 1 );
     camera.lookAt( new THREE.Vector3( 0, 0 ,0 ) );
 
@@ -45,47 +45,56 @@
 
     document.body.appendChild( renderer.domElement );
 
-    scene.background = new THREE.Color( 0x181818 );
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    //controls.addEventListener( 'change', render ); // add this only if there is no animation loop (requestAnimationFrame)
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.25;
+    controls.enableZoom = true;
 
 
-    var texture = new THREE.TextureLoader().load( "res/planet1.jpg" );
-    /*var texture = THREE.ImageUtils.loadTexture('crate.gif', {}, function() {
-        renderer.render(scene);
-    }),*/
-
-    var geom = new THREE.SphereGeometry( 64, 32, 32);
-    var material = new THREE.MeshLambertMaterial({color: 0xff00ff, side: 2, shading: THREE.FlatShading, map: texture });
-    var mesh = new THREE.Mesh( geom, material );
-    scene.add( mesh );
+    scene.background = new THREE.Color( 0x046876 );
 
 
+    var texture = new THREE.TextureLoader().load( "res/planet4.jpg", function( t ) {
 
-    // create the mesh for the halo with AtmosphereMaterial
-    var geometry	= mesh.geometry.clone();
-    //THREEx.dilateGeometry(geometry, 0.15);
-    var scale = 1.2;
-    geometry.scale( scale, scale, scale );
-    var material2	= THREEx.createAtmosphereMaterial();
-    var meshHalo	= new THREE.Mesh(geometry, material2 );
-    scene.add( meshHalo );
-    // possible customisation of AtmosphereMaterial
-    material2.uniforms.glowColor.value	= new THREE.Color('cyan');
-    material2.uniforms.coeficient.value	= 1.1;
-    material2.uniforms.power.value		= 1.4;
+        t.minFilter = THREE.LinearFilter;
 
-    // here is how to setup a datGUI for fine tuning
+        var geom = new THREE.SphereGeometry( 64, 32, 32 );
+        var material = new THREE.MeshLambertMaterial( { map: t } );
+        var mesh = new THREE.Mesh( geom, material );
 
-    var datGUI	= new dat.GUI();
-    new THREEx.addAtmosphereMaterial2DatGui(material2, datGUI);
+        mesh.rotateX( Math.random() * Math.PI );
+        mesh.rotateY( Math.random() * Math.PI );
+        mesh.rotateZ( Math.random() * Math.PI );
 
+        scene.add( mesh );
 
+        // create the mesh for the halo with AtmosphereMaterial
+        var geometry	= mesh.geometry.clone();
 
+        var scale = 1.1;
+        geometry.scale( scale, scale, scale );
+        var material2	= THREEx.createAtmosphereMaterial();
+        var meshHalo	= new THREE.Mesh(geometry, material2 );
+        scene.add( meshHalo );
 
+        material2.uniforms.glowColor.value	= new THREE.Color('cyan');
+        material2.uniforms.coeficient.value	= 1.2;
+        material2.uniforms.power.value		= 5;
 
-    var light = new THREE.Light(0xffffff,1);
-    light.position = new THREE.Vector3( 1000, 1000, 1000 );
+        // here is how to setup a datGUI for fine tuning
+
+        var datGUI	= new dat.GUI();
+        new THREEx.addAtmosphereMaterial2DatGui(material2, datGUI);
+
+    } );
+
+    var light = new THREE.PointLight( 0xffffff, 1 );
+    light.position.copy( new THREE.Vector3( 100, 1000, 100 ) );
 
     scene.add( light );
+
+
 
 
     function paintScene() {
@@ -99,5 +108,7 @@
     paintScene();
 
 </script>
+
+<canvas></canvas>
 </body>
 </html>

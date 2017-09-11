@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="510eed05-ed6a-4361-9ef3-ef26ad0cd624" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/threex.atmospherematerial.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/threex.atmospherematerialdatgui.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/test.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Globals.js" afterPath="$PROJECT_DIR$/js/Globals.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.html" afterPath="$PROJECT_DIR$/test.html" />
     </list>
     <ignored path="Robots.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -50,7 +47,7 @@
         <entry file="file://$PROJECT_DIR$/js/Scene.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="769" column="0" selection-start-line="769" selection-start-column="0" selection-end-line="769" selection-end-column="0" />
+              <caret line="768" column="0" selection-start-line="768" selection-start-column="0" selection-end-line="768" selection-end-column="0" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#398#477#0" expanded="false" />
@@ -87,7 +84,6 @@
                 <element signature="e#19384#19680#0" expanded="false" />
                 <element signature="e#19977#20168#0" expanded="false" />
                 <element signature="e#20195#20523#0" expanded="false" />
-                <element signature="e#20553#20876#0" expanded="false" />
                 <element signature="e#20904#21655#0" expanded="false" />
                 <element signature="e#21692#21935#0" expanded="false" />
                 <element signature="e#21970#22106#0" expanded="false" />
@@ -102,7 +98,7 @@
       <file leaf-file-name="Globals.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Globals.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-7.0689654">
+            <state vertical-scroll-proportion="0.0">
               <caret line="138" column="7" selection-start-line="138" selection-start-column="7" selection-end-line="138" selection-end-column="7" />
               <folding>
                 <element signature="e#1175#3654#0" expanded="false" />
@@ -116,11 +112,9 @@
       <file leaf-file-name="test.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.41379312">
-              <caret line="50" column="66" selection-start-line="50" selection-start-column="66" selection-end-line="50" selection-end-column="66" />
-              <folding>
-                <element signature="e#969#1229#0" expanded="false" />
-              </folding>
+            <state vertical-scroll-proportion="0.7850575">
+              <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -129,7 +123,7 @@
         <entry file="file://$PROJECT_DIR$/js/Classes.js">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="528" column="108" selection-start-line="527" selection-start-column="4" selection-end-line="528" selection-end-column="108" />
+              <caret line="528" column="106" selection-start-line="528" selection-start-column="55" selection-end-line="528" selection-end-column="106" />
               <folding>
                 <element signature="n#!!block;n#Player#0" expanded="false" />
                 <element signature="e#2259#2407#0" expanded="false" />
@@ -157,7 +151,6 @@
                 <element signature="e#9894#10348#0" expanded="false" />
                 <element signature="e#10392#11478#0" expanded="false" />
                 <element signature="n#!!block;n#Asteroid#0" expanded="false" />
-                <element signature="n#!!block;n#Planet#0" expanded="false" />
                 <element signature="n#!!block;n#Sun#0" expanded="false" />
                 <element signature="n#!!block;n#StarSystem#0" expanded="false" />
                 <element signature="e#14053#14097#0" expanded="false" />
@@ -165,7 +158,6 @@
                 <element signature="e#14445#14640#0" expanded="false" />
                 <element signature="e#14687#14862#0" expanded="false" />
                 <element signature="e#14910#15864#0" expanded="false" />
-                <element signature="e#15920#20747#0" expanded="false" />
                 <element signature="e#16487#17134#0" expanded="false" />
                 <element signature="e#17168#17252#0" expanded="false" />
                 <element signature="e#17288#17383#0" expanded="false" />
@@ -229,6 +221,8 @@
         <option value="$PROJECT_DIR$/js/threex.atmospherematerial.js" />
         <option value="$PROJECT_DIR$/js/threex.atmospherematerialdatgui.js" />
         <option value="$PROJECT_DIR$/js/threex.dilategeometry.js" />
+        <option value="$PROJECT_DIR$/js/webgl-heatmap.js" />
+        <option value="$PROJECT_DIR$/js/heatmap.min.js" />
         <option value="$PROJECT_DIR$/test.html" />
       </list>
     </option>
@@ -288,7 +282,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -338,6 +331,7 @@
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -440,12 +434,6 @@
       <workItem from="1483040499861" duration="204000" />
       <workItem from="1483808321278" duration="830000" />
       <workItem from="1483883140725" duration="7448000" />
-    </task>
-    <task id="LOCAL-00044" summary="multiple calls fix">
-      <created>1492190031831</created>
-      <option name="number" value="00044" />
-      <option name="project" value="LOCAL" />
-      <updated>1492190031831</updated>
     </task>
     <task id="LOCAL-00045" summary="Players array">
       <created>1492528949527</created>
@@ -735,7 +723,13 @@
       <option name="project" value="LOCAL" />
       <updated>1504878726075</updated>
     </task>
-    <option name="localTasksCounter" value="93" />
+    <task id="LOCAL-00093" summary="working test.html">
+      <created>1504889473359</created>
+      <option name="number" value="00093" />
+      <option name="project" value="LOCAL" />
+      <updated>1504889473359</updated>
+    </task>
+    <option name="localTasksCounter" value="94" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -756,7 +750,6 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12381454" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32900432" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -765,6 +758,7 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -809,7 +803,6 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="false" />
-    <MESSAGE value="duration" />
     <MESSAGE value="material design" />
     <MESSAGE value="material design js" />
     <MESSAGE value="material design button" />
@@ -834,7 +827,8 @@
     <MESSAGE value="camera good" />
     <MESSAGE value="radar" />
     <MESSAGE value="multiplayer" />
-    <option name="LAST_COMMIT_MESSAGE" value="multiplayer" />
+    <MESSAGE value="working test.html" />
+    <option name="LAST_COMMIT_MESSAGE" value="working test.html" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -843,61 +837,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js/Classes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="618" column="25" selection-start-line="618" selection-start-column="25" selection-end-line="618" selection-end-column="25" />
-          <folding>
-            <element signature="n#!!block;n#Player#0" expanded="false" />
-            <element signature="e#2259#2407#0" expanded="false" />
-            <element signature="e#2451#2555#0" expanded="false" />
-            <element signature="e#2598#2644#0" expanded="false" />
-            <element signature="e#2690#2738#0" expanded="false" />
-            <element signature="e#2782#2832#0" expanded="false" />
-            <element signature="e#2870#2956#0" expanded="false" />
-            <element signature="e#3002#3076#0" expanded="false" />
-            <element signature="e#3116#3170#0" expanded="false" />
-            <element signature="n#!!block;n#MatObj#0" expanded="false" />
-            <element signature="e#3559#3631#0" expanded="false" />
-            <element signature="e#3685#3744#0" expanded="false" />
-            <element signature="e#3788#3856#0" expanded="false" />
-            <element signature="e#3910#3992#0" expanded="false" />
-            <element signature="e#4326#4488#0" expanded="false" />
-            <element signature="e#4863#5515#0" expanded="false" />
-            <element signature="e#6386#6390#0" expanded="false" />
-            <element signature="n#!!block;n#extend#0" expanded="false" />
-            <element signature="e#7267#7467#0" expanded="false" />
-            <element signature="e#8516#8669#0" expanded="false" />
-            <element signature="e#8710#9507#0" expanded="false" />
-            <element signature="e#9562#9600#0" expanded="false" />
-            <element signature="e#9640#9847#0" expanded="false" />
-            <element signature="e#9894#10348#0" expanded="false" />
-            <element signature="e#10392#11478#0" expanded="false" />
-            <element signature="n#!!block;n#Asteroid#0" expanded="false" />
-            <element signature="n#!!block;n#Planet#0" expanded="false" />
-            <element signature="n#!!block;n#Sun#0" expanded="false" />
-            <element signature="n#!!block;n#StarSystem#0" expanded="false" />
-            <element signature="e#14053#14097#0" expanded="false" />
-            <element signature="e#14149#14392#0" expanded="false" />
-            <element signature="e#14445#14640#0" expanded="false" />
-            <element signature="e#14687#14862#0" expanded="false" />
-            <element signature="e#14910#15864#0" expanded="false" />
-            <element signature="e#15920#20747#0" expanded="false" />
-            <element signature="e#16487#17134#0" expanded="false" />
-            <element signature="e#17168#17252#0" expanded="false" />
-            <element signature="e#17288#17383#0" expanded="false" />
-            <element signature="n#!!block;n#LoopedArray#0" expanded="false" />
-            <element signature="e#20971#20998#0" expanded="false" />
-            <element signature="e#21047#21087#0" expanded="false" />
-            <element signature="e#21137#21427#0" expanded="false" />
-            <element signature="e#21483#21762#0" expanded="false" />
-            <element signature="e#21813#22263#0" expanded="false" />
-            <element signature="e#22304#22575#0" expanded="false" />
-            <element signature="n#!!block;n#RandomPool#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -955,7 +894,6 @@
             <element signature="e#19384#19680#0" expanded="false" />
             <element signature="e#19977#20168#0" expanded="false" />
             <element signature="e#20195#20523#0" expanded="false" />
-            <element signature="e#20553#20876#0" expanded="false" />
             <element signature="e#20904#21655#0" expanded="false" />
             <element signature="e#21692#21935#0" expanded="false" />
             <element signature="e#21970#22106#0" expanded="false" />
@@ -1009,7 +947,6 @@
             <element signature="e#9894#10348#0" expanded="false" />
             <element signature="e#10392#11478#0" expanded="false" />
             <element signature="n#!!block;n#Asteroid#0" expanded="false" />
-            <element signature="n#!!block;n#Planet#0" expanded="false" />
             <element signature="n#!!block;n#Sun#0" expanded="false" />
             <element signature="n#!!block;n#StarSystem#0" expanded="false" />
             <element signature="e#14053#14097#0" expanded="false" />
@@ -1017,7 +954,6 @@
             <element signature="e#14445#14640#0" expanded="false" />
             <element signature="e#14687#14862#0" expanded="false" />
             <element signature="e#14910#15864#0" expanded="false" />
-            <element signature="e#15920#20747#0" expanded="false" />
             <element signature="e#16487#17134#0" expanded="false" />
             <element signature="e#17168#17252#0" expanded="false" />
             <element signature="e#17288#17383#0" expanded="false" />
@@ -1097,7 +1033,6 @@
             <element signature="e#19384#19680#0" expanded="false" />
             <element signature="e#19977#20168#0" expanded="false" />
             <element signature="e#20195#20523#0" expanded="false" />
-            <element signature="e#20553#20876#0" expanded="false" />
             <element signature="e#20904#21655#0" expanded="false" />
             <element signature="e#21692#21935#0" expanded="false" />
             <element signature="e#21970#22106#0" expanded="false" />
@@ -1151,7 +1086,6 @@
             <element signature="e#9894#10348#0" expanded="false" />
             <element signature="e#10392#11478#0" expanded="false" />
             <element signature="n#!!block;n#Asteroid#0" expanded="false" />
-            <element signature="n#!!block;n#Planet#0" expanded="false" />
             <element signature="n#!!block;n#Sun#0" expanded="false" />
             <element signature="n#!!block;n#StarSystem#0" expanded="false" />
             <element signature="e#14053#14097#0" expanded="false" />
@@ -1159,7 +1093,6 @@
             <element signature="e#14445#14640#0" expanded="false" />
             <element signature="e#14687#14862#0" expanded="false" />
             <element signature="e#14910#15864#0" expanded="false" />
-            <element signature="e#15920#20747#0" expanded="false" />
             <element signature="e#16487#17134#0" expanded="false" />
             <element signature="e#17168#17252#0" expanded="false" />
             <element signature="e#17288#17383#0" expanded="false" />
@@ -1232,7 +1165,6 @@
             <element signature="e#19384#19680#0" expanded="false" />
             <element signature="e#19977#20168#0" expanded="false" />
             <element signature="e#20195#20523#0" expanded="false" />
-            <element signature="e#20553#20876#0" expanded="false" />
             <element signature="e#20904#21655#0" expanded="false" />
             <element signature="e#21692#21935#0" expanded="false" />
             <element signature="e#21970#22106#0" expanded="false" />
@@ -1286,7 +1218,6 @@
             <element signature="e#9894#10348#0" expanded="false" />
             <element signature="e#10392#11478#0" expanded="false" />
             <element signature="n#!!block;n#Asteroid#0" expanded="false" />
-            <element signature="n#!!block;n#Planet#0" expanded="false" />
             <element signature="n#!!block;n#Sun#0" expanded="false" />
             <element signature="n#!!block;n#StarSystem#0" expanded="false" />
             <element signature="e#14053#14097#0" expanded="false" />
@@ -1294,7 +1225,6 @@
             <element signature="e#14445#14640#0" expanded="false" />
             <element signature="e#14687#14862#0" expanded="false" />
             <element signature="e#14910#15864#0" expanded="false" />
-            <element signature="e#15920#20747#0" expanded="false" />
             <element signature="e#16487#17134#0" expanded="false" />
             <element signature="e#17168#17252#0" expanded="false" />
             <element signature="e#17288#17383#0" expanded="false" />
@@ -1367,7 +1297,6 @@
             <element signature="e#19384#19680#0" expanded="false" />
             <element signature="e#19977#20168#0" expanded="false" />
             <element signature="e#20195#20523#0" expanded="false" />
-            <element signature="e#20553#20876#0" expanded="false" />
             <element signature="e#20904#21655#0" expanded="false" />
             <element signature="e#21692#21935#0" expanded="false" />
             <element signature="e#21970#22106#0" expanded="false" />
@@ -1421,7 +1350,6 @@
             <element signature="e#9894#10348#0" expanded="false" />
             <element signature="e#10392#11478#0" expanded="false" />
             <element signature="n#!!block;n#Asteroid#0" expanded="false" />
-            <element signature="n#!!block;n#Planet#0" expanded="false" />
             <element signature="n#!!block;n#Sun#0" expanded="false" />
             <element signature="n#!!block;n#StarSystem#0" expanded="false" />
             <element signature="e#14053#14097#0" expanded="false" />
@@ -1429,7 +1357,6 @@
             <element signature="e#14445#14640#0" expanded="false" />
             <element signature="e#14687#14862#0" expanded="false" />
             <element signature="e#14910#15864#0" expanded="false" />
-            <element signature="e#15920#20747#0" expanded="false" />
             <element signature="e#16487#17134#0" expanded="false" />
             <element signature="e#17168#17252#0" expanded="false" />
             <element signature="e#17288#17383#0" expanded="false" />
@@ -1502,7 +1429,6 @@
             <element signature="e#19384#19680#0" expanded="false" />
             <element signature="e#19977#20168#0" expanded="false" />
             <element signature="e#20195#20523#0" expanded="false" />
-            <element signature="e#20553#20876#0" expanded="false" />
             <element signature="e#20904#21655#0" expanded="false" />
             <element signature="e#21692#21935#0" expanded="false" />
             <element signature="e#21970#22106#0" expanded="false" />
@@ -1556,7 +1482,6 @@
             <element signature="e#9894#10348#0" expanded="false" />
             <element signature="e#10392#11478#0" expanded="false" />
             <element signature="n#!!block;n#Asteroid#0" expanded="false" />
-            <element signature="n#!!block;n#Planet#0" expanded="false" />
             <element signature="n#!!block;n#Sun#0" expanded="false" />
             <element signature="n#!!block;n#StarSystem#0" expanded="false" />
             <element signature="e#14053#14097#0" expanded="false" />
@@ -1564,7 +1489,6 @@
             <element signature="e#14445#14640#0" expanded="false" />
             <element signature="e#14687#14862#0" expanded="false" />
             <element signature="e#14910#15864#0" expanded="false" />
-            <element signature="e#15920#20747#0" expanded="false" />
             <element signature="e#16487#17134#0" expanded="false" />
             <element signature="e#17168#17252#0" expanded="false" />
             <element signature="e#17288#17383#0" expanded="false" />
@@ -1637,7 +1561,6 @@
             <element signature="e#19384#19680#0" expanded="false" />
             <element signature="e#19977#20168#0" expanded="false" />
             <element signature="e#20195#20523#0" expanded="false" />
-            <element signature="e#20553#20876#0" expanded="false" />
             <element signature="e#20904#21655#0" expanded="false" />
             <element signature="e#21692#21935#0" expanded="false" />
             <element signature="e#21970#22106#0" expanded="false" />
@@ -1897,69 +1820,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Classes.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="528" column="108" selection-start-line="527" selection-start-column="4" selection-end-line="528" selection-end-column="108" />
-          <folding>
-            <element signature="n#!!block;n#Player#0" expanded="false" />
-            <element signature="e#2259#2407#0" expanded="false" />
-            <element signature="e#2451#2555#0" expanded="false" />
-            <element signature="e#2598#2644#0" expanded="false" />
-            <element signature="e#2690#2738#0" expanded="false" />
-            <element signature="e#2782#2832#0" expanded="false" />
-            <element signature="e#2870#2956#0" expanded="false" />
-            <element signature="e#3002#3076#0" expanded="false" />
-            <element signature="e#3116#3170#0" expanded="false" />
-            <element signature="n#!!block;n#MatObj#0" expanded="false" />
-            <element signature="e#3559#3631#0" expanded="false" />
-            <element signature="e#3685#3744#0" expanded="false" />
-            <element signature="e#3788#3856#0" expanded="false" />
-            <element signature="e#3910#3992#0" expanded="false" />
-            <element signature="e#4326#4488#0" expanded="false" />
-            <element signature="e#4863#5515#0" expanded="false" />
-            <element signature="e#6386#6390#0" expanded="false" />
-            <element signature="n#!!block;n#extend#0" expanded="false" />
-            <element signature="e#7267#7467#0" expanded="false" />
-            <element signature="e#8516#8669#0" expanded="false" />
-            <element signature="e#8710#9507#0" expanded="false" />
-            <element signature="e#9562#9600#0" expanded="false" />
-            <element signature="e#9640#9847#0" expanded="false" />
-            <element signature="e#9894#10348#0" expanded="false" />
-            <element signature="e#10392#11478#0" expanded="false" />
-            <element signature="n#!!block;n#Asteroid#0" expanded="false" />
-            <element signature="n#!!block;n#Planet#0" expanded="false" />
-            <element signature="n#!!block;n#Sun#0" expanded="false" />
-            <element signature="n#!!block;n#StarSystem#0" expanded="false" />
-            <element signature="e#14053#14097#0" expanded="false" />
-            <element signature="e#14149#14392#0" expanded="false" />
-            <element signature="e#14445#14640#0" expanded="false" />
-            <element signature="e#14687#14862#0" expanded="false" />
-            <element signature="e#14910#15864#0" expanded="false" />
-            <element signature="e#15920#20747#0" expanded="false" />
-            <element signature="e#16487#17134#0" expanded="false" />
-            <element signature="e#17168#17252#0" expanded="false" />
-            <element signature="e#17288#17383#0" expanded="false" />
-            <element signature="n#!!block;n#LoopedArray#0" expanded="false" />
-            <element signature="e#20971#20998#0" expanded="false" />
-            <element signature="e#21047#21087#0" expanded="false" />
-            <element signature="e#21137#21427#0" expanded="false" />
-            <element signature="e#21483#21762#0" expanded="false" />
-            <element signature="e#21813#22263#0" expanded="false" />
-            <element signature="e#22304#22575#0" expanded="false" />
-            <element signature="n#!!block;n#RandomPool#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/threex.atmospherematerial.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.2522322">
-          <caret line="66" column="1" selection-start-line="66" selection-start-column="1" selection-end-line="66" selection-end-column="1" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/threex.atmospherematerialdatgui.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.77790177">
@@ -1968,10 +1828,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/Globals.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="138" column="7" selection-start-line="138" selection-start-column="7" selection-end-line="138" selection-end-column="7" />
+          <folding>
+            <element signature="e#1175#3654#0" expanded="false" />
+            <element signature="e#3692#5883#0" expanded="false" />
+            <element signature="e#5908#7540#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/planet1.jpg">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/threex.atmospherematerial.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.05691964">
+          <caret line="3" column="82" selection-start-line="3" selection-start-column="8" selection-end-line="3" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/Scene.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="769" column="0" selection-start-line="769" selection-start-column="0" selection-end-line="769" selection-end-column="0" />
+          <caret line="768" column="0" selection-start-line="768" selection-start-column="0" selection-end-line="768" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#398#477#0" expanded="false" />
@@ -2008,7 +1893,6 @@
             <element signature="e#19384#19680#0" expanded="false" />
             <element signature="e#19977#20168#0" expanded="false" />
             <element signature="e#20195#20523#0" expanded="false" />
-            <element signature="e#20553#20876#0" expanded="false" />
             <element signature="e#20904#21655#0" expanded="false" />
             <element signature="e#21692#21935#0" expanded="false" />
             <element signature="e#21970#22106#0" expanded="false" />
@@ -2019,30 +1903,64 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Globals.js">
+    <entry file="file://$PROJECT_DIR$/js/Classes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-7.0689654">
-          <caret line="138" column="7" selection-start-line="138" selection-start-column="7" selection-end-line="138" selection-end-column="7" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="528" column="106" selection-start-line="528" selection-start-column="55" selection-end-line="528" selection-end-column="106" />
           <folding>
-            <element signature="e#1175#3654#0" expanded="false" />
-            <element signature="e#3692#5883#0" expanded="false" />
-            <element signature="e#5908#7540#0" expanded="false" />
+            <element signature="n#!!block;n#Player#0" expanded="false" />
+            <element signature="e#2259#2407#0" expanded="false" />
+            <element signature="e#2451#2555#0" expanded="false" />
+            <element signature="e#2598#2644#0" expanded="false" />
+            <element signature="e#2690#2738#0" expanded="false" />
+            <element signature="e#2782#2832#0" expanded="false" />
+            <element signature="e#2870#2956#0" expanded="false" />
+            <element signature="e#3002#3076#0" expanded="false" />
+            <element signature="e#3116#3170#0" expanded="false" />
+            <element signature="n#!!block;n#MatObj#0" expanded="false" />
+            <element signature="e#3559#3631#0" expanded="false" />
+            <element signature="e#3685#3744#0" expanded="false" />
+            <element signature="e#3788#3856#0" expanded="false" />
+            <element signature="e#3910#3992#0" expanded="false" />
+            <element signature="e#4326#4488#0" expanded="false" />
+            <element signature="e#4863#5515#0" expanded="false" />
+            <element signature="e#6386#6390#0" expanded="false" />
+            <element signature="n#!!block;n#extend#0" expanded="false" />
+            <element signature="e#7267#7467#0" expanded="false" />
+            <element signature="e#8516#8669#0" expanded="false" />
+            <element signature="e#8710#9507#0" expanded="false" />
+            <element signature="e#9562#9600#0" expanded="false" />
+            <element signature="e#9640#9847#0" expanded="false" />
+            <element signature="e#9894#10348#0" expanded="false" />
+            <element signature="e#10392#11478#0" expanded="false" />
+            <element signature="n#!!block;n#Asteroid#0" expanded="false" />
+            <element signature="n#!!block;n#Sun#0" expanded="false" />
+            <element signature="n#!!block;n#StarSystem#0" expanded="false" />
+            <element signature="e#14053#14097#0" expanded="false" />
+            <element signature="e#14149#14392#0" expanded="false" />
+            <element signature="e#14445#14640#0" expanded="false" />
+            <element signature="e#14687#14862#0" expanded="false" />
+            <element signature="e#14910#15864#0" expanded="false" />
+            <element signature="e#16487#17134#0" expanded="false" />
+            <element signature="e#17168#17252#0" expanded="false" />
+            <element signature="e#17288#17383#0" expanded="false" />
+            <element signature="n#!!block;n#LoopedArray#0" expanded="false" />
+            <element signature="e#20971#20998#0" expanded="false" />
+            <element signature="e#21047#21087#0" expanded="false" />
+            <element signature="e#21137#21427#0" expanded="false" />
+            <element signature="e#21483#21762#0" expanded="false" />
+            <element signature="e#21813#22263#0" expanded="false" />
+            <element signature="e#22304#22575#0" expanded="false" />
+            <element signature="n#!!block;n#RandomPool#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/res/planet1.jpg">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.41379312">
-          <caret line="50" column="66" selection-start-line="50" selection-start-column="66" selection-end-line="50" selection-end-column="66" />
-          <folding>
-            <element signature="e#969#1229#0" expanded="false" />
-          </folding>
+        <state vertical-scroll-proportion="0.7850575">
+          <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
