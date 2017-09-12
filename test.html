@@ -9,14 +9,31 @@
 
     <script src='http://jeromeetienne.github.io/threex.geometricglow/examples/vendor/three.js/examples/js/libs/dat.gui.min.js'></script>
     <script src="js/threex.atmospherematerialdatgui.js"></script>
-    <script src="js/heatmap.min.js"></script>
+
 
     <script src="js/threex.atmospherematerial.js"></script>
-
+    <script src="js/simpleheat.js"></script>
 
 </head>
 <body>
+
 <script>
+
+    function randColor() {
+
+        var min = 0.2;
+        var max = 0.9;
+
+        var self = this;
+
+        function r() {
+
+            return self.rand( min, max );
+        }
+
+        return new THREE.Color( r(), r(), r() );
+    }
+
     var scene = new THREE.Scene();
     var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
 
@@ -52,7 +69,7 @@
     controls.enableZoom = true;
 
 
-    scene.background = new THREE.Color( 0x046876 );
+    scene.background = new THREE.Color( 0x181818 );
 
 
     var texture = new THREE.TextureLoader().load( "res/planet4.jpg", function( t ) {
@@ -107,8 +124,65 @@
 
     paintScene();
 
+    // create a simpleheat object given an id or canvas reference
+    var canvas = document.createElement( "canvas" );
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    var heat = simpleheat(canvas);
+
+    var min = 10;
+    var max = 20;
+    var qty = Math.floor(Math.random() * (max - min)) + min;
+    for ( var i = 0; i < qty; i++ ) {
+
+        heat.add( [ canvas.width * Math.random(), canvas.height * Math.random(), Math.random()*Math.random()*Math.random() ] );
+        // set data of [[x, y, value], ...] format
+        //heat.data(data);
+    }
+
+    // set max data value (1 by default)
+    heat.max(1);
+
+    //heat.clear();
+
+    // set point radius and blur radius (25 and 15 by default)
+    heat.radius( 0.25 * ( canvas.width + canvas.height ) , 0.125 * ( canvas.width + canvas.height ) );
+
+    // set gradient colors as {<stop>: '<color>'}, e.g. {0.4: 'blue', 0.65: 'lime', 1: 'red'}
+    //heat.gradient( { 0.0: 'magenta', 0.8: 'black' } );// 0.35: 'blue', 0.5: 'red', 0.75: 'magenta', 1: 'black'} );
+    heat.gradient( { 0.0: randColor().getStyle(), 0.8: randColor().getStyle() } );// 0.35: 'blue', 0.5: 'red', 0.75: 'magenta', 1: 'black'} );
+
+    // call in case Canvas size changed
+    //heat.resize();
+    // draw the heatmap with optional minimum point opacity (0.05 by default)
+    heat.draw( 0.015 );
+
+    var texHeat = new THREE.Texture( canvas );
+    texHeat.needsUpdate = true;
+
+    var matHeat = new THREE.SpriteMaterial( {
+
+        //color: 0x555599,
+        blending: THREE.AdditiveBlending,
+        depthWrite: true,
+        map: texHeat
+    } );
+
+
+    var sprite = new THREE.Sprite( matHeat );
+    sprite.position.set( 0, -1000, 1 );
+    sprite.scale.set( canvas.width * 2, canvas.height * 2, 1 );
+
+    /*var halfHeight = sprite.position.distanceTo(camera.position) / Math.tan( camera.fov/2 * Math.PI / 180 );
+    var yscale = halfHeight * 2;
+    var xscale = yscale * texHeat.image.width / texHeat.image.height;//, or the other way round y-scale = x-scale * textureHeight / textureWidth.
+    sprite.scale.set( xscale, yscale, 1 );*/
+
+    scene.add( sprite );
+
 </script>
 
-<canvas></canvas>
+
 </body>
 </html>
