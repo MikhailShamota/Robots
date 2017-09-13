@@ -21,17 +21,12 @@
 
     function randColor() {
 
-        var min = 0.2;
-        var max = 0.9;
+        function r( min, max ) {
 
-        var self = this;
-
-        function r() {
-
-            return self.rand( min, max );
+            return Math.random() * (max - min) + min;
         }
 
-        return new THREE.Color( r(), r(), r() );
+        return new THREE.Color().setHSL( r(0,1), r(0.55,0.7), r(0.3,0.75) );
     }
 
     var scene = new THREE.Scene();
@@ -124,62 +119,90 @@
 
     paintScene();
 
-    // create a simpleheat object given an id or canvas reference
-    var canvas = document.createElement( "canvas" );
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    function spectre( x, min, max ) {
 
-    var heat = simpleheat(canvas);
-
-    var min = 10;
-    var max = 20;
-    var qty = Math.floor(Math.random() * (max - min)) + min;
-    for ( var i = 0; i < qty; i++ ) {
-
-        heat.add( [ canvas.width * Math.random(), canvas.height * Math.random(), Math.random()*Math.random()*Math.random() ] );
-        // set data of [[x, y, value], ...] format
-        //heat.data(data);
+        return x * (max - min) + min;
     }
 
-    // set max data value (1 by default)
-    heat.max(1);
+    function clamp(value, min, max) {
 
-    //heat.clear();
+        if (value < min) {
+            return min;
+        }
+        else if (value > max) {
+            return max;
+        }
 
-    // set point radius and blur radius (25 and 15 by default)
-    heat.radius( 0.25 * ( canvas.width + canvas.height ) , 0.125 * ( canvas.width + canvas.height ) );
+        return value;
+    }
 
-    // set gradient colors as {<stop>: '<color>'}, e.g. {0.4: 'blue', 0.65: 'lime', 1: 'red'}
-    //heat.gradient( { 0.0: 'magenta', 0.8: 'black' } );// 0.35: 'blue', 0.5: 'red', 0.75: 'magenta', 1: 'black'} );
-    heat.gradient( { 0.0: randColor().getStyle(), 0.8: randColor().getStyle() } );// 0.35: 'blue', 0.5: 'red', 0.75: 'magenta', 1: 'black'} );
+    function getSprite( gradient ) {
 
-    // call in case Canvas size changed
-    //heat.resize();
-    // draw the heatmap with optional minimum point opacity (0.05 by default)
-    heat.draw( 0.015 );
+        var canvas = document.createElement("canvas");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-    var texHeat = new THREE.Texture( canvas );
-    texHeat.needsUpdate = true;
+        var heat = simpleheat(canvas);
+        heat.clear();
 
-    var matHeat = new THREE.SpriteMaterial( {
+        var minQty = 1000;
+        var maxQty = 1000;
+        var qty = Math.floor( spectre( Math.random(), minQty, maxQty ) );
+        for (var i = 0; i < qty; i++) {
 
-        //color: 0x555599,
-        blending: THREE.AdditiveBlending,
-        depthWrite: true,
-        map: texHeat
-    } );
+            var sparkForce = Math.random();//0..1
+            heat.add([
+                canvas.width * Math.random() * 2 - canvas.width,
+                canvas.height * Math.random() * 2 - canvas.height,
+                spectre( sparkForce, 0.04, 0.1 ),//light
+                spectre( sparkForce, 25, 250 )//size
+            ]);
+            // set data of [[x, y, value], ...] format
+            //heat.data(data);
+        }
+
+        // set max data value (1 by default)
+        heat.max(1);
+
+        //heat.clear();
+
+        // set point radius and blur radius (25 and 15 by default)
+        heat.radius(0.0925 * ( canvas.width + canvas.height ), 0.07525 * ( canvas.width + canvas.height ));
+
+        // set gradient colors as {<stop>: '<color>'}, e.g. {0.4: 'blue', 0.65: 'lime', 1: 'red'}
+        //heat.gradient( { 0.0: 'magenta', 0.8: 'black' } );// 0.35: 'blue', 0.5: 'red', 0.75: 'magenta', 1: 'black'} );
+        //heat.gradient({0.0: randColor().getStyle(), 0.8: randColor().getStyle()});// 0.35: 'blue', 0.5: 'red', 0.75: 'magenta', 1: 'black'} );
+        heat.gradient( gradient );// 0.35: 'blue', 0.5: 'red', 0.75: 'magenta', 1: 'black'} );
+
+        // call in case Canvas size changed
+        //heat.resize();
+        // draw the heatmap with optional minimum point opacity (0.05 by default)
+        heat.draw(0.0);
+
+        var texHeat = new THREE.Texture(canvas);
+        texHeat.needsUpdate = true;
+
+        var matHeat = new THREE.SpriteMaterial({
+
+            blending: THREE.AdditiveBlending,
+            depthWrite: true,
+            map: texHeat
+        });
 
 
-    var sprite = new THREE.Sprite( matHeat );
-    sprite.position.set( 0, -1000, 1 );
-    sprite.scale.set( canvas.width * 2, canvas.height * 2, 1 );
+        var sprite = new THREE.Sprite(matHeat);
+        sprite.position.set(0, -1000, 1);
+        sprite.scale.set(canvas.width * 2, canvas.height * 2, 1);
 
+        return sprite;
+    }
     /*var halfHeight = sprite.position.distanceTo(camera.position) / Math.tan( camera.fov/2 * Math.PI / 180 );
     var yscale = halfHeight * 2;
     var xscale = yscale * texHeat.image.width / texHeat.image.height;//, or the other way round y-scale = x-scale * textureHeight / textureWidth.
     sprite.scale.set( xscale, yscale, 1 );*/
 
-    scene.add( sprite );
+    scene.add( getSprite( { 0.9: randColor().getStyle(), 0.5: randColor().getStyle(), 0.2:'black' } ) );
+
 
 </script>
 
