@@ -26,7 +26,7 @@
             return Math.random() * (max - min) + min;
         }
 
-        return new THREE.Color().setHSL( r(0,1), r(0.35,0.43), r(0.3,0.4) );
+        return new THREE.Color().setHSL( r(0,1), r(0.35,0.43), r(0.1,0.3) );
     }
 
     var scene = new THREE.Scene();
@@ -124,6 +124,11 @@
         return x * (max - min) + min;
     }
 
+    function rSpectre( min, max ) {
+
+        return spectre( Math.random(), min, max );
+    }
+
     function clamp(value, min, max) {
 
         if (value < min) {
@@ -136,30 +141,25 @@
         return value;
     }
 
-    function getSprite( gradient ) {
+    function getSprite( gradient, pt ) {
 
         var canvas = document.createElement("canvas");
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-
         var heat = simpleheat(canvas);
         heat.clear();
 
-        var heatAreaMarginWidth = -canvas.width * 0.2;
-        var heatAreaMarginHeight = -canvas.height * 0.2;
-        var minQty = 50;
-        var maxQty = 200;
-        var qty = Math.floor( spectre( Math.random(), minQty, maxQty ) );
-        var maxOpacity = spectre( Math.random() * Math.random(), 0.75, 0.1 );
+        var qty = 200;
+        //var randOpacity = spectre( Math.random() * Math.random(), 0.75, 0.1 );
         for (var i = 0; i < qty; i++) {
 
             var sparkForce = Math.random();//0..1
             heat.add([
-                spectre( Math.random(), 0, canvas.width ),
-                spectre( Math.random(), 0, canvas.height ),
-                spectre( sparkForce, 0.04, 0.1 ) * maxOpacity,//light
-                spectre( sparkForce, 90, 600 )//size
+                rSpectre( 0, canvas.width ),
+                rSpectre( 0, canvas.height ),
+                spectre( sparkForce, 0.02, 0.05 ),// * randOpacity,//light
+                spectre( sparkForce, 90, 800 )//size
             ]);
             // set data of [[x, y, value], ...] format
             //heat.data(data);
@@ -208,11 +208,16 @@
     //scene.add( getSprite( { 0.8: randColor().getStyle(), 0.5: randColor().getStyle(), 0.2:'black' } ) );
     var c1 = randColor().getStyle();
     var c2 = randColor().getStyle();
-    scene.add( getSprite( {
-        1.0: 'white',
-        0.8: c2,
-        0.3: c1
-    } ) );
+
+
+    scene.add( getSprite( { 0.8: c2, 0.3: c1 } ) );
+
+    //scene.add( getSprite( { 0.8: 'white', 0.3: 'black' } ) );
+
+    /*scene.add( getSprite( {
+            1.0: 'white',
+            0.0: 'black'
+        }, 0.25 ) );*/
 
 
 </script>
