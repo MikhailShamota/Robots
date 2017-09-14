@@ -19,14 +19,14 @@
 
 <script>
 
-    function randColor() {
+    function randColor( light ) {
 
         function r( min, max ) {
 
             return Math.random() * (max - min) + min;
         }
 
-        return new THREE.Color().setHSL( r(0,1), r(0.55,0.7), r(0.1,0.85) );
+        return new THREE.Color().setHSL( r(0,1), r(0.35,0.43), r(0.3,0.4) );
     }
 
     var scene = new THREE.Scene();
@@ -64,7 +64,7 @@
     controls.enableZoom = true;
 
 
-    scene.background = new THREE.Color( 0x181818 );
+    scene.background = new THREE.Color( randColor() );
 
 
     var texture = new THREE.TextureLoader().load( "res/planet4.jpg", function( t ) {
@@ -142,21 +142,24 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
+
         var heat = simpleheat(canvas);
         heat.clear();
 
-        var minQty = 2000;
-        var maxQty = 2000;
+        var heatAreaMarginWidth = -canvas.width * 0.2;
+        var heatAreaMarginHeight = -canvas.height * 0.2;
+        var minQty = 50;
+        var maxQty = 200;
         var qty = Math.floor( spectre( Math.random(), minQty, maxQty ) );
-        var maxOpacity = spectre( Math.random() * Math.random(), 0.2, 1 );
+        var maxOpacity = spectre( Math.random() * Math.random(), 0.75, 0.1 );
         for (var i = 0; i < qty; i++) {
 
             var sparkForce = Math.random();//0..1
             heat.add([
-                canvas.width * Math.random() * 2 - canvas.width,
-                canvas.height * Math.random() * 2 - canvas.height,
+                spectre( Math.random(), 0, canvas.width ),
+                spectre( Math.random(), 0, canvas.height ),
                 spectre( sparkForce, 0.04, 0.1 ) * maxOpacity,//light
-                spectre( sparkForce, 25, 250 )//size
+                spectre( sparkForce, 90, 600 )//size
             ]);
             // set data of [[x, y, value], ...] format
             //heat.data(data);
@@ -168,7 +171,7 @@
         //heat.clear();
 
         // set point radius and blur radius (25 and 15 by default)
-        heat.radius(0.1925 * ( canvas.width + canvas.height ), 0.07525 * ( canvas.width + canvas.height ));
+        heat.radius(1000, 0.27525 * ( canvas.width + canvas.height ));
 
         // set gradient colors as {<stop>: '<color>'}, e.g. {0.4: 'blue', 0.65: 'lime', 1: 'red'}
         //heat.gradient( { 0.0: 'magenta', 0.8: 'black' } );// 0.35: 'blue', 0.5: 'red', 0.75: 'magenta', 1: 'black'} );
@@ -202,7 +205,14 @@
     var xscale = yscale * texHeat.image.width / texHeat.image.height;//, or the other way round y-scale = x-scale * textureHeight / textureWidth.
     sprite.scale.set( xscale, yscale, 1 );*/
 
-    scene.add( getSprite( { 0.8: randColor().getStyle(), 0.5: randColor().getStyle(), 0.2:'black' } ) );
+    //scene.add( getSprite( { 0.8: randColor().getStyle(), 0.5: randColor().getStyle(), 0.2:'black' } ) );
+    var c1 = randColor().getStyle();
+    var c2 = randColor().getStyle();
+    scene.add( getSprite( {
+        1.0: 'white',
+        0.8: c2,
+        0.3: c1
+    } ) );
 
 
 </script>
