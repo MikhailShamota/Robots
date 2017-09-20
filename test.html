@@ -26,7 +26,7 @@
             return Math.random() * (max - min) + min;
         }
 
-        return new THREE.Color().setHSL( r(0,1), r(0.35,0.43), r(0.1,0.3) );
+        return new THREE.Color().setHSL( r(0,1), r(0.35,0.43), r(0.1,0.35) );
     }
 
     var scene = new THREE.Scene();
@@ -158,8 +158,8 @@
             heat.add([
                 rSpectre( 0, canvas.width ),
                 rSpectre( 0, canvas.height ),
-                spectre( sparkForce, 0.02, 0.05 ),// * randOpacity,//light
-                spectre( sparkForce, 90, 800 )//size
+                spectre( Math.pow( sparkForce, 8 ), 0.01, 0.29 ),// * randOpacity,//light
+                spectre( Math.pow( sparkForce, 2 ), 200, 500 )//size
             ]);
             // set data of [[x, y, value], ...] format
             //heat.data(data);
@@ -181,7 +181,7 @@
         // call in case Canvas size changed
         //heat.resize();
         // draw the heatmap with optional minimum point opacity (0.05 by default)
-        heat.draw( Math.random() * 0.01 );
+        heat.draw( 0.0000005 );
 
         var texHeat = new THREE.Texture(canvas);
         texHeat.needsUpdate = true;
@@ -209,10 +209,9 @@
     var c1 = randColor().getStyle();
     var c2 = randColor().getStyle();
 
+    //scene.add( getSprite( { 0.8: c2, 0.3: c1 } ) );
 
-    scene.add( getSprite( { 0.8: c2, 0.3: c1 } ) );
-
-    //scene.add( getSprite( { 0.8: 'white', 0.3: 'black' } ) );
+    scene.add( getSprite( { 0.95: 'white', 0.0: 'black' } ) );
 
     /*scene.add( getSprite( {
             1.0: 'white',
