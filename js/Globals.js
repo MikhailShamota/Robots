@@ -1,6 +1,6 @@
 const R_GALAXY = 4000;
 const R_START_DROP = 1500;
-const C_BACKGROUND = 0x181818;
+//const C_BACKGROUND = 0x181818;
 const V_CAMERA = 2;//camera speed
 const V_CAMERA_LIMIT = 1000;//camera speed limit
 const Y_CAMERA_MIN = 1000;//closest camera pos Y
@@ -309,7 +309,13 @@ var MathHelper = {
                 vars[key] = value;
             });
         return vars;
+    },
+
+    arrayLast: function( arr ) {
+
+        return arr[ arr.length - 1 ];
     }
+
 };
 
 var Textures = {
@@ -345,8 +351,3 @@ var Textures = {
     }
 };
 
-if (!Array.prototype.last){
-    Array.prototype.last = function(){
-        return this[this.length - 1];
-    };
-};

@@ -32,7 +32,8 @@
     var scene = new THREE.Scene();
     var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
 
-    var camera = new THREE.PerspectiveCamera(40, window.width / window.height, 1, 100000 );
+    //var camera = new THREE.PerspectiveCamera(40, window.width / window.height, 1, 100000 );
+    var camera = new THREE.OrthographicCamera( WIDTH / - 2, WIDTH / 2, HEIGHT / 2, HEIGHT / - 2, 1, 10000 );
     camera.aspect = WIDTH / HEIGHT;
     camera.updateProjectionMatrix();
 
@@ -141,7 +142,7 @@
         return value;
     }
 
-    function getSprite( gradient, pt ) {
+    function getSprite( gradient ) {
 
         function rPt( pt, r, pow ) {
 
@@ -204,8 +205,16 @@
 
 
         var sprite = new THREE.Sprite(matHeat);
-        sprite.position.set(0, -1000, 1);
-        sprite.scale.set(canvas.width * 2, canvas.height * 2, 1);
+        //sprite.position.set(0, -1000, 1);
+        //sprite.scale.set(canvas.width * 2, canvas.height * 2, 1);
+
+        sprite.scale.set(canvas.width, canvas.height, 1);
+
+
+        /*var halfHeight = sprite.position.distanceTo(camera.position) / Math.tan( camera.fov/2 * Math.PI / 180 );
+        var yscale = halfHeight * 2;
+        var xscale = yscale * texHeat.image.width / texHeat.image.height;
+        sprite.scale.set( xscale, yscale, 1 );*/
 
         return sprite;
     }

@@ -4,10 +4,10 @@ var Scene = (function () {
 
     var instance;
 
-    var stats, controls, camera, renderer;
-    var scene, octree;
+    var stats, controls, camera, cameraFix, renderer;
+    var scene, sceneFix, octree;
 
-    var starSystem, skyBox;
+    var starSystem, skyBox, skySprite;
 
     var players = [];
 
@@ -427,6 +427,8 @@ var Scene = (function () {
 
                 mesh.position.copy( camera.position );
             });
+
+            //skySprite.position.copy( camera.position.clone().sub( V3_UNIT_Y.clone().setY( 5000 ) ) );
         }
 
         function updateLasersMove() {
@@ -588,6 +590,7 @@ var Scene = (function () {
     function initializeGL() {
 
         scene = new THREE.Scene();
+        sceneFix = new THREE.Scene();
         var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
 
         camera = new THREE.PerspectiveCamera(40, window.width / window.height, 1, R_GALAXY * 10 );
@@ -597,6 +600,18 @@ var Scene = (function () {
         camera.position.set( 0, Y_CAMERA_START, 0 );
         camera.up = new THREE.Vector3( 0, 0, 1 );
         camera.lookAt( new THREE.Vector3( 0, 0 ,0 ) );
+
+        cameraFix = new THREE.OrthographicCamera( WIDTH / - 2, WIDTH / 2, HEIGHT / 2, HEIGHT / - 2, 1, 10000 );
+        cameraFix.aspect = WIDTH / HEIGHT;
+        cameraFix.updateProjectionMatrix();
+        //cameraFix = new THREE.PerspectiveCamera(40, window.width / window.height, 1, R_GALAXY * 10 );
+
+        /*cameraFix.updateProjectionMatrix();*/
+
+        cameraFix.position.set( 0, Y_CAMERA_START, 0 );
+        cameraFix.up = new THREE.Vector3( 0, 0, 1 );
+        cameraFix.lookAt( new THREE.Vector3( 0, 0 ,0 ) );
+
 
         window.addEventListener('resize', function () {
             var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
@@ -676,7 +691,7 @@ var Scene = (function () {
 
         document.body.appendChild( renderer.domElement );
 
-        scene.background = new THREE.Color( C_BACKGROUND );
+        //scene.background = new THREE.Color( C_BACKGROUND );
 
         V2_RESOLUTION = new THREE.Vector2( renderer.context.canvas.width, renderer.context.canvas.height );
     }
@@ -773,11 +788,15 @@ var Scene = (function () {
         //initControls();
         initOctree();
 
+        /**star system*/
         starSystem = new StarSystem( starSystemId );
-        //starSystem.initMeshes();
+        sceneFix.background = starSystem.randColor();
         initMeshes( starSystem.initMeshes() );
         skyBox = starSystem.initSkybox();
+        skySprite =  starSystem.initSkySprite();
         initMeshes( skyBox );
+        sceneFix.add( skySprite );
+
 
         iPlayer.id = PeerServer.getMyPeerId();
         initPlayer( iPlayer.id, false );
@@ -803,7 +822,13 @@ var Scene = (function () {
         update();//TODO: сделать не синхронным с прорисовкой
 
         requestAnimationFrame(paintScene);
+
+        renderer.autoClear = false;
+        renderer.clear();
+        renderer.render(sceneFix, cameraFix);
+        renderer.clearDepth();
         renderer.render(scene, camera);
+
     }
 
     return {

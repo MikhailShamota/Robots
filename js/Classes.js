@@ -622,7 +622,7 @@ StarSystem.prototype.randX0Z = function( length ) {
     ).multiplyScalar( length || 1 );
 };
 
-StarSystem.prototype.randColor = function() {
+/*StarSystem.prototype.randColor = function() {
 
     var min = 0.2;
     var max = 0.9;
@@ -635,6 +635,88 @@ StarSystem.prototype.randColor = function() {
     }
 
     return new THREE.Color( r(), r(), r() );
+};*/
+
+StarSystem.prototype.randColor = function() {
+
+    var self = this;
+
+    function r( min, max ) {
+
+        return self.rand() * (max - min) + min;
+    }
+
+    return new THREE.Color().setHSL( r(0,1), r(0.35,0.43), r(0.01,0.35) );
+};
+
+StarSystem.prototype.initSkySprite = function() {
+
+    var self = this;
+
+    function rPt( pt, r, pow ) {
+
+        return Math.pow( self.rand(), pow || 1 ) * Math.sign( self.rand() - 0.5 ) * r + pt;
+    }
+
+    function spectre( x, min, max ) {
+
+        return x * (max - min) + min;
+    }
+
+    function rSpectre( min, max ) {
+
+        return spectre( self.rand(), min, max );
+    }
+
+    var gradient = this.rand() > 0.5 ? { 0.0: 'white', 0.99: 'black' } : { 0.99: 'white', 0.0: 'black' };
+
+    var canvas = document.createElement("canvas");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    var heat = simpleheat( canvas );
+    heat.clear();
+
+    var qty = 200,
+        oversize = 1.2,
+        x = rSpectre( ( oversize - 1 ) * canvas.width, oversize * canvas.width ),
+        y = rSpectre( ( oversize - 1 ) * canvas.height, oversize * canvas.height );
+
+    for (var i = 0; i < qty; i++) {
+
+        var sparkForce = Math.random();//0..1
+        heat.add([
+            rPt( x, canvas.width, 2 ),
+            rPt( y, canvas.height, 2 ),
+            spectre( Math.pow( sparkForce, 8 ), 0.01, 0.19 ),// * randOpacity,//light
+            spectre( Math.pow( sparkForce, 2 ), 400, 900 )//size
+        ]);
+    }
+
+    heat.max(1);
+    //heat.clear();
+    heat.radius(1000, 0.27525 * ( canvas.width + canvas.height ));
+    heat.gradient( gradient );// 0.35: 'blue', 0.5: 'red', 0.75: 'magenta', 1: 'black'} );
+    // call in case Canvas size changed
+    //heat.resize();
+    heat.draw( 0.0000005 );
+
+    var texHeat = new THREE.Texture(canvas);
+    texHeat.needsUpdate = true;
+
+    var matHeat = new THREE.SpriteMaterial({
+
+        blending: THREE.AdditiveBlending,
+        depthWrite: true,
+        //map: texHeat,
+        color: 0xffffff
+    });
+
+    var sprite = new THREE.Sprite( matHeat );
+    //sprite.position.set(0, -10000, 1);
+    sprite.scale.set(canvas.width, canvas.height, 1);
+
+    return sprite;
 };
 
 StarSystem.prototype.initSkybox = function() {
