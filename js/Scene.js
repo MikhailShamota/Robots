@@ -601,10 +601,11 @@ var Scene = (function () {
         camera.up = new THREE.Vector3( 0, 0, 1 );
         camera.lookAt( new THREE.Vector3( 0, 0 ,0 ) );
 
-        cameraFix = new THREE.OrthographicCamera( WIDTH / - 2, WIDTH / 2, HEIGHT / 2, HEIGHT / - 2, 1, 10000 );
+        //cameraFix = new THREE.PerspectiveCamera(40, window.width / window.height, 1, R_GALAXY * 10 );
+        cameraFix = new THREE.OrthographicCamera( WIDTH / - 2, WIDTH / 2, HEIGHT / 2, HEIGHT / - 2, -1000000, 100000 );
         cameraFix.aspect = WIDTH / HEIGHT;
         cameraFix.updateProjectionMatrix();
-        //cameraFix = new THREE.PerspectiveCamera(40, window.width / window.height, 1, R_GALAXY * 10 );
+
 
         /*cameraFix.updateProjectionMatrix();*/
 

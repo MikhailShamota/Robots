@@ -142,7 +142,7 @@
         return value;
     }
 
-    function getSprite( gradient ) {
+    function getSprite( gradient, maxOpacity ) {
 
         function rPt( pt, r, pow ) {
 
@@ -175,6 +175,19 @@
             //heat.data(data);
         }
 
+        //STARS
+        for (var j = 0; j < 200; j++) {
+
+            var sf = Math.random();//0..1
+            heat.add([
+                rSpectre( 0, canvas.width ),
+                rSpectre( 0, canvas.height ),
+                maxOpacity,//size
+                spectre( Math.pow( sf, 2 ), 0.5, 4 )//size
+            ]);
+        }
+
+
         // set max data value (1 by default)
         heat.max(1);
 
@@ -191,7 +204,7 @@
         // call in case Canvas size changed
         //heat.resize();
         // draw the heatmap with optional minimum point opacity (0.05 by default)
-        heat.draw( 0.0000005 );
+        heat.draw( 0 );
 
         var texHeat = new THREE.Texture(canvas);
         texHeat.needsUpdate = true;
@@ -230,7 +243,9 @@
     //scene.add( getSprite( { 0.8: c2, 0.3: c1 } ) );
 
     //scene.add( getSprite( { 0.99: 'white', 0.0: 'black' } ) );
-    scene.add( getSprite( Math.random() > 0.5 ? { 0.0: 'white', 0.99: 'black' } : { 0.99: 'white', 0.0: 'black' } ) );
+    //var sprite = Math.random() > 0.5 ? getSprite( {0.0: 'white', 0.99: 'black'}, 0.0001 ) : getSprite( {0.99: 'white', 0.0: 'black'}, 1 );
+    var sprite = 10 > 0.5 ? getSprite( {0.0: 'white', 0.99: 'black'}, -1 ) : getSprite( {0.99: 'white', 0.0: 'black'}, 1 );
+    scene.add( sprite );
 
     /*scene.add( getSprite( {
             1.0: 'white',

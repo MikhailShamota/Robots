@@ -708,8 +708,8 @@ StarSystem.prototype.initSkySprite = function() {
 
         blending: THREE.AdditiveBlending,
         depthWrite: true,
-        //map: texHeat,
-        color: 0xffffff
+        map: texHeat
+        //color: 0xffffff
     });
 
     var sprite = new THREE.Sprite( matHeat );
