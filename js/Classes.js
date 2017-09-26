@@ -649,7 +649,7 @@ StarSystem.prototype.randColor = function() {
     return new THREE.Color().setHSL( r(0,1), r(0.35,0.43), r(0.01,0.35) );
 };
 
-StarSystem.prototype.initSkySprite = function() {
+StarSystem.prototype.initSkySprite = function( res ) {
 
     var self = this;
 
@@ -668,7 +668,8 @@ StarSystem.prototype.initSkySprite = function() {
         return spectre( self.rand(), min, max );
     }
 
-    var gradient = this.rand() > 0.5 ? { 0.0: 'white', 0.99: 'black' } : { 0.99: 'white', 0.0: 'black' };
+    //var gradient = this.rand() > 0.5 ? { 0.0: 'white', 0.99: 'black' } : { 0.99: 'white', 0.0: 'black' };
+    var gradient = { 0.99: 'white', 0.0: 'black' };
 
     var canvas = document.createElement("canvas");
     canvas.width = window.innerWidth;
@@ -677,11 +678,14 @@ StarSystem.prototype.initSkySprite = function() {
     var heat = simpleheat( canvas );
     heat.clear();
 
+    var size = Math.max( canvas.height, canvas.width );
+
     var qty = 200,
         oversize = 1.2,
         x = rSpectre( ( oversize - 1 ) * canvas.width, oversize * canvas.width ),
         y = rSpectre( ( oversize - 1 ) * canvas.height, oversize * canvas.height );
 
+    //var randOpacity = spectre( Math.random() * Math.random(), 0.75, 0.1 );
     for (var i = 0; i < qty; i++) {
 
         var sparkForce = Math.random();//0..1
@@ -689,7 +693,21 @@ StarSystem.prototype.initSkySprite = function() {
             rPt( x, canvas.width, 2 ),
             rPt( y, canvas.height, 2 ),
             spectre( Math.pow( sparkForce, 8 ), 0.01, 0.19 ),// * randOpacity,//light
-            spectre( Math.pow( sparkForce, 2 ), 400, 900 )//size
+            spectre( Math.pow( sparkForce, 2 ), size * 0.235, size * 0.58 )//size
+        ]);
+        // set data of [[x, y, value], ...] format
+        //heat.data(data);
+    }
+
+    //STARS
+    for (var j = 0; j < 200; j++) {
+
+        var sf = Math.random();//0..1
+        heat.add([
+            rSpectre( 0, canvas.width ),
+            rSpectre( 0, canvas.height ),
+            1,//size
+            spectre( Math.pow( sf, 2 ), size * 0.001, size * 0.002 )//size
         ]);
     }
 
@@ -707,18 +725,21 @@ StarSystem.prototype.initSkySprite = function() {
     var matHeat = new THREE.SpriteMaterial({
 
         blending: THREE.AdditiveBlending,
-        depthWrite: true,
+        depthWrite: false,
         map: texHeat
         //color: 0xffffff
     });
 
     var sprite = new THREE.Sprite( matHeat );
+    sprite.scale.set( window.innerWidth, window.innerHeight, 1 );
+
     //sprite.position.set(0, -10000, 1);
-    sprite.scale.set(canvas.width, canvas.height, 1);
+    //sprite.scale.set(canvas.width, canvas.height, 1);
 
     return sprite;
 };
 
+/*
 StarSystem.prototype.initSkybox = function() {
 
     var self = this;
@@ -730,7 +751,7 @@ StarSystem.prototype.initSkybox = function() {
         { size: 8.0, minQty: 1000,  maxQty: 2000, dist: -14000, color:  0xa0a0af }
     ];
 
-    /**STARS!*/
+    //STARS!
     P_STARS.forEach( function( item ) {
 
          var qty = self.rand( item.minQty, item.maxQty );
@@ -751,7 +772,7 @@ StarSystem.prototype.initSkybox = function() {
 
     return ret;
 };
-
+*/
 StarSystem.prototype.initMeshes = function( camera ) {
 
     const Q_PLANETS_MIN = 3;

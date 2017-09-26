@@ -33,7 +33,7 @@
     var WIDTH = window.innerWidth, HEIGHT = window.innerHeight;
 
     //var camera = new THREE.PerspectiveCamera(40, window.width / window.height, 1, 100000 );
-    var camera = new THREE.OrthographicCamera( WIDTH / - 2, WIDTH / 2, HEIGHT / 2, HEIGHT / - 2, 1, 10000 );
+    var camera = new THREE.OrthographicCamera( WIDTH / - 2, WIDTH / 2, HEIGHT / 2, HEIGHT / - 2, -100, 10000 );
     camera.aspect = WIDTH / HEIGHT;
     camera.updateProjectionMatrix();
 
@@ -58,11 +58,11 @@
 
     document.body.appendChild( renderer.domElement );
 
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    /*controls = new THREE.OrbitControls(camera, renderer.domElement);
     //controls.addEventListener( 'change', render ); // add this only if there is no animation loop (requestAnimationFrame)
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
-    controls.enableZoom = true;
+    controls.enableZoom = true;*/
 
 
     scene.background = new THREE.Color( randColor() );
@@ -156,6 +156,8 @@
         var heat = simpleheat(canvas);
         heat.clear();
 
+        var size = Math.max( canvas.height, canvas.width );
+
         var qty = 200,
             oversize = 1.2,
             x = rSpectre( ( oversize - 1 ) * canvas.width, oversize * canvas.width ),
@@ -169,7 +171,7 @@
                 rPt( x, canvas.width, 2 ),
                 rPt( y, canvas.height, 2 ),
                 spectre( Math.pow( sparkForce, 8 ), 0.01, 0.19 ),// * randOpacity,//light
-                spectre( Math.pow( sparkForce, 2 ), 400, 900 )//size
+                spectre( Math.pow( sparkForce, 2 ), size * 0.235, size * 0.58 )//size
             ]);
             // set data of [[x, y, value], ...] format
             //heat.data(data);
@@ -183,7 +185,7 @@
                 rSpectre( 0, canvas.width ),
                 rSpectre( 0, canvas.height ),
                 maxOpacity,//size
-                spectre( Math.pow( sf, 2 ), 0.5, 4 )//size
+                spectre( Math.pow( sf, 2 ), size * 0.001, size * 0.002 )//size
             ]);
         }
 
@@ -212,16 +214,14 @@
         var matHeat = new THREE.SpriteMaterial({
 
             blending: THREE.AdditiveBlending,
-            depthWrite: true,
+            depthWrite: false,
             map: texHeat
         });
 
 
         var sprite = new THREE.Sprite(matHeat);
-        //sprite.position.set(0, -1000, 1);
-        //sprite.scale.set(canvas.width * 2, canvas.height * 2, 1);
 
-        sprite.scale.set(canvas.width, canvas.height, 1);
+        sprite.scale.set( window.innerWidth, window.innerHeight, 1 );
 
 
         /*var halfHeight = sprite.position.distanceTo(camera.position) / Math.tan( camera.fov/2 * Math.PI / 180 );
@@ -244,7 +244,7 @@
 
     //scene.add( getSprite( { 0.99: 'white', 0.0: 'black' } ) );
     //var sprite = Math.random() > 0.5 ? getSprite( {0.0: 'white', 0.99: 'black'}, 0.0001 ) : getSprite( {0.99: 'white', 0.0: 'black'}, 1 );
-    var sprite = 10 > 0.5 ? getSprite( {0.0: 'white', 0.99: 'black'}, -1 ) : getSprite( {0.99: 'white', 0.0: 'black'}, 1 );
+    var sprite = getSprite( {0.99: 'white', 0.0: 'black'} ,1 );
     scene.add( sprite );
 
     /*scene.add( getSprite( {
