@@ -7,7 +7,7 @@ var Scene = (function () {
     var stats, controls, camera, cameraFix, renderer;
     var scene, sceneFix, octree;
 
-    var starSystem /*, skyBox*/;
+    var starSystem, skySprite /*, skyBox*/;
 
     var players = [];
 
@@ -130,7 +130,7 @@ var Scene = (function () {
                 opacity: 0.5,
                 resolution: V2_RESOLUTION,
                 sizeAttenuation: 1,
-                lineWidth: 2,
+                lineWidth: 16,
                 near: 1,
                 far: 100000,
                 depthTest: true,
@@ -148,7 +148,7 @@ var Scene = (function () {
             var line = new THREE.MeshLine( );
             line.setGeometry( geom );
 
-            var mesh = new THREE.Mesh( line.geometry, material ); // this syntax could definitely be improved!*/
+            var mesh = new THREE.Mesh( line.geometry, material );
 
             mesh.source_dir = ray.direction.clone();
             mesh.source_length = length - beamLen;
@@ -633,6 +633,14 @@ var Scene = (function () {
         renderer.setSize(WIDTH, HEIGHT);
         renderer.sortObjects = false;
 
+        $('#buttonMenu').bind(
+            'click',
+            function onDblClick( event ) {
+
+                initSkySprite();
+            }
+        );
+
         var dom = renderer.domElement;
 
         dom.addEventListener(
@@ -785,6 +793,14 @@ var Scene = (function () {
         console.log( id + ' entered' );
     }
 
+    function initSkySprite() {
+
+        sceneFix.background = starSystem.randColor();
+        sceneFix.remove( skySprite );
+        skySprite = starSystem.initSkySprite();
+        sceneFix.add( skySprite );
+    }
+
     function initScene( starSystemId ) {
 
         initStats();
@@ -793,13 +809,11 @@ var Scene = (function () {
 
         /**star system*/
         starSystem = new StarSystem( starSystemId );
-        sceneFix.background = starSystem.randColor();
         initMeshes( starSystem.initMeshes() );
 
         //initMeshes( skyBox );
         //skyBox = starSystem.initSkybox();
-        sceneFix.add( starSystem.initSkySprite() );
-
+        initSkySprite();
 
         iPlayer.id = PeerServer.getMyPeerId();
         initPlayer( iPlayer.id, false );

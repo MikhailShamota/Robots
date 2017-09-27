@@ -525,9 +525,10 @@ function Celestial (pos, radius, color) {
     this.radius = radius;
     this.mass = this.radius * this.radius * this.radius;
 
-    this.mesh.geometry = new THREE.SphereGeometry(radius, 32, 32);
+    this.mesh.geometry = new THREE.SphereGeometry(radius, 48, 48);
     this.mesh.material = new THREE.MeshLambertMaterial({color: color, side: 2, shading: THREE.FlatShading});
 
+    this.color = color;
     //this.rWorld = 0;
     //this.axisUp = V3_UNIT_Y.clone();
 
@@ -543,13 +544,37 @@ function Asteroid(pos, radius, color) {
 
 extend( Asteroid, Celestial );
 
-function Planet(pos, radius, color) {
+function Planet( pos, radius, color ) {
 
     Celestial.apply( this, arguments );
 }
 
 extend( Planet, Celestial );
 
+/*
+Planet.prototype.addAtmosphere = function( starSystem ) {
+
+    if ( starSystem.rand() > 0.5 )
+        return;
+
+    var geometry	= this.mesh.geometry.clone();
+
+    var scale = 1.07;
+
+    geometry.scale( scale, scale, scale );
+
+    var material2	= THREEx.createAtmosphereMaterial();
+    var meshHalo	= new THREE.Mesh( geometry, material2 );
+
+    material2.uniforms.glowColor.value	= 'cyan';
+    material2.uniforms.coeficient.value	= 1.2;
+    material2.uniforms.power.value		= 5;
+
+    this.mesh.add( meshHalo );
+
+    return this;
+};
+*/
 //override
 /*
  Celestial.prototype.newPos = function( dt ) {
@@ -779,7 +804,7 @@ StarSystem.prototype.initMeshes = function( camera ) {
     const Q_PLANETS_MAX = 8;
     const R_PLANET_MIN = 70;
     const R_PLANET_MAX = 100;
-    const V3_SUN = new THREE.Vector3( 0, R_GALAXY * 0.25, 0 );
+    const V3_SUN = new THREE.Vector3( 0, R_GALAXY * 0.5, 0 );
     const Q_MOONS_MAX = 4;
     const R_MOON_MIN = 10;
     const R_MOON_MAX = 20;
@@ -847,7 +872,7 @@ StarSystem.prototype.initMeshes = function( camera ) {
     for ( var j = 0; j < qPlanets; j++ ) {
 
         var radius = this.rand( R_PLANET_MIN, R_PLANET_MAX );
-        var planet = new Planet( this.randV3( R_GALAXY ).setY( 0 ), radius, this.randColor() );
+        var planet = new Planet( this.randV3( R_GALAXY ).setY( 0 ), radius, this.randColor() )/*.addAtmosphere( this )*/;
         add( planet ).setG();
 
         /**Mooons*/
@@ -919,7 +944,7 @@ StarSystem.prototype.initMeshes = function( camera ) {
      }*/
 
     //LIGHT
-    var light = new THREE.PointLight( 0xFFFFFF, 1, 0 );
+    var light = new THREE.PointLight( 0xFFFFFF, 1 );
     light.position.copy( V3_SUN );
 
     //scene.add( light );
