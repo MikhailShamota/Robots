@@ -1,5 +1,4 @@
-//TODO:autoscale - сделать все крупнее
-//TODO:autorotate
+//TODO: materials library
 var Scene = (function () {
 
     var instance;
@@ -127,10 +126,25 @@ var Scene = (function () {
             var material = new THREE.MeshLineMaterial( {
 
                 color: new THREE.Color( "rgb( 255, 255, 2 )" ),
+                opacity: 0.12,
+                resolution: V2_RESOLUTION,
+                sizeAttenuation: 1,
+                lineWidth: 12,
+                near: 1,
+                far: 100000,
+                depthTest: true,
+                blending: THREE.AdditiveBlending,
+                transparent: true,
+                side: THREE.DoubleSide
+            } );
+
+            var material2 = new THREE.MeshLineMaterial( {
+
+                color: new THREE.Color( "rgb( 255, 255, 255 )" ),
                 opacity: 0.5,
                 resolution: V2_RESOLUTION,
                 sizeAttenuation: 1,
-                lineWidth: 16,
+                lineWidth: 3,
                 near: 1,
                 far: 100000,
                 depthTest: true,
@@ -147,8 +161,9 @@ var Scene = (function () {
 
             var line = new THREE.MeshLine( );
             line.setGeometry( geom );
-
             var mesh = new THREE.Mesh( line.geometry, material );
+
+            mesh.add( new THREE.Mesh( line.geometry.clone(), material2 ) );
 
             mesh.source_dir = ray.direction.clone();
             mesh.source_length = length - beamLen;
@@ -627,6 +642,13 @@ var Scene = (function () {
             V2_RESOLUTION.set( renderer.context.canvas.width, renderer.context.canvas.height );
         });
 
+        /*window.addEventListener(
+            "orientationchange",
+            function ( event ) {
+
+                initSkySprite();
+            },
+            true);*/
 
         renderer = new THREE.WebGLRenderer({antialias: true});
         renderer.setPixelRatio( window.devicePixelRatio );

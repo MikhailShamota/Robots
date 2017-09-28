@@ -551,30 +551,30 @@ function Planet( pos, radius, color ) {
 
 extend( Planet, Celestial );
 
-/*
+
 Planet.prototype.addAtmosphere = function( starSystem ) {
 
-    if ( starSystem.rand() > 0.5 )
-        return;
+    if ( starSystem.rand() > 0.0 ) {
 
-    var geometry	= this.mesh.geometry.clone();
+        var geometry = this.mesh.geometry.clone();
 
-    var scale = 1.07;
+        var scale = starSystem.rand( 1.02, 1.09 );
 
-    geometry.scale( scale, scale, scale );
+        geometry.scale(scale, scale, scale);
 
-    var material2	= THREEx.createAtmosphereMaterial();
-    var meshHalo	= new THREE.Mesh( geometry, material2 );
+        var material2 = THREEx.createAtmosphereMaterial().clone();
+        var meshHalo = new THREE.Mesh(geometry, material2);
 
-    material2.uniforms.glowColor.value	= 'cyan';
-    material2.uniforms.coeficient.value	= 1.2;
-    material2.uniforms.power.value		= 5;
+        material2.uniforms.glowColor.value = this.color.multiplyScalar( 5 );//starSystem.randColor().multiplyScalar( 5 );
+        material2.uniforms.coeficient.value = 1.2;
+        material2.uniforms.power.value = starSystem.rand( 0.9, 5.0 );
 
-    this.mesh.add( meshHalo );
+        this.mesh.add( meshHalo );
+    }
 
     return this;
 };
-*/
+
 //override
 /*
  Celestial.prototype.newPos = function( dt ) {
@@ -872,7 +872,7 @@ StarSystem.prototype.initMeshes = function( camera ) {
     for ( var j = 0; j < qPlanets; j++ ) {
 
         var radius = this.rand( R_PLANET_MIN, R_PLANET_MAX );
-        var planet = new Planet( this.randV3( R_GALAXY ).setY( 0 ), radius, this.randColor() )/*.addAtmosphere( this )*/;
+        var planet = new Planet( this.randV3( R_GALAXY ).setY( 0 ), radius, this.randColor() ).addAtmosphere( this );
         add( planet ).setG();
 
         /**Mooons*/
