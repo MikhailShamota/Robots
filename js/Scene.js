@@ -36,6 +36,7 @@ var Scene = (function () {
 
             "lasers": new LoopedArray( 100, 1150 ),//100 qty, 30 ms to live
             "hits": new LoopedArray( 100, 40 ),
+            "shotFlare": new LoopedArray( 100, 20 ),
             "explosions": new LoopedArray( 10, 50 ),
             "radar": new LoopedArray( 25, SCAN_SEC_MAX * 1000 * 2 )// x 2 because of delayed start
         }
@@ -110,6 +111,15 @@ var Scene = (function () {
         );
     }
 
+    function addShotFlare( pt ) {
+
+        loopedArrays.add2scene(
+
+            "shotFlare",
+            Flare( pt, 50, 0xffff00, 'res/blue_particle.jpg' )
+        );
+    }
+
     function addExplosion( pt ) {
 
         loopedArrays.add2scene(
@@ -125,7 +135,7 @@ var Scene = (function () {
 
             var material = new THREE.MeshLineMaterial( {
 
-                color: new THREE.Color( "rgb( 255, 255, 2 )" ),
+                color: new THREE.Color( "rgb( 255, 255, 0 )" ),
                 opacity: 0.12,
                 resolution: V2_RESOLUTION,
                 sizeAttenuation: 1,
@@ -140,7 +150,7 @@ var Scene = (function () {
 
             var material2 = new THREE.MeshLineMaterial( {
 
-                color: new THREE.Color( "rgb( 255, 255, 255 )" ),
+                color: new THREE.Color( "rgb( 255, 255, 0 )" ),
                 opacity: 0.5,
                 resolution: V2_RESOLUTION,
                 sizeAttenuation: 1,
@@ -360,9 +370,9 @@ var Scene = (function () {
                 obj.updateMesh();
                 obj.updateSpec();
 
-                obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > 50 || ! obj.lastFired ) && fire( obj );//do not calc damage from my vessels, only on my vessel
+                obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > ( SHOT_MIN_MSEC + ( obj.canonHeat || 0 ) ) || ! obj.lastFired ) && fire( obj );//do not calc damage from my vessels, only on my vessel
 
-
+                obj.canonHeat -=  dt * SHOT_COOL_MSEC_PER_SEC;
             });
         }
 
@@ -580,8 +590,10 @@ var Scene = (function () {
             }
         });
 
+        addShotFlare( from.fwd().multiplyScalar( 25 ).add( from.pos ) );
         addShot( raycaster.ray, dist );
         from.lastFired = nowTime;
+        from.canonHeat = ( from.canonHeat || 0 ) + SHOT_HEAT_MSEC;
     }
 
     function scan( from ) {

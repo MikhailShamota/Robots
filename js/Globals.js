@@ -24,6 +24,10 @@ const SCAN_DIST_MAX = R_GALAXY * 2;
 const SCAN_SEC_MIN = 0.5;
 const SCAN_SEC_MAX = 1.5;
 
+const SHOT_HEAT_MSEC = 25;//add duration reload per shot
+const SHOT_MIN_MSEC = 50;//default duration reload
+const SHOT_COOL_MSEC_PER_SEC = 100;//cooling canon heat msec per sec
+
 //constants
 const MSEC_IN_SEC = 1000;
 
