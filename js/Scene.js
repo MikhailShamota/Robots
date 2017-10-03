@@ -116,7 +116,7 @@ var Scene = (function () {
         loopedArrays.add2scene(
 
             "shotFlare",
-            Flare( pt, 50, 0xffff00, 'res/blue_particle.jpg' )
+            Flare( pt, 50, SHOT_COLOR, 'res/blue_particle.jpg' )
         );
     }
 
@@ -133,13 +133,15 @@ var Scene = (function () {
 
         function Beam( ray, length ) {
 
+            var color = new THREE.Color( SHOT_COLOR );
+
             var material = new THREE.MeshLineMaterial( {
 
-                color: new THREE.Color( "rgb( 255, 255, 0 )" ),
-                opacity: 0.12,
+                color: color,
+                opacity: 0.25,
                 resolution: V2_RESOLUTION,
                 sizeAttenuation: 1,
-                lineWidth: 12,
+                lineWidth: 10,
                 near: 1,
                 far: 100000,
                 depthTest: true,
@@ -150,11 +152,11 @@ var Scene = (function () {
 
             var material2 = new THREE.MeshLineMaterial( {
 
-                color: new THREE.Color( "rgb( 255, 255, 0 )" ),
-                opacity: 0.5,
+                color: color,
+                opacity: 0.75,
                 resolution: V2_RESOLUTION,
                 sizeAttenuation: 1,
-                lineWidth: 3,
+                lineWidth: 4,
                 near: 1,
                 far: 100000,
                 depthTest: true,
