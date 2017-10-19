@@ -138,19 +138,19 @@ var Scene = (function () {
             var material = new THREE.MeshLineMaterial( {
 
                 color: color,
-                opacity: 0.25,
+                opacity: 1.0,
                 resolution: V2_RESOLUTION,
                 sizeAttenuation: 1,
-                lineWidth: 10,
+                lineWidth: 7,
                 near: 1,
                 far: 100000,
                 depthTest: true,
                 blending: THREE.AdditiveBlending,
-                transparent: true,
+                transparent: false,
                 side: THREE.DoubleSide
             } );
 
-            var material2 = new THREE.MeshLineMaterial( {
+            /*var material2 = new THREE.MeshLineMaterial( {
 
                 color: color,
                 opacity: 0.75,
@@ -163,9 +163,9 @@ var Scene = (function () {
                 blending: THREE.AdditiveBlending,
                 transparent: true,
                 side: THREE.DoubleSide
-            } );
+            } );*/
 
-            const beamLen = 50;
+            const beamLen = 40;
             var geom = new THREE.Geometry( );
 
             geom.vertices.push( ray.origin.clone( ) );
@@ -175,7 +175,7 @@ var Scene = (function () {
             line.setGeometry( geom );
             var mesh = new THREE.Mesh( line.geometry, material );
 
-            mesh.add( new THREE.Mesh( line.geometry.clone(), material2 ) );
+            //mesh.add( new THREE.Mesh( line.geometry.clone(), material2 ) );
 
             mesh.source_dir = ray.direction.clone();
             mesh.source_length = length - beamLen;
@@ -450,6 +450,8 @@ var Scene = (function () {
             var dir = cameraToPos.sub( camera.position ).clampLength ( 0, V_CAMERA_LIMIT );
             dir.lengthSq() && camera.position.add( dir.multiplyScalar( V_CAMERA * dt ) );
 
+            //camera.lookAt( vessel.pos );
+
             /*skyBox.forEach( function( mesh ) {
 
                 mesh.position.copy( camera.position );
@@ -669,13 +671,13 @@ var Scene = (function () {
         renderer.setSize(WIDTH, HEIGHT);
         renderer.sortObjects = false;
 
-        $('#buttonMenu').bind(
+        /*$('#buttonMenu').bind(
             'click',
             function onDblClick( event ) {
 
                 initSkySprite();
             }
-        );
+        );*/
 
         var dom = renderer.domElement;
 
@@ -738,7 +740,7 @@ var Scene = (function () {
 
         document.body.appendChild( renderer.domElement );
 
-        //scene.background = new THREE.Color( C_BACKGROUND );
+        scene.background = new THREE.Color( C_BACKGROUND );
 
         V2_RESOLUTION = new THREE.Vector2( renderer.context.canvas.width, renderer.context.canvas.height );
     }
@@ -829,6 +831,7 @@ var Scene = (function () {
         console.log( id + ' entered' );
     }
 
+    /*
     function initSkySprite() {
 
         sceneFix.background = starSystem.randColor();
@@ -836,6 +839,7 @@ var Scene = (function () {
         skySprite = starSystem.initSkySprite();
         sceneFix.add( skySprite );
     }
+    */
 
     function initScene( starSystemId ) {
 
@@ -849,7 +853,8 @@ var Scene = (function () {
 
         //initMeshes( skyBox );
         //skyBox = starSystem.initSkybox();
-        initSkySprite();
+
+        //initSkySprite();
 
         iPlayer.id = PeerServer.getMyPeerId();
         initPlayer( iPlayer.id, false );
@@ -876,10 +881,10 @@ var Scene = (function () {
 
         requestAnimationFrame(paintScene);
 
-        renderer.autoClear = false;
+        //renderer.autoClear = false;
         renderer.clear();
-        renderer.render(sceneFix, cameraFix);
-        renderer.clearDepth();
+        //renderer.render(sceneFix, cameraFix);
+        //renderer.clearDepth();
         renderer.render(scene, camera);
 
     }

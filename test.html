@@ -65,7 +65,8 @@
     controls.enableZoom = true;*/
 
 
-    scene.background = new THREE.Color( randColor() );
+    scene.background = new THREE.Color(0x181818);
+
 
 
     var texture = new THREE.TextureLoader().load( "res/planet4.jpg", function( t ) {
@@ -73,7 +74,20 @@
         t.minFilter = THREE.LinearFilter;
 
         var geom = new THREE.SphereGeometry( 64, 32, 32 );
-        var material = new THREE.MeshLambertMaterial( { map: t } );
+        //var material = new THREE.MeshLambertMaterial( { map: t } );
+        var material = new THREE.MeshToonMaterial( {
+            map: null,
+            bumpMap: null,
+            bumpScale: 1,
+            color: randColor(1),
+            specular: null,
+            reflectivity: 0,
+            shininess: 0,
+            envMap: null
+        } );
+
+
+
         var mesh = new THREE.Mesh( geom, material );
 
         mesh.rotateX( Math.random() * Math.PI );
@@ -103,7 +117,7 @@
     } );
 
     var light = new THREE.PointLight( 0xffffff, 1 );
-    light.position.copy( new THREE.Vector3( 100, 1000, 100 ) );
+    light.position.copy( new THREE.Vector3( 500, 500, 100 ) );
 
     scene.add( light );
 
@@ -231,26 +245,10 @@
 
         return sprite;
     }
-    /*var halfHeight = sprite.position.distanceTo(camera.position) / Math.tan( camera.fov/2 * Math.PI / 180 );
-    var yscale = halfHeight * 2;
-    var xscale = yscale * texHeat.image.width / texHeat.image.height;//, or the other way round y-scale = x-scale * textureHeight / textureWidth.
-    sprite.scale.set( xscale, yscale, 1 );*/
 
-    //scene.add( getSprite( { 0.8: randColor().getStyle(), 0.5: randColor().getStyle(), 0.2:'black' } ) );
-    //var c1 = randColor().getStyle();
-    //var c2 = randColor().getStyle();
+/*    var sprite = getSprite( {0.99: 'white', 0.0: 'black'} ,1 );
+    scene.add( sprite );*/
 
-    //scene.add( getSprite( { 0.8: c2, 0.3: c1 } ) );
-
-    //scene.add( getSprite( { 0.99: 'white', 0.0: 'black' } ) );
-    //var sprite = Math.random() > 0.5 ? getSprite( {0.0: 'white', 0.99: 'black'}, 0.0001 ) : getSprite( {0.99: 'white', 0.0: 'black'}, 1 );
-    var sprite = getSprite( {0.99: 'white', 0.0: 'black'} ,1 );
-    scene.add( sprite );
-
-    /*scene.add( getSprite( {
-            1.0: 'white',
-            0.0: 'black'
-        }, 0.25 ) );*/
 
 
 </script>

@@ -1,6 +1,6 @@
 const R_GALAXY = 4000;
 const R_START_DROP = 1500;
-//const C_BACKGROUND = 0x181818;
+const C_BACKGROUND = 0x181818;//( 0x020E1F );2A2C2B
 const V_CAMERA = 2;//camera speed
 const V_CAMERA_LIMIT = 1000;//camera speed limit
 const Y_CAMERA_MIN = 1000;//closest camera pos Y
@@ -27,7 +27,7 @@ const SCAN_SEC_MAX = 1.5;
 const SHOT_HEAT_MSEC = 25;//add duration reload per shot
 const SHOT_MIN_MSEC = 50;//default duration reload
 const SHOT_COOL_MSEC_PER_SEC = 100;//cooling canon heat msec per sec
-const SHOT_COLOR = "rgb( 66, 226, 255 )";
+const SHOT_COLOR = "rgb( 241, 255, 133 )";
 
 //constants
 const MSEC_IN_SEC = 1000;

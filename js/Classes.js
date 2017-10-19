@@ -305,12 +305,14 @@ function Vessel( pos, mass, color ) {
     this.trailMeshes = [];
     this.trailLines = [];
     this.dtJet = 0;
-    this.trailWidth = 4;
 
     this.toughness = 1;
     this.hits = this.toughness;//toughness
 
     this.color = color;
+    this.colorHue = this.color.getHSL().h;
+    this.colorEdge = this.color.clone().setHSL( this.colorHue, 1, 0.5);
+    this.colorPlane = this.color.clone().setHSL( this.colorHue, 1, 0.2);
 
     this.isFiring = false;
 
@@ -449,12 +451,13 @@ Vessel.prototype.updateTrail = function(dt) {
 
 Vessel.prototype.initTrail = function () {
 
+    var trailWidth = 6;
     var material = new THREE.MeshLineMaterial( {
-        color: new THREE.Color( this.color ),
-        opacity: 0.5,
+        color: new THREE.Color( this.colorEdge ),
+        opacity:0.5,
         resolution: V2_RESOLUTION,
-        sizeAttenuation: 1,
-        lineWidth: this.trailWidth,
+        sizeAttenuation: true,
+        lineWidth: trailWidth,//see bellow override thickness
         near: 1,
         far: 100000,
         depthTest: true,
@@ -510,7 +513,16 @@ function Fighter(pos, mass, color) {
     box1.merge( box2, new THREE.Matrix4().makeTranslation( 0, 0, -size) );
 
     this.mesh.geometry = box1;
-    this.mesh.material = new THREE.MeshLambertMaterial({color: color, side: 2, shading: THREE.FlatShading});
+    //this.mesh.material = new THREE.MeshLambertMaterial({color: 0x660138/*color*/, side: 2, shading: THREE.FlatShading});
+    this.mesh.material = new THREE.MeshBasicMaterial({color: this.colorPlane });
+
+    //edge geometry
+    var geo = new THREE.EdgesGeometry( this.mesh.geometry ); // or WireframeGeometry( geometry )
+    var mat = new THREE.LineBasicMaterial( { color: this.colorEdge, linewidth: 5 } );
+    var wireframe = new THREE.LineSegments( geo, mat );
+
+    this.mesh.add( wireframe );
+
 
     this.ptJet = [ new THREE.Vector3( -size * 0.5 , 0, -size * 1.5), new THREE.Vector3( size * 0.5, 0, -size * 1.5) ];
 }
@@ -526,7 +538,17 @@ function Celestial (pos, radius, color) {
     this.mass = this.radius * this.radius * this.radius;
 
     this.mesh.geometry = new THREE.SphereGeometry(radius, 48, 48);
-    this.mesh.material = new THREE.MeshLambertMaterial({color: color, side: 2, shading: THREE.FlatShading});
+    //this.mesh.material = new THREE.MeshLambertMaterial({color: color, side: 2, shading: THREE.FlatShading});
+    this.mesh.material = new THREE.MeshToonMaterial( {
+        map: null,
+        bumpMap: null,
+        bumpScale: 1,
+        color: color,
+        specular: null,
+        reflectivity: 0,
+        shininess: 0,
+        envMap: null
+    } );
 
     this.color = color;
     //this.rWorld = 0;
@@ -673,7 +695,7 @@ StarSystem.prototype.randColor = function() {
 
     return new THREE.Color().setHSL( r(0,1), r(0.35,0.43), r(0.01,0.35) );
 };
-
+/*
 StarSystem.prototype.initSkySprite = function( res ) {
 
     var self = this;
@@ -763,7 +785,7 @@ StarSystem.prototype.initSkySprite = function( res ) {
 
     return sprite;
 };
-
+*/
 /*
 StarSystem.prototype.initSkybox = function() {
 
@@ -804,7 +826,7 @@ StarSystem.prototype.initMeshes = function( camera ) {
     const Q_PLANETS_MAX = 8;
     const R_PLANET_MIN = 70;
     const R_PLANET_MAX = 100;
-    const V3_SUN = new THREE.Vector3( 0, R_GALAXY * 0.5, 0 );
+    const V3_SUN = new THREE.Vector3( R_GALAXY * 0.5, R_GALAXY * 0.5, 0 );
     const Q_MOONS_MAX = 4;
     const R_MOON_MIN = 10;
     const R_MOON_MAX = 20;
