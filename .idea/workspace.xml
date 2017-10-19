@@ -4,11 +4,6 @@
     <list default="true" id="510eed05-ed6a-4361-9ef3-ef26ad0cd624" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Classes.js" afterPath="$PROJECT_DIR$/js/Classes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Globals.js" afterPath="$PROJECT_DIR$/js/Globals.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Scene.js" afterPath="$PROJECT_DIR$/js/Scene.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/three.js" afterPath="$PROJECT_DIR$/js/three.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.html" afterPath="$PROJECT_DIR$/main.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.html" afterPath="$PROJECT_DIR$/test.html" />
     </list>
     <ignored path="Robots.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -83,37 +78,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="test.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.8846154">
+            <state vertical-scroll-proportion="-0.057511736">
               <caret line="96" column="26" selection-start-line="96" selection-start-column="26" selection-end-line="96" selection-end-column="26" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Classes.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/js/Classes.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.31321186">
-              <caret line="456" column="19" selection-start-line="456" selection-start-column="19" selection-end-line="456" selection-end-column="19" />
-              <folding>
-                <element signature="n#!!block;n#StarSystem#0" expanded="false" />
-                <element signature="e#15614#15658#0" expanded="false" />
-                <element signature="e#15710#15953#0" expanded="false" />
-                <element signature="e#16006#16201#0" expanded="false" />
-                <element signature="e#16204#16428#0" expanded="false" />
-                <element signature="e#16474#16660#0" expanded="false" />
-                <element signature="e#16662#19263#0" expanded="false" />
-                <element signature="e#20900#21547#0" expanded="false" />
-                <element signature="e#21581#21665#0" expanded="false" />
-                <element signature="e#21701#21796#0" expanded="false" />
-                <element signature="e#21934#22625#0" expanded="false" />
-                <element signature="e#22758#23146#0" expanded="false" />
-                <element signature="e#23178#23587#0" expanded="false" />
-                <element signature="e#23626#24299#0" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -379,12 +349,6 @@
       <workItem from="1483040499861" duration="204000" />
       <workItem from="1483808321278" duration="830000" />
       <workItem from="1483883140725" duration="7448000" />
-    </task>
-    <task id="LOCAL-00060" summary="Player.isProxy">
-      <created>1498062485954</created>
-      <option name="number" value="00060" />
-      <option name="project" value="LOCAL" />
-      <updated>1498062485954</updated>
     </task>
     <task id="LOCAL-00061" summary="set players to vessels by link&#10;update octree on every player mesh init">
       <created>1499776904138</created>
@@ -674,7 +638,13 @@
       <option name="project" value="LOCAL" />
       <updated>1507029921282</updated>
     </task>
-    <option name="localTasksCounter" value="109" />
+    <task id="LOCAL-00109" summary="All new NEON design">
+      <created>1508415986587</created>
+      <option name="number" value="00109" />
+      <option name="project" value="LOCAL" />
+      <updated>1508415986588</updated>
+    </task>
+    <option name="localTasksCounter" value="110" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -695,6 +665,7 @@
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32671082" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289183" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -704,7 +675,6 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -748,7 +718,6 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="false" />
-    <MESSAGE value="camera follows v1" />
     <MESSAGE value="stars" />
     <MESSAGE value="SPHERICAL MOVEMENT!" />
     <MESSAGE value="step back" />
@@ -773,7 +742,8 @@
     <MESSAGE value="atmosphere" />
     <MESSAGE value="canonfire" />
     <MESSAGE value="canon fire" />
-    <option name="LAST_COMMIT_MESSAGE" value="canon fire" />
+    <MESSAGE value="All new NEON design" />
+    <option name="LAST_COMMIT_MESSAGE" value="All new NEON design" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1327,14 +1297,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.8846154">
-          <caret line="96" column="26" selection-start-line="96" selection-start-column="26" selection-end-line="96" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-15.115385">
@@ -1385,24 +1347,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/Classes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31321186">
-          <caret line="456" column="19" selection-start-line="456" selection-start-column="19" selection-end-line="456" selection-end-column="19" />
+        <state vertical-scroll-proportion="0.787016">
+          <caret line="1071" column="48" selection-start-line="1071" selection-start-column="48" selection-end-line="1071" selection-end-column="48" />
           <folding>
             <element signature="n#!!block;n#StarSystem#0" expanded="false" />
-            <element signature="e#15614#15658#0" expanded="false" />
-            <element signature="e#15710#15953#0" expanded="false" />
-            <element signature="e#16006#16201#0" expanded="false" />
-            <element signature="e#16204#16428#0" expanded="false" />
-            <element signature="e#16474#16660#0" expanded="false" />
-            <element signature="e#16662#19263#0" expanded="false" />
-            <element signature="e#20900#21547#0" expanded="false" />
-            <element signature="e#21581#21665#0" expanded="false" />
-            <element signature="e#21701#21796#0" expanded="false" />
-            <element signature="e#21934#22625#0" expanded="false" />
-            <element signature="e#22758#23146#0" expanded="false" />
-            <element signature="e#23178#23587#0" expanded="false" />
-            <element signature="e#23626#24299#0" expanded="false" />
+            <element signature="e#15715#15958#0" expanded="false" />
+            <element signature="e#16011#16206#0" expanded="false" />
+            <element signature="e#16209#16433#0" expanded="false" />
+            <element signature="e#16667#19268#0" expanded="false" />
+            <element signature="e#20929#21576#0" expanded="false" />
+            <element signature="e#21610#21694#0" expanded="false" />
+            <element signature="e#21730#21825#0" expanded="false" />
+            <element signature="e#22825#23213#0" expanded="false" />
+            <element signature="e#23245#23654#0" expanded="false" />
+            <element signature="e#23693#24366#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.057511736">
+          <caret line="96" column="26" selection-start-line="96" selection-start-column="26" selection-end-line="96" selection-end-column="26" />
+          <folding />
         </state>
       </provider>
     </entry>

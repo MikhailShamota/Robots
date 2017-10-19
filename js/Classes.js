@@ -466,7 +466,6 @@ Vessel.prototype.initTrail = function () {
         side: THREE.DoubleSide
     });
 
-
     var self = this;
     var pos = this.pos || V3_ZERO;
 
@@ -536,6 +535,7 @@ function Celestial (pos, radius, color) {
     //var radius = Math.cbrt( this.mass );
     this.radius = radius;
     this.mass = this.radius * this.radius * this.radius;
+    this.color = color;
 
     this.mesh.geometry = new THREE.SphereGeometry(radius, 48, 48);
     //this.mesh.material = new THREE.MeshLambertMaterial({color: color, side: 2, shading: THREE.FlatShading});
@@ -543,14 +543,14 @@ function Celestial (pos, radius, color) {
         map: null,
         bumpMap: null,
         bumpScale: 1,
-        color: color,
+        color: this.color,
         specular: null,
         reflectivity: 0,
         shininess: 0,
         envMap: null
     } );
 
-    this.color = color;
+
     //this.rWorld = 0;
     //this.axisUp = V3_UNIT_Y.clone();
 
@@ -822,18 +822,19 @@ StarSystem.prototype.initSkybox = function() {
 */
 StarSystem.prototype.initMeshes = function( camera ) {
 
+    const Q_CELESTIALS_LIMIT = 90;
     const Q_PLANETS_MIN = 3;
     const Q_PLANETS_MAX = 8;
     const R_PLANET_MIN = 70;
     const R_PLANET_MAX = 100;
-    const V3_SUN = new THREE.Vector3( R_GALAXY * 0.5, R_GALAXY * 0.5, 0 );
+    const V3_SUN = new THREE.Vector3( R_GALAXY, R_GALAXY, 0 );
     const Q_MOONS_MAX = 4;
     const R_MOON_MIN = 10;
     const R_MOON_MAX = 20;
     const K_MOON_SPARSE_MIN = 3;
     const K_MOON_SPARSE_MAX = 4;
     const AXIS_MOON_MAX = 0.8;//rad
-    const Q_ASTEROIDS_MAX = 100;
+    //const Q_ASTEROIDS_MAX = 30;
     const R_ASTEROID_MIN = 3;
     const R_ASTEROID_MAX = 5;
     const V_ASTEROID_MAX = 20;//per sec
@@ -890,7 +891,6 @@ StarSystem.prototype.initMeshes = function( camera ) {
 
     /**PLANETS!*/
     var qPlanets = Math.floor( this.rand( Q_PLANETS_MIN, Q_PLANETS_MAX ) );
-
     for ( var j = 0; j < qPlanets; j++ ) {
 
         var radius = this.rand( R_PLANET_MIN, R_PLANET_MAX );
@@ -910,7 +910,7 @@ StarSystem.prototype.initMeshes = function( camera ) {
         }
     }
     /**ASTEROIDS!*/
-    var qAsteroids = Math.floor( this.rand( 0, Q_ASTEROIDS_MAX ) );
+    var qAsteroids = Math.floor( this.rand( 0, Q_CELESTIALS_LIMIT - meshes.length /*Q_ASTEROIDS_MAX*/ ) );
 
     for ( var j = 0; j < qAsteroids; j++ ) {
 
@@ -1069,7 +1069,7 @@ function RandomPool( seed ) {
         min = min || 0;
 
         this.seed = (this.seed * 9301 + 49297) % 233280;
-        var rnd = this.seed / 233280;
+        var rnd = Math.abs( this.seed / 233280 );
 
         return min + rnd * (max - min);
     }
