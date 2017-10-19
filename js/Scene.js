@@ -1,3 +1,4 @@
+//TODO: Exotic camera!
 //TODO: materials library
 var Scene = (function () {
 
@@ -202,7 +203,7 @@ var Scene = (function () {
                 return new THREE.MeshLineMaterial( {
 
                     color: new THREE.Color( "rgb( 0, 255, 0 )" ),
-                    opacity: 0.43,
+                    opacity: 0.73,
                     resolution: V2_RESOLUTION,
                     sizeAttenuation: 1,
                     lineWidth: 10,
@@ -447,10 +448,12 @@ var Scene = (function () {
             var vesselPos = vessel.mesh.position.clone();
 
             var cameraToPos = vesselPos.clone().setY( MathHelper.lerp( Y_CAMERA_MIN, Y_CAMERA_MAX, getDist( dist ) ) );
+            var backward = vessel.fwd().clone().multiplyScalar( -( Y_CAMERA_MAX - Y_CAMERA_MIN ) );//сдвинем камеру назад настолько, насколько она высоко поднята
+            cameraToPos.add( backward );
             var dir = cameraToPos.sub( camera.position ).clampLength ( 0, V_CAMERA_LIMIT );
             dir.lengthSq() && camera.position.add( dir.multiplyScalar( V_CAMERA * dt ) );
 
-            //camera.lookAt( vessel.pos );
+            camera.lookAt( vessel.pos );
 
             /*skyBox.forEach( function( mesh ) {
 
