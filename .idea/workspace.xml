@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="510eed05-ed6a-4361-9ef3-ef26ad0cd624" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LICENCE.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/LICENSE.txt" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/LICENCE.txt" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Robots.iws" />
@@ -66,11 +67,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="LICENCE.txt" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/LICENCE.txt">
+      <file leaf-file-name="LICENSE.txt" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/LICENSE.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.05808656">
-              <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.019362187">
+              <caret line="1" column="168" selection-start-line="1" selection-start-column="168" selection-end-line="1" selection-end-column="168" />
               <folding />
             </state>
           </provider>
@@ -163,6 +164,7 @@
         <option value="$PROJECT_DIR$/js/Classes.js" />
         <option value="$PROJECT_DIR$/js/Scene.js" />
         <option value="$PROJECT_DIR$/LICENCE.txt" />
+        <option value="$PROJECT_DIR$/LICENSE.txt" />
       </list>
     </option>
   </component>
@@ -373,12 +375,6 @@
       <workItem from="1483040499861" duration="204000" />
       <workItem from="1483808321278" duration="830000" />
       <workItem from="1483883140725" duration="7448000" />
-    </task>
-    <task id="LOCAL-00064" summary="get CouchDB games list">
-      <created>1500573269468</created>
-      <option name="number" value="00064" />
-      <option name="project" value="LOCAL" />
-      <updated>1500573269468</updated>
     </task>
     <task id="LOCAL-00065" summary="get CouchDB games list group by">
       <created>1500651478297</created>
@@ -668,7 +664,13 @@
       <option name="project" value="LOCAL" />
       <updated>1508490570826</updated>
     </task>
-    <option name="localTasksCounter" value="113" />
+    <task id="LOCAL-00113" summary="LICENCE.txt">
+      <created>1508490933783</created>
+      <option name="number" value="00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1508490933783</updated>
+    </task>
+    <option name="localTasksCounter" value="114" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -742,7 +744,6 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="false" />
-    <MESSAGE value="main menu colors to blue" />
     <MESSAGE value="smooth movements" />
     <MESSAGE value="infinite galaxy" />
     <MESSAGE value="skyBox" />
@@ -767,7 +768,8 @@
     <MESSAGE value="random fix (not negative values only)" />
     <MESSAGE value="crazy camera&#10;WOW!" />
     <MESSAGE value="best camera of the World!" />
-    <option name="LAST_COMMIT_MESSAGE" value="best camera of the World!" />
+    <MESSAGE value="LICENCE.txt" />
+    <option name="LAST_COMMIT_MESSAGE" value="LICENCE.txt" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1392,10 +1394,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LICENCE.txt">
+    <entry file="file://$PROJECT_DIR$/LICENSE.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.05808656">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.019362187">
+          <caret line="1" column="168" selection-start-line="1" selection-start-column="168" selection-end-line="1" selection-end-column="168" />
           <folding />
         </state>
       </provider>
