@@ -454,6 +454,7 @@ var Scene = (function () {
             dir.lengthSq() && camera.position.add( dir.multiplyScalar( V_CAMERA * dt ) );
 
             camera.lookAt( vessel.pos );
+            camera.up = new THREE.Vector3( 0, 1, 0 );
 
             /*skyBox.forEach( function( mesh ) {
 

@@ -513,11 +513,17 @@ function Fighter(pos, mass, color) {
 
     this.mesh.geometry = box1;
     //this.mesh.material = new THREE.MeshLambertMaterial({color: 0x660138/*color*/, side: 2, shading: THREE.FlatShading});
-    this.mesh.material = new THREE.MeshBasicMaterial({color: this.colorPlane });
+    this.mesh.material = new THREE.MeshBasicMaterial( {color: this.colorPlane } );
 
     //edge geometry
     var geo = new THREE.EdgesGeometry( this.mesh.geometry ); // or WireframeGeometry( geometry )
-    var mat = new THREE.LineBasicMaterial( { color: this.colorEdge, linewidth: 5 } );
+    var mat = new THREE.LineBasicMaterial(
+        {
+            color: this.colorEdge,
+            linewidth: 2,
+            linecap: 'round', //ignored by WebGLRenderer
+            linejoin:  'round' //ignored by WebGLRenderer
+        } );
     var wireframe = new THREE.LineSegments( geo, mat );
 
     this.mesh.add( wireframe );
