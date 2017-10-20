@@ -2,3 +2,13 @@ li {
 
     border: 25px solid transparent;
 }
+
+.footer {
+    position: relative;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    text-align: center;
+    font-size: xx-small;
+}

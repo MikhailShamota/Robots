@@ -28,14 +28,21 @@
 </head>
 <body style="width:100vw;height:100vh;color: #66F0FF;">
 
-<table class="wrapper" id="dMenu" style="width: 100%;height: 100%;background-color: #282828; position: absolute; top:0; bottom: 0;left: 0; right: 0; margin: auto;text-align: center" >
+<table class="wrapper" id="dMenu" style="width: 100%;height: 100%;background-color: #282828; position: relative; top:0; bottom: 0;left: 0; right: 0; margin: auto;text-align: center" >
+    <tbody>
     <tr><td>
     <div id="menu">
-            <h1>Material design</h1>
-            <h3 id="hConnStatus"><div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div></h3>
             <ul class="mdl-list" >
+                <li>
+                    <h1>Material design</h1>
+                    <h3 id="hConnStatus"><div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div></h3>
+                </li>
 
-                <ul class="mdl-list" id="gamesList"></ul>
+                <li>
+                    <ul class="mdl-list" id="gamesList">
+                    </ul>
+                </li>
+
                 <li class="mdl-list__item">
                     <span  class="mdl-list__item-primary-content" >
                         <div style="width: 100%"><button onclick="enterGame()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Start new</button></div>
@@ -44,6 +51,12 @@
             </ul>
     </div>
     </td></tr>
+<tr style="height:0"><td>
+    <div class="footer">This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.<br>
+        To view a copy of this license, visit <a href="http://creativecommons.org/licenses/by-nc-nd/3.0/">http://creativecommons.org/licenses/by-nc-nd/3.0/</a> or send a letter to Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.</div>
+</td>
+</tr>
+</tbody>
 </table>
 
 <!--<div id="dScene" style="display:none; width: 100%;height: 100%; position: absolute; top:0; bottom: 0;left: 0; right: 0; margin: 0;text-align: center" ></div>-->
@@ -53,6 +66,7 @@
 <!--<button id="buttonMenu" style="position:absolute; left:30px; top:40px" onclick="" class="mdl-button mdl-js-button mdl-button--accent">[&#9732]</button>-->
 <!--<button id="buttonFire" style="position:absolute; right:30px; bottom:30px" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">&#8230</button>-->
 <p style="color:white; width:100%;position: absolute; bottom: 30px; margin: auto;text-align: center; display:none" id="Score">0:0</p>
+
 
 <script>
 

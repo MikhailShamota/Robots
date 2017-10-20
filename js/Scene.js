@@ -70,7 +70,7 @@ var Scene = (function () {
 
     var v3MousePoint = new THREE.Vector3();
 
-    var cursor = new THREE.Mesh( new THREE.PlaneGeometry( 50, 50 ) );
+    //var cursor = new THREE.Mesh( new THREE.PlaneGeometry( 50, 50 ) );
 
     function Flare( pos, size, color, texture ) {
 
@@ -343,23 +343,6 @@ var Scene = (function () {
                 if ( !obj.mesh.visible )
                     return;
 
-                /*infinine map*/
-                /*if ( obj.pos ) {
-
-                    function vec2str( v ) {
-
-                        return Math.round( v.x ) + "   " + Math.round( v.y ) + "   " + Math.round( v.z );
-                    }
-
-                    var dist = camera.position.clone().setY(0).clone().sub(obj.pos).multiplyScalar(1 / R_GALAXY).roundToZero();
-
-                    if ( obj.hits && obj.player.isProxy )
-                        document.getElementById("buttonScreenMode").innerHTML =  vec2str( dist );
-
-
-                    obj.pos.add(dist.multiplyScalar(2 * R_GALAXY));
-                }*/
-
                 //CHECK & KILL & REMOVE
                 obj.hits <= 0 && killObject( obj );
 
@@ -513,13 +496,14 @@ var Scene = (function () {
             v3MousePoint = raycaster.ray.intersectPlane( eclipticPlane );
             //v3MousePoint = raycaster.ray.intersectSphere( new THREE.Sphere( V3_ZERO.clone(), R_WORLD ) );
 
-            if ( v3MousePoint )
-                cursor.position.copy( v3MousePoint );
+            //if ( v3MousePoint )
+              //  cursor.position.copy( v3MousePoint );
         }
 
         function updateTarget() {
 
-            iPlayer().fleet.update( v3MousePoint );
+            //iPlayer().fleet.update( v3MousePoint );
+            iPlayer().getVessel().steer = MathHelper.clamp( -v2MousePoint.x, -1, 1 );
         }
 
         function updateScan( obj ) {
@@ -716,8 +700,10 @@ var Scene = (function () {
         dom.addEventListener("touchstart",
             function ( event ) {
 
-                event.preventDefault();
-                iPlayer().setMouseDown();
+                if ( event.targetTouches.length > 1 ) {
+                    event.preventDefault();
+                    iPlayer().setMouseDown();
+                }
             },
             false);
 
@@ -802,6 +788,7 @@ var Scene = (function () {
         });
     }
 
+    /*
     function initCursor( texture ) {
 
         cursor.material = new THREE.MeshBasicMaterial( {
@@ -815,6 +802,7 @@ var Scene = (function () {
 
         scene.add( cursor );
     }
+    */
 
     function initFleet( player ) {
 
@@ -868,7 +856,7 @@ var Scene = (function () {
 
         octree.update();
 
-        Textures.add( 'res/cursor.png', initCursor );
+        //Textures.add( 'res/cursor.png', initCursor );
         Textures.add( 'res/blue_particle.jpg' );
     }
 

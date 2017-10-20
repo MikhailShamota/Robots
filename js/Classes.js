@@ -50,7 +50,7 @@ function Player( id, isProxy ) {
             return V3_ZERO.clone();
         }
     }
-
+    /*
     Fleet.prototype.update = function( mousePos ) {
 
         this.vesselsList.forEach( (item ) => {
@@ -59,7 +59,7 @@ function Player( id, isProxy ) {
             item.obj.to = ( to && to.clone() );//where go to
         });
     };
-
+    */
     Fleet.prototype.start = function() {
 
         this.vesselsList.forEach( function( item ) {
@@ -300,6 +300,7 @@ function Vessel( pos, mass, color ) {
     this.sTurn = null;//turn rad per sec
 
     this.to = new THREE.Vector3();//fly to. maintain direction if null
+    this.steer = null;//-1..0..+1
 
     this.ptJet = [];
     this.trailMeshes = [];
@@ -381,6 +382,9 @@ Vessel.prototype.fwd = function() {
 };
 
 Vessel.prototype.turnVec = function() {
+
+    if ( this.steer )
+        return new THREE.Vector3( 0, this.steer, 0 );
 
     if ( !this.to )
         return V3_ZERO;
