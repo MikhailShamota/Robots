@@ -425,14 +425,19 @@ var Scene = (function () {
                 dist = MathHelper.clamp( dist, 0, 1 );
                 dist *= 0.8;
 
-                return d * d;
+                return d/* * d*/;
             }
 
-            var vesselPos = vessel.mesh.position.clone();
+            var camVesselPos = vessel.mesh.position.clone();
+            var camDist = getDist( dist ) || 1;
+            var camUp = new THREE.Vector3( 0, Y_CAMERA, 0 );//just up 1
+            var camBackward = vessel.fwd().clone().multiplyScalar( -Z_CAMERA );//just back 2
 
-            var cameraToPos = vesselPos.clone().setY( MathHelper.lerp( Y_CAMERA_MIN, Y_CAMERA_MAX, getDist( dist ) ) );
-            var backward = vessel.fwd().clone().multiplyScalar( -( Y_CAMERA_MAX - Y_CAMERA_MIN ) );//сдвинем камеру назад настолько, насколько она высоко поднята
-            cameraToPos.add( backward );
+            var cameraToPos = camVesselPos.add(
+
+                camBackward.add( camUp ).normalize().multiplyScalar( MathHelper.lerp( DIST_CAMERA_MIN, DIST_CAMERA_MAX, camDist ) )
+            );
+
             var dir = cameraToPos.sub( camera.position ).clampLength ( 0, V_CAMERA_LIMIT );
             dir.lengthSq() && camera.position.add( dir.multiplyScalar( V_CAMERA * dt ) );
 
