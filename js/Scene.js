@@ -4,12 +4,14 @@ var Scene = (function () {
 
     var instance;
 
-    var stats, controls, camera, cameraFix, renderer;
+    var stats, controls, camera, /*cameraFix,*/ renderer;
     var scene, sceneFix, octree;
 
     var starSystem, skySprite /*, skyBox*/;
 
     var players = [];
+
+    var clickTimer = null;
 
     var iPlayer = function() { return players[ iPlayer.id ] };//i am player
     iPlayer.id = null;//i am index
@@ -347,8 +349,13 @@ var Scene = (function () {
                 obj.hits <= 0 && killObject( obj );
 
                 //TURN
-                if ( obj.turn )
-                    obj.turn.y += ( obj.turnVec && obj.turnVec() || V3_ZERO ).multiplyScalar( obj.sTurn * dt ).y;
+                if ( obj.turn ) {
+
+                    var turn_f = (obj.turnVec && obj.turnVec() || V3_ZERO).y;
+                    var turn_rad = obj.sTurn * dt;
+                    obj.turn.y += turn_f * turn_rad;
+                    obj.turn.z = MathHelper.lerp( obj.turn.z, -turn_f, turn_rad * 2 );//roll faster 2 times!
+                }
 
                 //VELOCITY & POSITION
                 obj.v && obj.pos && obj.v.add( obj.velocityDelta( obj.jetVec && getForces( obj ) || V3_ZERO.clone(), dt ).clampLength( 0, VELOCITY_LIMIT_PER_SEC * dt ) ) && obj.pos.copy( obj.newPos( dt ) ) /*&& !obj.axisUp*/ && goEcliptic( obj );
@@ -430,18 +437,18 @@ var Scene = (function () {
 
             var camVesselPos = vessel.mesh.position.clone();
             var camDist = getDist( dist ) || 1;
-            var camUp = new THREE.Vector3( 0, Y_CAMERA, 0 );//just up 1
-            var camBackward = vessel.fwd().clone().multiplyScalar( -Z_CAMERA );//just back 2
+            var camUp = new THREE.Vector3( 0, CAMERA_Y, 0 );//just up 1
+            var camBackward = vessel.fwd().clone().multiplyScalar( -CAMERA_Z );//just back 2
 
             var cameraToPos = camVesselPos.add(
 
-                camBackward.add( camUp ).normalize().multiplyScalar( MathHelper.lerp( DIST_CAMERA_MIN, DIST_CAMERA_MAX, camDist ) )
+                camBackward.add( camUp ).normalize().multiplyScalar( MathHelper.lerp( CAMERA_DIST_MIN, CAMERA_DIST_MAX, camDist ) )
             );
 
-            var dir = cameraToPos.sub( camera.position ).clampLength ( 0, V_CAMERA_LIMIT );
-            dir.lengthSq() && camera.position.add( dir.multiplyScalar( V_CAMERA * dt ) );
+            var dir = cameraToPos.sub( camera.position ).clampLength ( 0, CAMERA_V_LIMIT );
+            dir.lengthSq() && camera.position.add( dir.multiplyScalar( CAMERA_V * dt ) );
 
-            camera.lookAt( vessel.pos );
+            camera.lookAt( vessel.fwd().multiplyScalar( CAMERA_LOOK_AT_FWD ).add( vessel.pos ) );
             camera.up = new THREE.Vector3( 0, 1, 0 );
 
             /*skyBox.forEach( function( mesh ) {
@@ -548,7 +555,7 @@ var Scene = (function () {
 
         updateScan( iPlayer().getVessel() );
 
-        send();
+        iPlayer().id != 0 && send();//Zero if offline
 
         octree.rebuild();
     }
@@ -621,21 +628,16 @@ var Scene = (function () {
         camera.aspect = WIDTH / HEIGHT;
         camera.updateProjectionMatrix();
 
-        camera.position.set( 0, Y_CAMERA_START, 0 );
+        camera.position.set( 0, CAMERA_START_Y, 0 );
         camera.up = new THREE.Vector3( 0, 0, 1 );
         camera.lookAt( new THREE.Vector3( 0, 0 ,0 ) );
 
-        //cameraFix = new THREE.PerspectiveCamera(40, window.width / window.height, 1, R_GALAXY * 10 );
-        cameraFix = new THREE.OrthographicCamera( WIDTH / - 2, WIDTH / 2, HEIGHT / 2, HEIGHT / - 2, -100, 100000 );
+        /*cameraFix = new THREE.OrthographicCamera( WIDTH / - 2, WIDTH / 2, HEIGHT / 2, HEIGHT / - 2, -100, 100000 );
         cameraFix.aspect = WIDTH / HEIGHT;
         cameraFix.updateProjectionMatrix();
-
-
-        /*cameraFix.updateProjectionMatrix();*/
-
         cameraFix.position.set( 0, Y_CAMERA_START, 0 );
         cameraFix.up = new THREE.Vector3( 0, 0, 1 );
-        cameraFix.lookAt( new THREE.Vector3( 0, 0 ,0 ) );
+        cameraFix.lookAt( new THREE.Vector3( 0, 0 ,0 ) );*/
 
 
         window.addEventListener('resize', function () {
@@ -704,6 +706,23 @@ var Scene = (function () {
 
         dom.addEventListener("touchstart",
             function ( event ) {
+
+                event.preventDefault();
+
+                if (clickTimer == null) {
+
+                    clickTimer = setTimeout(function () {
+                        clickTimer = null;
+                        //alert("single");
+
+                    }, 500)
+                } else {
+
+                    clearTimeout(clickTimer);
+                    clickTimer = null;
+                    //alert("double");
+                    iPlayer().setMouseDown();
+                }
 
                 if ( event.targetTouches.length > 1 ) {
                     event.preventDefault();
@@ -853,7 +872,7 @@ var Scene = (function () {
 
         //initSkySprite();
 
-        iPlayer.id = PeerServer.getMyPeerId();
+        iPlayer.id = PeerServer.getMyPeerId() || 0;//Zero if offline
         initPlayer( iPlayer.id, false );
         iPlayer().changeCallback = iPlayer.onChange;
         //iPlayer().fleet.start();//start from new random pos
@@ -906,7 +925,7 @@ var Scene = (function () {
         init : function( starSystemStr ) {
 
             initializeGL();
-            initScene( starSystemStr.hashCode() );
+            initScene( starSystemStr.toString().hashCode() );
         },
 
         paint : function() {

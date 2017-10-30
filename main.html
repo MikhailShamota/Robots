@@ -101,7 +101,7 @@
         //var dom = document.getElementById('dScene');
         //dom.style.display = 'block';
 
-        Scene.init( starSystemSeedStr );
+        Scene.init( starSystemSeedStr || MathHelper.rand( 0, 10000) );
         Scene.paint();
     }
 

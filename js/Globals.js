@@ -1,13 +1,15 @@
 const R_GALAXY = 4000;
 const R_START_DROP = 1500;
 const C_BACKGROUND = 0x181818;//( 0x020E1F );2A2C2B
-const V_CAMERA = 2;//camera speed
-const V_CAMERA_LIMIT = 1000;//camera speed limit
-const DIST_CAMERA_MIN = 400;//closest camera pos Y
-const DIST_CAMERA_MAX = 1600;//closest camera pos Y
-const Y_CAMERA = 1;//farthest camera pos Y
-const Z_CAMERA = 2;
-const Y_CAMERA_START = R_GALAXY * 3;//start camera pos Y
+
+const CAMERA_V = 2;//camera speed
+const CAMERA_V_LIMIT = 1000;//camera speed limit
+const CAMERA_DIST_MIN = 400;//closest camera pos Y
+const CAMERA_DIST_MAX = 1600;//closest camera pos Y
+const CAMERA_Y = 1;//farthest camera pos Y
+const CAMERA_Z = 1.6;
+const CAMERA_START_Y = R_GALAXY * 3;//start camera pos Y
+const CAMERA_LOOK_AT_FWD = 300;//смотреть перед кораблем
 
 const K_GRAVITY = 2;
 const K_SPACE_RESIST = 10;
