@@ -311,7 +311,7 @@ var Scene = (function () {
                 updateScore();
 
                 //if my last was killed respawn me at 2 sec
-                !obj.player.isProxy && obj.player.fleet.totalHits() < 1 && setTimeout( function() { iPlayer().fleet.start(); }, MSEC_RESPAWN_DELAY );
+                !obj.player.isProxy && obj.player.fleet.totalHits() < 1 && setTimeout( function() { obj.player.fleet.start(); }, MSEC_RESPAWN_DELAY );
                 //iPlayer().fleet.totalHits() < 1 && //initFleet( player );//respawn
                 //iPlayer().fleet.start();
             }
@@ -585,7 +585,8 @@ var Scene = (function () {
                 hits++;
 
                 var vessel = mesh.userData;
-                from.player.isProxy && vessel.hits > 0 && vessel.hits-- && (vessel.lastHitBy = from.player.id);//doDamage -> isProxy
+                //from.player.isProxy && vessel.hits > 0 && vessel.hits-- && (vessel.lastHitBy = from.player.id);//doDamage -> isProxy
+                vessel && vessel.player && !vessel.player.isProxy && vessel.hits > 0 && vessel.hits-- && (vessel.lastHitBy = from.player.id);//doDamage -> isProxy
 
                 dist = intersects[ 0 ].distance;
 
@@ -781,7 +782,7 @@ var Scene = (function () {
         document.getElementById("Stats-output").appendChild(stats.domElement);
     }
 
-    function initControls() {
+    /*function initControls() {
 
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         //controls.addEventListener( 'change', render ); // add this only if there is no animation loop (requestAnimationFrame)
@@ -789,6 +790,7 @@ var Scene = (function () {
         controls.dampingFactor = 0.25;
         controls.enableZoom = true;
     }
+*/
 
     function initOctree() {
 
@@ -857,6 +859,14 @@ var Scene = (function () {
     }
     */
 
+    function initRobots( num ) {
+
+        initPlayer( 1, false );
+        initPlayer( 2, false );
+        initPlayer( 3, false );
+        initPlayer( 4, false );
+    }
+
     function initScene( starSystemId ) {
 
         initStats();
@@ -877,6 +887,7 @@ var Scene = (function () {
         iPlayer().changeCallback = iPlayer.onChange;
         //iPlayer().fleet.start();//start from new random pos
 
+        initRobots( 5 );
 
         octree.update();
 
