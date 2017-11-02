@@ -7,7 +7,7 @@ var Scene = (function () {
     var stats, controls, camera, /*cameraFix,*/ renderer;
     var scene, sceneFix, octree;
 
-    var starSystem, skySprite /*, skyBox*/;
+    var starSystem, skyBox;//skySprite;
 
     var players = [];
 
@@ -386,7 +386,7 @@ var Scene = (function () {
                     var mesh2 = octreeObj2.object;
                     var matObj2 = mesh2.userData;
 
-                    if (mesh.id == mesh2.id)
+                    if (mesh.id == mesh2.id || !mesh2.visible )
                         return;
 
                     var depth = octreeObj2.radius + octreeObj.radius - mesh.position.distanceTo( mesh2.position );
@@ -451,11 +451,11 @@ var Scene = (function () {
             camera.lookAt( vessel.fwd().multiplyScalar( CAMERA_LOOK_AT_FWD ).add( vessel.pos ) );
             camera.up = new THREE.Vector3( 0, 1, 0 );
 
-            /*skyBox.forEach( function( mesh ) {
+            skyBox.forEach( function( mesh ) {
 
                 mesh.position.copy( camera.position );
             });
-            */
+
             //skySprite.position.copy( camera.position.clone().sub( V3_UNIT_Y.clone().setY( 5000 ) ) );
         }
 
@@ -877,8 +877,8 @@ var Scene = (function () {
         starSystem = new StarSystem( starSystemId );
         initMeshes( starSystem.initMeshes() );
 
-        //initMeshes( skyBox );
-        //skyBox = starSystem.initSkybox();
+        initMeshes( skyBox );
+        skyBox = starSystem.initSkybox();
 
         //initSkySprite();
 

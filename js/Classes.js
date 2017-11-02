@@ -796,7 +796,7 @@ StarSystem.prototype.initSkySprite = function( res ) {
     return sprite;
 };
 */
-/*
+
 StarSystem.prototype.initSkybox = function() {
 
     var self = this;
@@ -829,7 +829,7 @@ StarSystem.prototype.initSkybox = function() {
 
     return ret;
 };
-*/
+
 StarSystem.prototype.initMeshes = function( camera ) {
 
     const Q_CELESTIALS_LIMIT = 90;
@@ -934,9 +934,9 @@ StarSystem.prototype.initMeshes = function( camera ) {
     const P_DUST = [
         { size: 2, minQty: 1000,  maxQty: 2000, dist: 0, color: 0xf0f0f0 },
         { size: 1.8, minQty: 1000,  maxQty: 2000, dist: -2000, color: 0xd0d0d0 },
-        { size: 1.4, minQty: 1000,  maxQty: 2000, dist: -4000, color: 0xbfbfbf },
-        { size: 1.2, minQty: 1000,  maxQty: 2000, dist: -8000, color: 0xa0a0a0 },
-        { size: 1, minQty: 1000,  maxQty: 2000, dist: -16000, color: 0x888888 }
+    //    { size: 1.4, minQty: 1000,  maxQty: 2000, dist: -4000, color: 0xbfbfbf },
+  //      { size: 1.2, minQty: 1000,  maxQty: 2000, dist: -8000, color: 0xa0a0a0 },
+//        { size: 1, minQty: 1000,  maxQty: 2000, dist: -16000, color: 0x888888 }
     ];
     P_DUST.forEach( function( item ) {
 

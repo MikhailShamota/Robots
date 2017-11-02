@@ -4,7 +4,7 @@ const C_BACKGROUND = 0x181818;//( 0x020E1F );2A2C2B
 
 const CAMERA_V = 2;//camera speed
 const CAMERA_V_LIMIT = 1000;//camera speed limit
-const CAMERA_DIST_MIN = 400;//closest camera pos
+const CAMERA_DIST_MIN = 900;//closest camera pos
 const CAMERA_DIST_MAX = 1600;//farthest camera pos
 const CAMERA_Y = 1;//farthest camera pos Y
 const CAMERA_Z = 1.6;

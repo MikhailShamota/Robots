@@ -38,15 +38,19 @@
                     <h3 id="hConnStatus"><div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div></h3>
                 </li>
 
+                <li class="mdl-list__item">
+                    <span  class="mdl-list__item-primary-content" >
+                        <div style="width: 100%"><button onclick="enterNewGame()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">New game</button></div>
+                    </span>
+                </li>
+                <li class="mdl-list__item">
+                    <span  class="mdl-list__item-primary-content" >
+                        <div style="width: 100%"><button onclick="enterMultiplayerGame()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Multiplayer</button></div>
+                    </span>
+                </li>
                 <li>
                     <ul class="mdl-list" id="gamesList">
                     </ul>
-                </li>
-
-                <li class="mdl-list__item">
-                    <span  class="mdl-list__item-primary-content" >
-                        <div style="width: 100%"><button onclick="enterGame()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Start new</button></div>
-                    </span>
                 </li>
             </ul>
     </div>
@@ -134,7 +138,12 @@
 
     }
 
-    function enterGame( game ) {
+    function enterNewGame() {
+
+        drawScene( null );
+    }
+
+    function enterMultiplayerGame( game ) {
 
         var myId = PeerServer.getMyPeerId();
 
