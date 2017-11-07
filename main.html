@@ -31,11 +31,15 @@
 <table class="wrapper" id="dMenu" style="width: 100%;height: 100%;background-color: #282828; position: relative; top:0; bottom: 0;left: 0; right: 0; margin: auto;text-align: center" >
     <tbody>
     <tr><td>
+    <div id="hStatus" style="display: none">
+        <h3>hyperjump</h3>
+        <br>
+        <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
+    </div>
     <div id="menu">
             <ul class="mdl-list" >
                 <li>
                     <h1>Material design</h1>
-                    <h3 id="hConnStatus"><div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div></h3>
                 </li>
 
                 <li class="mdl-list__item">
@@ -45,7 +49,11 @@
                 </li>
                 <li class="mdl-list__item">
                     <span  class="mdl-list__item-primary-content" >
-                        <div style="width: 100%"><button onclick="enterMultiplayerGame()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Multiplayer</button></div>
+                        <div style="width: 100%">
+                            <button onclick="initConnect()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Multiplayer</button>
+                            <p id="hNoConnection" style="color:red; display: none">no connection</p>
+                        </div>
+
                     </span>
                 </li>
                 <li>
@@ -63,12 +71,9 @@
 </tbody>
 </table>
 
-<!--<div id="dScene" style="display:none; width: 100%;height: 100%; position: absolute; top:0; bottom: 0;left: 0; right: 0; margin: 0;text-align: center" ></div>-->
 <div id="Stats-output"></div>
 
 <button id="buttonScreenMode" style="position:absolute; right:30px; top:40px" onclick="toggleFullScreen()" class="mdl-button mdl-js-button mdl-button--accent">[&#8801]</button>
-<!--<button id="buttonMenu" style="position:absolute; left:30px; top:40px" onclick="" class="mdl-button mdl-js-button mdl-button--accent">[&#9732]</button>-->
-<!--<button id="buttonFire" style="position:absolute; right:30px; bottom:30px" class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored">&#8230</button>-->
 <p style="color:white; width:100%;position: absolute; bottom: 30px; margin: auto;text-align: center; display:none" id="Score">0:0</p>
 
 
@@ -76,22 +81,46 @@
 
     var sceneDraw = false;
 
-    initConnect();
+    //initConnect();
 
-    CouchDB.getActiveGames( drawGamesList );
+    //CouchDB.getActiveGames( drawGamesList );
 
     function initConnect() {
 
-        PeerServer.setCallbackOpen( function( id ) {
+        waiterRun();
 
-            document.getElementById('hConnStatus').innerHTML = "connected";
-        });
+        try {
 
-        //PeerServer.setCallbackConnect( drawScene );//возможен дублированный запуск, сейчас решается sceneDraw
-        PeerServer.setCallbackReceive( Scene.receiveData );
+            PeerServer.setCallbackOpen(function (id) {
 
-        //init connection to PeerJS
-        PeerServer.open();
+                //document.getElementById('hConnStatus').innerHTML = "connected";
+                CouchDB.getActiveGames(function (d) {
+
+                    var game = d.rows && d.rows.find(function (item) {
+
+                                return item.value < MULTIPLAYER_PLAYERS_MAX;
+                            });
+
+                    var gameId = game && game.key[1];
+                    var gameTime = game && game.key[0];
+                    var players_count = game && game.value;
+
+                    enterMultiplayerGame(game && {id: gameId, time: gameTime})
+                });
+            });
+
+            //PeerServer.setCallbackConnect( drawScene );//возможен дублированный запуск, сейчас решается sceneDraw
+            PeerServer.setCallbackReceive(Scene.receiveData);
+
+            //init connection to PeerJS
+            PeerServer.open();
+
+            //CouchDB.getActiveGames( drawGamesList );
+        } catch ( err ) {
+
+            waiterRun( true );
+            $('#hNoConnection').show();
+        }
     }
 
     function drawScene( starSystemSeedStr ) {
@@ -109,6 +138,7 @@
         Scene.paint();
     }
 
+    /*
     function drawGamesList( data ) {
 
         function button( item, i ) {
@@ -118,9 +148,7 @@
             var newBtn = document.createElement( "li" );
 
             newBtn.id = "join_" + i;
-            //newBtn.href = "javascript:void(0)";
-            newBtn.onclick = function () { enterGame( { id: gameId, time: gameTime } ) };
-            //newBtn.innerHTML = gameId+'  '+item.value;
+            newBtn.onclick = function () { enterMultiplayerGame( { id: gameId, time: gameTime } ) };
             newBtn.innerHTML =
                     '<span class="mdl-list__item-primary-content">' +
                     '<div class="material-icons mdl-badge mdl-badge--overlap" data-badge="'+item.value+'">' + '<a href="#">' + 'join players ' + '</a>' + '</div>' +
@@ -135,12 +163,22 @@
             var li = $("#gamesList").append( button( item, i )).append();
             console.log( item );
         });
+    }
+    */
+    function waiterRun( reverse )
+    {
+        var menu = $('#menu');
+        var status = $('#hStatus');
 
+        reverse && menu.show() || menu.hide();
+        reverse && status.hide() || status.show();
     }
 
     function enterNewGame() {
 
-        drawScene( null );
+        waiterRun();
+
+        setTimeout( function() { drawScene( null ) }, 50 );
     }
 
     function enterMultiplayerGame( game ) {

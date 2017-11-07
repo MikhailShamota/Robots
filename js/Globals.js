@@ -18,6 +18,8 @@ const K_CENTER_FORCE = 20;//force pulling to ecliptic plane
 
 const Q_TRAIL_LEN = 100;//mesh line trail segments
 
+const MULTIPLAYER_OPEN_SEC = 120;//multiplayer game open period for join players
+const MULTIPLAYER_PLAYERS_MAX = 10;//max players in multiplayer
 const SEC_EXCH_PERIOD = 0.1;//peer-to-peer message send period
 const MSEC_RESPAWN_DELAY = 2000;//respawn delay
 
@@ -118,7 +120,7 @@ var CouchDB = ( function() {
         enterGame: function( myPeerId, game ) {
 
             var t = new Date().getTime();
-            var duration = 60;
+            var duration = MULTIPLAYER_OPEN_SEC;
 
             send({
 

@@ -418,7 +418,7 @@ var Scene = (function () {
 
             for ( var playerId in players ) {
 
-                playerId != iPlayer().id && players[ playerId ].fleet.vesselsList.forEach( function( vessel ) {
+                playerId != iPlayer.id && players[ playerId ].fleet.vesselsList.forEach( function( vessel ) {
 
                     var obj = vessel.obj;
                     var p = obj.getCameraPos( camera );
@@ -555,7 +555,7 @@ var Scene = (function () {
 
         updateScan( iPlayer().getVessel() );
 
-        iPlayer().id != 0 && send();//Zero if offline
+        iPlayer.id != 0 && send();//Zero if offline
 
         octree.rebuild();
     }
@@ -887,7 +887,7 @@ var Scene = (function () {
         iPlayer().changeCallback = iPlayer.onChange;
         //iPlayer().fleet.start();//start from new random pos
 
-        initRobots( 5 );
+        iPlayer.id == 0 && initRobots( 5 );
 
         octree.update();
 
