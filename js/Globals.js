@@ -161,6 +161,7 @@ var PeerServer = ( function() {
     var callbackOpen;
     var callbackReceive;
     var callbackConnect;
+    var callbackError;
 
     function initConn( dataConn ) {
 
@@ -193,6 +194,10 @@ var PeerServer = ( function() {
             callbackOpen && callbackOpen(id);
         });
 
+        peer.on( 'error', function( err ) {
+
+            callbackError && callbackError( err );
+        });
         //Receive connection
         peer.on('connection', function(dataConn) {
 
@@ -251,6 +256,11 @@ var PeerServer = ( function() {
         setCallbackReceive( func ) {
 
             callbackReceive = func;
+        },
+
+        setCallbackError( func ) {
+
+            callbackError = func;
         }
     }
 } () );

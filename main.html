@@ -32,36 +32,22 @@
     <tbody>
     <tr><td>
     <div id="hStatus" style="display: none">
-        <h3>hyperjump</h3>
+        <h3>&nbsp;&nbsp;&nbsp;loading...</h3>
         <br>
         <div class="mdl-spinner mdl-spinner--single-color mdl-js-spinner is-active"></div>
     </div>
-    <div id="menu">
-            <ul class="mdl-list" >
-                <li>
-                    <h1>Material design</h1>
-                </li>
-
-                <li class="mdl-list__item">
-                    <span  class="mdl-list__item-primary-content" >
-                        <div style="width: 100%"><button onclick="enterNewGame()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">New game</button></div>
-                    </span>
-                </li>
-                <li class="mdl-list__item">
-                    <span  class="mdl-list__item-primary-content" >
-                        <div style="width: 100%">
-                            <button onclick="initConnect()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Multiplayer</button>
-                            <p id="hNoConnection" style="color:red; display: none">no connection</p>
-                        </div>
-
-                    </span>
-                </li>
-                <li>
-                    <ul class="mdl-list" id="gamesList">
-                    </ul>
-                </li>
-            </ul>
-    </div>
+    <ul id="menu" class='mdl-list'>
+       <li>
+            <h1>Material design</h1>
+       </li>
+       <li>
+            <button onclick="enterNewGame()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">campaign</button>
+       </li>
+       <li>
+            <button onclick="initConnect()" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">multiplayer</button>
+            <p id="hNoConnection" style="color:red; display: none">connection failed</p>
+       </li>
+    </ul>
     </td></tr>
 <tr style="height:0"><td>
     <div class="footer">This work is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License.<br>
@@ -78,49 +64,40 @@
 
 
 <script>
-
     var sceneDraw = false;
-
-    //initConnect();
-
-    //CouchDB.getActiveGames( drawGamesList );
 
     function initConnect() {
 
         waiterRun();
 
-        try {
+        PeerServer.setCallbackOpen(function (id) {
 
-            PeerServer.setCallbackOpen(function (id) {
+            CouchDB.getActiveGames(function (d) {
 
-                //document.getElementById('hConnStatus').innerHTML = "connected";
-                CouchDB.getActiveGames(function (d) {
+                var game = d.rows && d.rows.find(function (item) {
 
-                    var game = d.rows && d.rows.find(function (item) {
+                            return item.value < MULTIPLAYER_PLAYERS_MAX;
+                        });
 
-                                return item.value < MULTIPLAYER_PLAYERS_MAX;
-                            });
+                var gameId = game && game.key[1];
+                var gameTime = game && game.key[0];
+                var players_count = game && game.value;
 
-                    var gameId = game && game.key[1];
-                    var gameTime = game && game.key[0];
-                    var players_count = game && game.value;
-
-                    enterMultiplayerGame(game && {id: gameId, time: gameTime})
-                });
+                enterMultiplayerGame(game && {id: gameId, time: gameTime})
             });
+        });
 
-            //PeerServer.setCallbackConnect( drawScene );//возможен дублированный запуск, сейчас решается sceneDraw
-            PeerServer.setCallbackReceive(Scene.receiveData);
-
-            //init connection to PeerJS
-            PeerServer.open();
-
-            //CouchDB.getActiveGames( drawGamesList );
-        } catch ( err ) {
+        PeerServer.setCallbackReceive( Scene.receiveData );
+        PeerServer.setCallbackError( function( err ) {
 
             waiterRun( true );
-            $('#hNoConnection').show();
-        }
+            var elementErr = $('#hNoConnection');
+            elementErr.innerHTML = err;
+            elementErr.show();
+        } );
+
+        //init connection to PeerJS
+        PeerServer.open();
     }
 
     function drawScene( starSystemSeedStr ) {
