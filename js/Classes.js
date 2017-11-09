@@ -23,7 +23,7 @@ function Player( id, isProxy ) {
 
             {
                 f: smallFighter,
-                target: selectAnyOtherPlayers
+                target: selectAnyOtherPlayersInRange
             }/*,
              {
              f: bigFighter,
@@ -41,7 +41,7 @@ function Player( id, isProxy ) {
             return new Fighter( p, 5000, color );
         }
 
-        function selectAnyOtherPlayers( all_vessels ) {
+        function selectAnyOtherPlayersInRange( all_vessels ) {
 
             var any = all_vessels[ Math.floor( Math.random() * all_vessels.length ) ];
 
@@ -300,7 +300,7 @@ function Vessel( pos, mass, color ) {
     this.sTurn = null;//turn rad per sec
 
     this.to = new THREE.Vector3();//fly to. maintain direction if null
-    this.targetVessel = null;
+    this.target = null;
     this.steer = null;//-1..0..+1
 
     this.ptJet = [];
@@ -382,12 +382,17 @@ Vessel.prototype.fwd = function() {
     //движение по сфере return this.V3_FWD.clone().applyEuler( this.turn );
 };
 
+Vessel.prototype.angleToTarget = function( target ) {
+
+    return obj.fwd().angleTo( target.pos.clone().sub( this.pos ) );
+};
+
 Vessel.prototype.turnVec = function() {
 
     if ( this.steer )
         return new THREE.Vector3( 0, this.steer, 0 );
 
-    this.to = this.targetVessel ? this.targetVessel.pos : null;
+    this.to = this.target ? this.target.pos : null;
 
     if ( !this.to )
         return V3_ZERO;

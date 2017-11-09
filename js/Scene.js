@@ -526,21 +526,16 @@ var Scene = (function () {
 
                 player.fleet.vesselsList.forEach( function( item ) {
 
-                    var vessel = item.obj;
+                    var obj = item.obj;
+                    obj.target = item.target( vessels ).obj;//find new target
 
-                    if ( vessel.targetVessel && vessel.targetVessel.hits > 0 ) {
+                    if ( obj.target && obj.target.hits > 0 ) {
 
-                        var to_target = vessel.targetVessel.pos.clone().sub(vessel.pos);
-                        var angle_to_target = vessel.fwd().angleTo(to_target);
+                        //var to_target = obj.targetVessel.pos.clone().sub(obj.pos);
+                        //var angle_to_target = obj.fwd().angleTo(to_target);
 
-                        vessel.isFiring = angle_to_target < 0.1;
-
-                        vessel.targetVessel = vessel.targetVessel.hits > 0 ? vessel.targetVessel : null;//clear target if killed
-                    } else {
-
-                        vessel.targetVessel = item.target( vessels ).obj;//find new target
+                        obj.isFiring = obj.angleToTarget( obj.target ) < 0.1;
                     }
-
                 });
             });
         }
