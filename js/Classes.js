@@ -18,11 +18,12 @@ function Player( id, isProxy ) {
 
         this.player = player;
 
+        //TODO:campaign mission
         this.vesselsList = [
 
             {
                 f: smallFighter,
-                to: toPos
+                target: selectAnyOtherPlayers
             }/*,
              {
              f: bigFighter,
@@ -40,14 +41,12 @@ function Player( id, isProxy ) {
             return new Fighter( p, 5000, color );
         }
 
-        function toPos( pos ) {
+        function selectAnyOtherPlayers( all_vessels ) {
 
-            return pos;
-        }
+            var any = all_vessels[ Math.floor( Math.random() * all_vessels.length ) ];
 
-        function toZero() {
-
-            return V3_ZERO.clone();
+            return any.obj.player.id == this.obj.player.id ? null : any;
+            //return any.obj.mesh.uuid == this.obj.uuid ? null : any;
         }
     }
     /*
@@ -129,6 +128,7 @@ Player.prototype.initMeshes = function() {
     return this.fleet.initMeshes( this.color );
 };
 
+//TODO:remove!!
 Player.prototype.getVessel = function() {
 
     return this.fleet.vesselsList[0].obj;
@@ -300,6 +300,7 @@ function Vessel( pos, mass, color ) {
     this.sTurn = null;//turn rad per sec
 
     this.to = new THREE.Vector3();//fly to. maintain direction if null
+    this.targetVessel = null;
     this.steer = null;//-1..0..+1
 
     this.ptJet = [];
@@ -385,6 +386,8 @@ Vessel.prototype.turnVec = function() {
 
     if ( this.steer )
         return new THREE.Vector3( 0, this.steer, 0 );
+
+    this.to = this.targetVessel ? this.targetVessel.pos : null;
 
     if ( !this.to )
         return V3_ZERO;

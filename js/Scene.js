@@ -10,6 +10,8 @@ var Scene = (function () {
     var starSystem, skyBox;//skySprite;
 
     var players = [];
+    var bot_players = [];
+    var vessels = [];
 
     var clickTimer = null;
 
@@ -365,7 +367,7 @@ var Scene = (function () {
 
                 obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > ( SHOT_MIN_MSEC + ( obj.canonHeat || 0 ) ) || ! obj.lastFired ) && fire( obj );//do not calc damage from my vessels, only on my vessel
 
-                obj.canonHeat -=  dt * SHOT_COOL_MSEC_PER_SEC;
+                obj.canonHeat = Math.max( obj.canonHeat - dt * SHOT_COOL_MSEC_PER_SEC, SHOT_MIN_MSEC );
             });
         }
 
@@ -518,6 +520,31 @@ var Scene = (function () {
             iPlayer().getVessel().steer = MathHelper.clamp( -v2MousePoint.x, -1, 1 );
         }
 
+        function updateBots() {
+
+            bot_players.forEach( function( player ) {
+
+                player.fleet.vesselsList.forEach( function( item ) {
+
+                    var vessel = item.obj;
+
+                    if ( vessel.targetVessel && vessel.targetVessel.hits > 0 ) {
+
+                        var to_target = vessel.targetVessel.pos.clone().sub(vessel.pos);
+                        var angle_to_target = vessel.fwd().angleTo(to_target);
+
+                        vessel.isFiring = angle_to_target < 0.1;
+
+                        vessel.targetVessel = vessel.targetVessel.hits > 0 ? vessel.targetVessel : null;//clear target if killed
+                    } else {
+
+                        vessel.targetVessel = item.target( vessels ).obj;//find new target
+                    }
+
+                });
+            });
+        }
+
         function updateScan( obj ) {
 
             obj.hits > 0 && ( nowTime - obj.lastScan > 5000 || ! obj.lastScan ) && scan( obj );
@@ -532,6 +559,8 @@ var Scene = (function () {
         stats.update();
 
         ////
+        updateBots();//update bots decsisions
+
         updateMouse();//get mouse position
 
         updateTarget();//update vessels movement direction
@@ -834,6 +863,8 @@ var Scene = (function () {
 
         initMeshes( player.initMeshes() );
         !player.isProxy && player.fleet.start();//start my fleet from new random pos
+
+        vessels = vessels.concat( player.fleet.vesselsList );
     }
 
     function initPlayer( id, isProxy ) {
@@ -847,6 +878,8 @@ var Scene = (function () {
         players[ id ] = player;
 
         console.log( id + ' entered' );
+
+        return player;
     }
 
     /*
@@ -861,10 +894,10 @@ var Scene = (function () {
 
     function initRobots( num ) {
 
-        initPlayer( 1, false );
-        initPlayer( 2, false );
-        initPlayer( 3, false );
-        initPlayer( 4, false );
+        for ( var i = 0; i < num; i++) {
+
+            bot_players.push( initPlayer( i + 1, false ) );
+        }
     }
 
     function initScene( starSystemId ) {
