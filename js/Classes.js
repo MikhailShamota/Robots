@@ -23,7 +23,10 @@ function Player( id, isProxy ) {
 
             {
                 f: smallFighter,
-                target: selectEasiest
+                target: selectEasiest,
+                w2: smallMissile
+                //wa:autoTurret
+                //w1:[laser,laser]
             }/*,
              {
              f: bigFighter,
@@ -41,6 +44,11 @@ function Player( id, isProxy ) {
             return new Fighter( p, 5000, color );
         }
 
+        function smallMissile( p, color ) {
+
+            return new Missile( p, 500, color );
+        }
+
         function selectAny( all_vessels ) {
 
             var any = all_vessels[ Math.floor( Math.random() * all_vessels.length ) ];
@@ -51,7 +59,7 @@ function Player( id, isProxy ) {
 
             var selected = null;
             var minAngle = 99;
-            var my = this.obj;
+            var my = this;
 
             all_vessels.forEach( function( vessel ) {
 
@@ -126,6 +134,9 @@ function Player( id, isProxy ) {
                 //scene.add( item );
                 meshes.push( item );
             });
+
+            obj.w2 = function() { item.w2( this.pos, this.color ) };
+            obj.selectTarget = item.target;
 
             item.obj = obj;//a link to vessel
         });
@@ -567,6 +578,41 @@ function Fighter(pos, mass, color) {
 }
 
 extend ( Fighter, Vessel );
+
+function Missile( pos, mass, color ) {
+
+    Vessel.apply( this, arguments );
+
+    this.fJet = 1800000;//this.mass * 80000;
+    this.sTurn = 0.75;//radians per sec
+    this.trailWidth = 4;
+
+    this.toughness = 1;//toughness
+
+    var size = Math.cbrt( this.mass );
+
+
+
+    var material	= new THREE.SpriteMaterial( {
+
+        map: texture && Textures.add( 'res/blue_particle.jpg' ),
+        color : color,
+        blending : THREE.AdditiveBlending,
+        transparent: true
+    } );
+
+    var sprite	= new THREE.Sprite( material );
+    sprite.scale.set( size, size, size );
+
+    this.mesh.add( sprite );
+
+
+
+    this.ptJet = [ new THREE.Vector3( 0, 0, -size * 1.5 ) ];
+}
+
+
+extend ( Missile, Vessel );
 
 function Celestial (pos, radius, color) {
 

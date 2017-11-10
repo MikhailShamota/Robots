@@ -1,5 +1,5 @@
 const R_GALAXY = 4000;
-const R_START_DROP = 1500;
+const R_START_DROP = 2500;
 const C_BACKGROUND = 0x181818;//( 0x020E1F );2A2C2B
 
 const CAMERA_V = 2;//camera speed
@@ -373,4 +373,3 @@ var Textures = {
         );
     }
 };
-

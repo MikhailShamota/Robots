@@ -530,7 +530,7 @@ var Scene = (function () {
 
                     if ( nowTime - obj.targetFoundTime > BOT_FIND_TARGET_PERIOD_MSEC || !obj.targetFoundTime || !obj.target ) {
 
-                        obj.target = item.target(vessels);//find new target
+                        obj.target = obj.selectTarget( vessels );//find new target
                         obj.targetFoundTime = nowTime;
                     }
 
@@ -642,6 +642,11 @@ var Scene = (function () {
         }
     }
 
+    function mouseRightClick( event ) {
+
+        iPlayer().getVessel().w2();
+    }
+
     function initializeGL() {
 
         scene = new THREE.Scene();
@@ -724,7 +729,7 @@ var Scene = (function () {
             function ( event ) {
 
                 event.preventDefault();
-                iPlayer().setMouseUp();
+                event.button == 1 && mouseRightClick( event ) || iPlayer().setMouseUp();
             },
             false);
 
