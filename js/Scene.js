@@ -527,15 +527,14 @@ var Scene = (function () {
                 player.fleet.vesselsList.forEach( function( item ) {
 
                     var obj = item.obj;
-                    obj.target = item.target( vessels ).obj;//find new target
 
-                    if ( obj.target && obj.target.hits > 0 ) {
+                    if ( nowTime - obj.targetFoundTime > BOT_FIND_TARGET_PERIOD_MSEC || !obj.targetFoundTime || !obj.target ) {
 
-                        //var to_target = obj.targetVessel.pos.clone().sub(obj.pos);
-                        //var angle_to_target = obj.fwd().angleTo(to_target);
-
-                        obj.isFiring = obj.angleToTarget( obj.target ) < 0.1;
+                        obj.target = item.target(vessels);//find new target
+                        obj.targetFoundTime = nowTime;
                     }
+
+                    obj.isFiring = obj.target && obj.target.hits > 0 && obj.angleToTarget( obj.target ) < 0.1;
                 });
             });
         }

@@ -23,7 +23,7 @@ function Player( id, isProxy ) {
 
             {
                 f: smallFighter,
-                target: selectAnyOtherPlayersInRange
+                target: selectEasiest
             }/*,
              {
              f: bigFighter,
@@ -41,12 +41,34 @@ function Player( id, isProxy ) {
             return new Fighter( p, 5000, color );
         }
 
-        function selectAnyOtherPlayersInRange( all_vessels ) {
+        function selectAny( all_vessels ) {
 
             var any = all_vessels[ Math.floor( Math.random() * all_vessels.length ) ];
-
             return any.obj.player.id == this.obj.player.id ? null : any;
-            //return any.obj.mesh.uuid == this.obj.uuid ? null : any;
+        }
+
+        function selectEasiest( all_vessels ) {
+
+            var selected = null;
+            var minAngle = 99;
+            var my = this.obj;
+
+            all_vessels.forEach( function( vessel ) {
+
+                var target = vessel.obj;
+                if ( my.player.id == target.player.id )
+                    return;
+
+                var angle = Math.abs( my.angleToTarget( target ) );
+
+                if ( angle < minAngle ) {
+
+                    minAngle = angle;
+                    selected = target;
+                }
+            });
+
+            return selected;
         }
     }
     /*
@@ -384,7 +406,7 @@ Vessel.prototype.fwd = function() {
 
 Vessel.prototype.angleToTarget = function( target ) {
 
-    return obj.fwd().angleTo( target.pos.clone().sub( this.pos ) );
+    return this.fwd().angleTo( target.pos.clone().sub( this.pos ) );
 };
 
 Vessel.prototype.turnVec = function() {
