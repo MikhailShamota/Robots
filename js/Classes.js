@@ -24,7 +24,7 @@ function Player( id, isProxy ) {
             {
                 f: smallFighter,
                 target: selectEasiest,
-                m: [ smallMissile, smallMissile ]
+                m: [ {f:smallMissile,p:new THREE.Vector3(-15,0,0)}, {f:smallMissile,p:new THREE.Vector3(+15,0,0)} ]
                 //wa:autoTurret
                 //w1:[laser,laser]
             }/*,
@@ -141,12 +141,12 @@ function Player( id, isProxy ) {
 
             item.m && item.forEach( function( m ) {
 
-                var missile = m();
+                var missile = m.f();
 
                 item.missiles.push( missile );
 
+                missile.pt = m.p;//point of connection
                 ///missile.init();
-
                 ///missile.pos.copy( p );
 
                 addMesh( missile, meshes );

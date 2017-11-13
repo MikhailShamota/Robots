@@ -647,10 +647,10 @@ var Scene = (function () {
 
         var vesselObj = iPlayer().getVesselFromList();
         var missiles = vesselObj.missiles;
-        missiles && missiles.forEach( function (missile) {
+        missiles && missiles.forEach( function ( missile ) {
 
             missile.init();
-            missile.pos.copy( vesselObj.pos );
+            missile.pos.copy( vesselObj.pos ).add( missile.pt );
         });
     }
 
