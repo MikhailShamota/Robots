@@ -642,9 +642,10 @@ var Scene = (function () {
         }
     }
 
-    function mouseRightClick( event ) {
+    //dblClick
+    function clickDbl( event ) {
 
-        iPlayer().getVessel().w2();
+        initMeshes( iPlayer().getVessel().w2() );
     }
 
     function initializeGL() {
@@ -729,7 +730,16 @@ var Scene = (function () {
             function ( event ) {
 
                 event.preventDefault();
-                event.button == 1 && mouseRightClick( event ) || iPlayer().setMouseUp();
+                iPlayer().setMouseUp();
+            },
+            false);
+
+        dom.addEventListener(
+            'dblclick',
+            function ( event ) {
+
+                event.preventDefault();
+                clickDbl( event );
             },
             false);
 
@@ -751,6 +761,7 @@ var Scene = (function () {
                     clickTimer = null;
                     //alert("double");
                     iPlayer().setMouseDown();
+                    clickDbl( event );
                 }
 
                 if ( event.targetTouches.length > 1 ) {
@@ -909,8 +920,8 @@ var Scene = (function () {
         starSystem = new StarSystem( starSystemId );
         initMeshes( starSystem.initMeshes() );
 
-        initMeshes( skyBox );
         skyBox = starSystem.initSkybox();
+        initMeshes( skyBox );
 
         //initSkySprite();
 

@@ -24,7 +24,7 @@ function Player( id, isProxy ) {
             {
                 f: smallFighter,
                 target: selectEasiest,
-                w2: smallMissile
+                m: [ smallMissile, smallMissile ]
                 //wa:autoTurret
                 //w1:[laser,laser]
             }/*,
@@ -79,16 +79,7 @@ function Player( id, isProxy ) {
             return selected;
         }
     }
-    /*
-    Fleet.prototype.update = function( mousePos ) {
 
-        this.vesselsList.forEach( (item ) => {
-
-            var to = item.to( mousePos );
-            item.obj.to = ( to && to.clone() );//where go to
-        });
-    };
-    */
     Fleet.prototype.start = function() {
 
         this.vesselsList.forEach( function( item ) {
@@ -114,6 +105,24 @@ function Player( id, isProxy ) {
 
     Fleet.prototype.initMeshes = function( color ) {
 
+        function addMesh( obj, meshes ) {
+
+            obj.mesh.setToOctree = true;
+
+            meshes.push( obj.mesh );
+
+            //trail
+            obj.initTrail();
+            obj.player = this.player;
+
+            obj.trailMeshes.forEach( function( item ) {
+
+                meshes.push( item );
+            });
+
+            return meshes;
+        }
+
         var meshes = [];
         var self = this;
 
@@ -121,7 +130,30 @@ function Player( id, isProxy ) {
 
             var obj = item.f( null, color );
 
-            obj.mesh.setToOctree = true;
+
+            addMesh( obj, meshes );///<----
+
+
+            //obj.w2 = function() { return item.w2( this.pos, this.color ) };
+            obj.selectTarget = item.target;
+            item.obj = obj;//a link to vessel*/
+            item.missiles = [];
+
+            item.m && item.forEach( function( m ) {
+
+                var missile = m();
+
+                item.missiles.push( missile );
+
+                ///missile.init();
+
+                ///missile.pos.copy( p );
+
+                addMesh( missile, meshes );
+            });
+
+
+            /*obj.mesh.setToOctree = true;
 
             meshes.push( obj.mesh );
 
@@ -138,7 +170,7 @@ function Player( id, isProxy ) {
             obj.w2 = function() { item.w2( this.pos, this.color ) };
             obj.selectTarget = item.target;
 
-            item.obj = obj;//a link to vessel
+            item.obj = obj;//a link to vessel*/
         });
 
         return meshes;
@@ -595,7 +627,7 @@ function Missile( pos, mass, color ) {
 
     var material	= new THREE.SpriteMaterial( {
 
-        map: texture && Textures.add( 'res/blue_particle.jpg' ),
+        map: Textures.add( 'res/blue_particle.jpg' ),
         color : color,
         blending : THREE.AdditiveBlending,
         transparent: true
@@ -879,9 +911,9 @@ StarSystem.prototype.initSkybox = function() {
     var ret = [];
 
     const P_STARS = [
-        { size: 1.0, minQty: 1000,  maxQty: 2000, dist: -4000, color: 0xf0f0ff },
-        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: -10000, color: 0xd0d0df },
-        { size: 8.0, minQty: 1000,  maxQty: 2000, dist: -14000, color:  0xa0a0af }
+        { size: 1.0, minQty: 1000,  maxQty: 2000, dist: 4000, color: 0xf0f0ff },
+        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: 10000, color: 0xd0d0df },
+        { size: 8.0, minQty: 1000,  maxQty: 2000, dist: 14000, color:  0xa0a0af }
     ];
 
     //STARS!
