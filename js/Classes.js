@@ -194,9 +194,9 @@ Player.prototype.initMeshes = function() {
 };
 
 //TODO:remove!!
-Player.prototype.getVessel = function() {
+Player.prototype.getVesselFromList = function() {
 
-    return this.fleet.vesselsList[0].obj;
+    return this.fleet.vesselsList[0];
 };
 
 Player.prototype.setMouseDown = function() {
@@ -215,7 +215,7 @@ Player.prototype.setMouseUp = function() {
 
 Player.prototype.pack = function() {
 
-    var data = this.getVessel().pack();
+    var data = this.getVesselFromList().obj.pack();
 
     data.id = this.id;
 
@@ -224,7 +224,7 @@ Player.prototype.pack = function() {
 
 Player.prototype.unpack = function( data ) {
 
-    data.id && data.id == this.id && this.getVessel().unpack( data );
+    data.id && data.id == this.id && this.getVesselFromList().obj.unpack( data );
 };
 
 Player.prototype.change = function() {

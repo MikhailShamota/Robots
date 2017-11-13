@@ -20,7 +20,7 @@ var Scene = (function () {
     iPlayer.lastPeerSent = 0;
     iPlayer.onChange = function() {
 
-        this.getVessel().isFiring = this.isMouseDown;
+        this.getVesselFromList().obj.isFiring = this.isMouseDown;
 
         send();
     };
@@ -413,7 +413,7 @@ var Scene = (function () {
 
         function updateCamera(dt) {
 
-            var vessel = iPlayer().getVessel();
+            var vessel = iPlayer().getVesselFromList().obj;
 
             var dist = Number.MAX_SAFE_INTEGER;
             var i = vessel.getCameraPos( camera );
@@ -517,7 +517,7 @@ var Scene = (function () {
         function updateTarget() {
 
             //iPlayer().fleet.update( v3MousePoint );
-            iPlayer().getVessel().steer = MathHelper.clamp( -v2MousePoint.x, -1, 1 );
+            iPlayer().getVesselFromList().obj.steer = MathHelper.clamp( -v2MousePoint.x, -1, 1 );
         }
 
         function updateBots() {
@@ -574,9 +574,9 @@ var Scene = (function () {
 
         updateLasersMove();
 
-        updateRadarMove( iPlayer().getVessel().pos, dt );
+        updateRadarMove( iPlayer().getVesselFromList().obj.pos, dt );
 
-        updateScan( iPlayer().getVessel() );
+        updateScan( iPlayer().getVesselFromList().obj );
 
         iPlayer.id != 0 && send();//Zero if offline
 
@@ -645,7 +645,13 @@ var Scene = (function () {
     //dblClick
     function clickDbl( event ) {
 
-        initMeshes( iPlayer().getVessel().w2() );
+        var vesselObj = iPlayer().getVesselFromList();
+        var missiles = vesselObj.missiles;
+        missiles && missiles.forEach( function (missile) {
+
+            missile.init();
+            missile.pos.copy( vesselObj.pos );
+        });
     }
 
     function initializeGL() {
