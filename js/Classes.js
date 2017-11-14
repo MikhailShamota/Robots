@@ -86,8 +86,7 @@ function Player( id, isProxy ) {
 
             var obj = item.obj;
 
-            obj.init();
-            obj.pos = MathHelper.v3Random( R_START_DROP );
+            obj.init( MathHelper.v3Random( R_START_DROP ) );
         });
     };
 
@@ -105,6 +104,9 @@ function Player( id, isProxy ) {
 
     Fleet.prototype.initMeshes = function( color ) {
 
+        var meshes = [];
+        var self = this;
+
         function addMesh( obj, meshes ) {
 
             obj.mesh.setToOctree = true;
@@ -113,7 +115,7 @@ function Player( id, isProxy ) {
 
             //trail
             obj.initTrail();
-            obj.player = this.player;
+            obj.player = self.player;
 
             obj.trailMeshes.forEach( function( item ) {
 
@@ -123,25 +125,22 @@ function Player( id, isProxy ) {
             return meshes;
         }
 
-        var meshes = [];
-        var self = this;
-
         this.vesselsList.forEach( (item ) => {
 
-            var obj = item.f( null, color );
+            var obj = item.f( V3_ZERO, color );
 
 
             addMesh( obj, meshes );///<----
 
 
-            //obj.w2 = function() { return item.w2( this.pos, this.color ) };
             obj.selectTarget = item.target;
             item.obj = obj;//a link to vessel*/
             item.missiles = [];
 
-            item.m && item.forEach( function( m ) {
+            //missiles loop
+            item.m && item.m.forEach( function( m ) {
 
-                var missile = m.f();
+                var missile = m.f( V3_ZERO, color );
 
                 item.missiles.push( missile );
 
@@ -176,16 +175,6 @@ function Player( id, isProxy ) {
         return meshes;
     };
 }
-
-Player.prototype.update = function( dt ) {
-
-    this.fleet.vesselsList.forEach( function ( item ) {
-
-        var obj = item.obj;
-
-        obj.updateTrail && obj.updateTrail( dt );
-    });
-};
 
 Player.prototype.initMeshes = function() {
 
@@ -390,14 +379,16 @@ extend( Vessel, MatObj );
 
 Vessel.prototype.V3_FWD = new THREE.Vector3( 0, 0, 1 );
 
-Vessel.prototype.init = function() {
+Vessel.prototype.init = function( pos ) {
 
     this.v = new THREE.Vector3();
-    this.pos = new THREE.Vector3();
+    this.pos = pos || new THREE.Vector3();
     this.turn = new THREE.Vector3();
     this.hits = this.toughness;
     this.lastHitBy = null;
     this.mesh.visible = true;
+
+    this.resetTrail();
 };
 
 Vessel.prototype.pack = function() {
@@ -523,6 +514,37 @@ Vessel.prototype.updateTrail = function(dt) {
 
         var pt = item.clone().applyMatrix4( matrix );
         self.trailLines[i].advance( pt.add( pos ) );
+    });
+};
+
+//reset all line positions to default
+Vessel.prototype.resetTrail = function() {
+
+    var self = this;
+    this.ptJet.forEach( function( item, i ) {
+
+        //self
+        var pt = item.clone().applyMatrix4( self.mesh.matrix ).add( self.pos );//new pt
+        var line = self.trailLines[i];
+
+        var positions = line.attributes.position.array;
+        var previous = line.attributes.previous.array;
+        var next = line.attributes.next.array;
+
+        var len = positions.length;
+        for ( var j = 0; j < len; j += 3 ) {
+
+            positions[ j ] = pt.x;
+            positions[ j + 1 ] = pt.y;
+            positions[ j + 2 ] = pt.z;
+        }
+
+        MathHelper.memcopy( positions, 0, previous, 0, len );
+        MathHelper.memcopy( positions, 0, next, 0, len );
+
+        line.attributes.position.needsUpdate = true;
+        line.attributes.previous.needsUpdate = true;
+        line.attributes.next.needsUpdate = true;
     });
 };
 

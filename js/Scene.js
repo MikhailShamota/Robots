@@ -368,6 +368,8 @@ var Scene = (function () {
                 obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > ( SHOT_MIN_MSEC + ( obj.canonHeat || 0 ) ) || ! obj.lastFired ) && fire( obj );//do not calc damage from my vessels, only on my vessel
 
                 obj.canonHeat = Math.max( obj.canonHeat - dt * SHOT_COOL_MSEC_PER_SEC, SHOT_MIN_MSEC );
+
+                obj && obj.updateTrail && obj.updateTrail( dt );
             });
         }
 
@@ -380,7 +382,7 @@ var Scene = (function () {
                 var mesh = octreeObj.object;
                 var matObj = mesh.userData;
 
-                if ( !matObj.v || !mesh.visible )//immovable or invisible
+                if ( !matObj.v || !mesh.visible ||!matObj.pos )//immovable or invisible or undefined pos
                     return;
 
                 octree.search( octreeObj.position, octreeObj.radius ).forEach( octreeObj2 => {
@@ -388,7 +390,7 @@ var Scene = (function () {
                     var mesh2 = octreeObj2.object;
                     var matObj2 = mesh2.userData;
 
-                    if (mesh.id == mesh2.id || !mesh2.visible )
+                    if (mesh.id == mesh2.id || !mesh2.visible || !matObj2.pos )
                         return;
 
                     var depth = octreeObj2.radius + octreeObj.radius - mesh.position.distanceTo( mesh2.position );
@@ -567,10 +569,11 @@ var Scene = (function () {
 
         loopedArrays.update();
 
+        /*
         for ( var playerId in players ) {
 
             players[ playerId ].update( dt );
-        }
+        }*/
 
         updateLasersMove();
 
@@ -642,16 +645,20 @@ var Scene = (function () {
         }
     }
 
+    function launch( vesselItem ) {
+
+        var missiles = vesselItem.missiles;
+        missiles && missiles.forEach( function ( missile ) {
+
+            missile.init( vesselItem.obj.pos.clone().add( missile.pt ) );
+        });
+    }
     //dblClick
     function clickDbl( event ) {
 
-        var vesselObj = iPlayer().getVesselFromList();
-        var missiles = vesselObj.missiles;
-        missiles && missiles.forEach( function ( missile ) {
+        var vesselItem = iPlayer().getVesselFromList();
+        launch( vesselItem );
 
-            missile.init();
-            missile.pos.copy( vesselObj.pos ).add( missile.pt );
-        });
     }
 
     function initializeGL() {
