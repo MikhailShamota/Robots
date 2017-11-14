@@ -817,6 +817,7 @@ var Scene = (function () {
         meshes_arr && meshes_arr.forEach( function( mesh ) {
 
             scene.add( mesh );
+            че с октрии почему мимо создает?
             mesh.setToOctree && octree.add( mesh );
         });
 

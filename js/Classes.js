@@ -86,7 +86,7 @@ function Player( id, isProxy ) {
 
             var obj = item.obj;
 
-            obj.init( MathHelper.v3Random( R_START_DROP ) );
+            obj.init( MathHelper.v3Random( R_START_DROP ).setY( 0 ) );
         });
     };
 
@@ -524,7 +524,7 @@ Vessel.prototype.resetTrail = function() {
     this.ptJet.forEach( function( item, i ) {
 
         //self
-        var pt = item.clone().applyMatrix4( self.mesh.matrix ).add( self.pos );//new pt
+        var pt = self.pos;//item.clone().applyMatrix4( self.mesh.matrix ).add( self.pos );//new pt
         var line = self.trailLines[i];
 
         var positions = line.attributes.position.array;
