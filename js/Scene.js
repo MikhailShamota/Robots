@@ -590,23 +590,25 @@ var Scene = (function () {
 
         var raycaster = new THREE.Raycaster( from.pos, from.fwd() );
 
-        var octreeObjects = octree.search(
-            raycaster.ray.origin,
-            raycaster.ray.far,
-            false/*false to get geometry info*/,
-            raycaster.ray.direction );
+        //var octreeObjects = octree.search(
+          //  raycaster.ray.origin,
+//            raycaster.ray.far,
+  //          false/*false to get geometry info*/,
+    //        raycaster.ray.direction );
 
         var hits = 0;
         var dist = R_GALAXY;
 
-        octreeObjects && octreeObjects.forEach( function( item ) {
+        //octreeObjects && octreeObjects.forEach( function( item ) {
 
-            var mesh = item.object;
-            if ( mesh.id == from.mesh.id || hits > 0 )
+        rayIntersect( raycaster, function( mesh ) {
+
+            //var mesh = item.object;
+            if (mesh.id == from.mesh.id || hits > 0)
                 return;
 
-            var intersects = raycaster.intersectObject( mesh );
-            if ( intersects.length > 0) {
+            var intersects = raycaster.intersectObject(mesh);
+            if (intersects.length > 0) {
 
                 hits++;
 
@@ -614,12 +616,13 @@ var Scene = (function () {
                 //from.player.isProxy && vessel.hits > 0 && vessel.hits-- && (vessel.lastHitBy = from.player.id);//doDamage -> isProxy
                 vessel && vessel.player && !vessel.player.isProxy && vessel.hits > 0 && vessel.hits-- && (vessel.lastHitBy = from.player.id);//doDamage -> isProxy
 
-                dist = intersects[ 0 ].distance;
+                dist = intersects[0].distance;
 
-                addHit( intersects[ 0 ].point );
-            }else{
+                addHit(intersects[0].point);
+            } else {
             }
-        });
+        } );
+        //});
 
         addShotFlare( from.fwd().multiplyScalar( 25 ).add( from.pos ) );
         addShot( raycaster.ray, dist );
@@ -645,20 +648,56 @@ var Scene = (function () {
         }
     }
 
-    function launch( vesselItem ) {
+    function launch( vesselItem, target ) {
 
         var missiles = vesselItem.missiles;
         missiles && missiles.forEach( function ( missile ) {
 
             missile.init( vesselItem.obj.pos.clone().add( missile.pt ) );
+            missile.target = target;
         });
     }
+
+    function rayIntersect( raycaster, fMap ) {
+
+        var octreeObjects = octree.search(
+            raycaster.ray.origin,
+            raycaster.ray.far,
+            false/*false to get geometry info*/,
+            raycaster.ray.direction );
+
+        octreeObjects && octreeObjects.forEach( function( item ) {
+
+            fMap( item.object );
+        });
+    }
+
+    function pickObject( v2 ) {
+
+        var raycaster = new THREE.Raycaster();
+        raycaster.setFromCamera( v2, camera );
+
+        var ret = null;
+
+        rayIntersect( raycaster, function( mesh ) {
+
+           var intersects = raycaster.intersectObject( mesh );
+           for ( var i = 0; i < intersects.length; i++ ) {
+
+               ret = mesh;
+               console.log ( intersects[ i ] );
+           }
+        } );
+
+        return ret;
+    }
+
     //dblClick
     function clickDbl( event ) {
 
         var vesselItem = iPlayer().getVesselFromList();
-        launch( vesselItem );
-
+        var target = pickObject( v2MousePoint );
+        target && launch( vesselItem, target );
     }
 
     function initializeGL() {
@@ -817,7 +856,7 @@ var Scene = (function () {
         meshes_arr && meshes_arr.forEach( function( mesh ) {
 
             scene.add( mesh );
-            че с октрии почему мимо создает?
+
             mesh.setToOctree && octree.add( mesh );
         });
 
