@@ -12,8 +12,8 @@ const CAMERA_START_Y = R_GALAXY * 3;//start camera pos Y
 const CAMERA_LOOK_AT_FWD = 300;//смотреть перед кораблем
 
 const K_GRAVITY = 2;
-const K_SPACE_RESIST = 10;
-const VELOCITY_LIMIT_PER_SEC = 100;
+const K_SPACE_RESIST = 6;
+const VELOCITY_LIMIT_PER_SEC = 500;
 const K_CENTER_FORCE = 20;//force pulling to ecliptic plane
 
 const Q_TRAIL_LEN = 100;//mesh line trail segments
@@ -366,31 +366,39 @@ var Textures = {
 
     loader: new THREE.TextureLoader(),
     collection: {},
-    add: function(file, func) {
+    get: function( file ) {
 
-        var tex = this.collection[ file ];
+        return this.collection[ file ];
+    },
+    add: function( files ) {
 
-        if ( tex )
-            return func && func( tex ) || !func && tex;
+        var qty = files.length;
 
-        var self = this;
 
-        this.loader.load(
-            file,
-            function (texture) {
+        for ( var i = 0; i < qty; i++ ) {
 
-                self.collection[ file ] = texture;
-                return func && func( texture ) || !func && tex;
-            },
-            function (xhr) {
+            this.collection[ files[ i ] ] = new THREE.TextureLoader().load( files[ i ] );
+            /*this.loader.load(
 
-                //console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
-                console.log( 'load "' + file + '" OK' );
-            },
-            function (xhr) {
+                files[ i ],
+                function (texture) {
 
-                console.log( 'load "' + file + '" failed' );
-            }
-        );
+                    self.collection[ file ] = texture;
+                    return func && func( texture ) || !func && tex;
+                },
+                function (xhr) {
+
+                    //console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+                    console.log( 'load "' + file + '" OK' );
+                },
+                function (xhr) {
+
+                    console.log( 'load "' + file + '" failed' );
+                }
+            );
+            */
+
+        }
+
     }
 };

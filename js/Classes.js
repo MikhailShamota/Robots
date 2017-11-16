@@ -46,7 +46,7 @@ function Player( id, isProxy ) {
 
         function smallMissile( p, color ) {
 
-            return new Missile( p, 500, color );
+            return new Missile( p, 5, color );
         }
 
         function selectAny( all_vessels ) {
@@ -638,19 +638,19 @@ function Missile( pos, mass, color ) {
     Vessel.apply( this, arguments );
 
     this.fJet = 1800000;//this.mass * 80000;
-    this.sTurn = 0.75;//radians per sec
+    this.sTurn = 1.75;//radians per sec
     this.trailWidth = 4;
 
     this.toughness = 1;//toughness
 
-    var size = Math.cbrt( this.mass );
+    var size = 25;
 
 
 
     var material	= new THREE.SpriteMaterial( {
 
-        map: Textures.add( 'res/blue_particle.jpg' ),
-        color : color,
+        map: Textures.get( 'res/blue_particle.jpg' ),
+        color : color.clone().multiplyScalar( 2 ),
         blending : THREE.AdditiveBlending,
         transparent: true
     } );
@@ -659,10 +659,11 @@ function Missile( pos, mass, color ) {
     sprite.scale.set( size, size, size );
 
     this.mesh.add( sprite );
+    this.mesh.visible = false;
 
 
 
-    this.ptJet = [ new THREE.Vector3( 0, 0, -size * 1.5 ) ];
+    this.ptJet = [ new THREE.Vector3( 0, 0, 0 ) ];
 }
 
 

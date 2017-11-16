@@ -80,7 +80,7 @@ var Scene = (function () {
 
         var material	= new THREE.SpriteMaterial( {
 
-            map: texture && Textures.add( texture ),
+            map: texture && Textures.get( texture ),
             color : color,
             blending : THREE.AdditiveBlending,
             transparent: true
@@ -530,10 +530,10 @@ var Scene = (function () {
 
                     var obj = item.obj;
 
-                    if ( nowTime - obj.targetFoundTime > BOT_FIND_TARGET_PERIOD_MSEC || !obj.targetFoundTime || !obj.target ) {
+                    if ( nowTime > obj.targetNewSearchAt || !obj.target ) {
 
                         obj.target = obj.selectTarget( vessels );//find new target
-                        obj.targetFoundTime = nowTime;
+                        obj.targetNewSearchAt = nowTime + BOT_FIND_TARGET_PERIOD_MSEC;
                     }
 
                     obj.isFiring = obj.target && obj.target.hits > 0 && obj.angleToTarget( obj.target ) < 0.1;
@@ -648,13 +648,14 @@ var Scene = (function () {
         }
     }
 
-    function launch( vesselItem, target ) {
+    function launch( vesselItem, targetObj ) {
 
         var missiles = vesselItem.missiles;
         missiles && missiles.forEach( function ( missile ) {
 
             missile.init( vesselItem.obj.pos.clone().add( missile.pt ) );
-            missile.target = target;
+            missile.target = targetObj;
+            missile.v = vesselItem.obj.v.clone();
         });
     }
 
@@ -681,15 +682,17 @@ var Scene = (function () {
 
         rayIntersect( raycaster, function( mesh ) {
 
-           var intersects = raycaster.intersectObject( mesh );
-           for ( var i = 0; i < intersects.length; i++ ) {
+           var boundingSphere = mesh.geometry.boundingSphere.clone();
+           boundingSphere.radius *= 4;
+           boundingSphere.center.copy( mesh.position );
+           if ( raycaster.ray.intersectSphere( boundingSphere ) )  {
 
                ret = mesh;
-               console.log ( intersects[ i ] );
+               console.log ( mesh );
            }
         } );
 
-        return ret;
+        return ret && ret.userData;
     }
 
     //dblClick
@@ -965,6 +968,8 @@ var Scene = (function () {
 
     function initScene( starSystemId ) {
 
+        Textures.add( ['res/blue_particle.jpg'] );
+
         initStats();
         //initControls();
         initOctree();
@@ -986,9 +991,6 @@ var Scene = (function () {
         iPlayer.id == 0 && initRobots( 5 );
 
         octree.update();
-
-        //Textures.add( 'res/cursor.png', initCursor );
-        Textures.add( 'res/blue_particle.jpg' );
     }
 
     function getDataFromPeer( peer, data ) {
