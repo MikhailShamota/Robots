@@ -968,7 +968,7 @@ var Scene = (function () {
 
     function initScene( starSystemId ) {
 
-        Textures.add( ['res/blue_particle.jpg'] );
+        Textures.add( ['res/blue_particle.jpg','res/grad.png'] );
 
         initStats();
         //initControls();

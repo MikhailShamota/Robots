@@ -370,6 +370,9 @@ function Vessel( pos, mass, color ) {
     this.colorEdge = this.color.clone().setHSL( this.colorHue, 1, 0.5);
     this.colorPlane = this.color.clone().setHSL( this.colorHue, 1, 0.2);
 
+    this.trailWidth = 6;
+    this.trailColor = this.colorEdge;
+
     this.isFiring = false;
 
     this.lastHitBy = null;
@@ -550,19 +553,21 @@ Vessel.prototype.resetTrail = function() {
 
 Vessel.prototype.initTrail = function () {
 
-    var trailWidth = 6;
+    //var trailWidth = 6;
     var material = new THREE.MeshLineMaterial( {
-        color: new THREE.Color( this.colorEdge ),
+        color: new THREE.Color( this.trailColor ),
         opacity:0.5,
         resolution: V2_RESOLUTION,
         sizeAttenuation: true,
-        lineWidth: trailWidth,//see bellow override thickness
+        lineWidth: this.trailWidth,//see bellow override thickness
         near: 1,
         far: 100000,
         depthTest: true,
         blending: THREE.AdditiveBlending,
         transparent: true,
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
+        map: Textures.get( 'res/grad.png' ),
+        useMap : 1
     });
 
     var self = this;
@@ -599,7 +604,7 @@ function Fighter(pos, mass, color) {
 
     this.fJet = 900000;//this.mass * 80000;
     this.sTurn = 0.75;//radians per sec
-    this.trailWidth = 4;
+    this.trailWidth = 6;
     //this.hits = 3;//toughness
     this.toughness = 3;//toughness
 
@@ -637,9 +642,12 @@ function Missile( pos, mass, color ) {
 
     Vessel.apply( this, arguments );
 
+    const brightness = 2;
+
     this.fJet = 1800000;//this.mass * 80000;
     this.sTurn = 1.75;//radians per sec
     this.trailWidth = 4;
+    this.trailColor.multiplyScalar( brightness );
 
     this.toughness = 1;//toughness
 
@@ -650,7 +658,7 @@ function Missile( pos, mass, color ) {
     var material	= new THREE.SpriteMaterial( {
 
         map: Textures.get( 'res/blue_particle.jpg' ),
-        color : color.clone().multiplyScalar( 2 ),
+        color : color.clone().multiplyScalar( brightness ),
         blending : THREE.AdditiveBlending,
         transparent: true
     } );
