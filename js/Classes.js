@@ -303,6 +303,11 @@ MatObj.prototype.bounce = function(obj2) {
     return newVelocity.add( v1Tangent );
 };
 
+MatObj.prototype.processCollision = function( obj2 ) {
+
+
+};
+
 MatObj.prototype.updateMesh = function() {
 
     /*движение по сфере-->
@@ -649,7 +654,7 @@ function Missile( pos, mass, color ) {
     this.trailWidth = 4;
     this.trailColor.multiplyScalar( brightness );
 
-    this.toughness = 1;//toughness
+    this.toughness = 3;//toughness = kill potential
 
     var size = 25;
 
@@ -674,8 +679,17 @@ function Missile( pos, mass, color ) {
     this.ptJet = [ new THREE.Vector3( 0, 0, 0 ) ];
 }
 
-
 extend ( Missile, Vessel );
+
+//override
+Missile.prototype.processCollision = function( obj2 ) {
+
+    if ( this.target.mesh.uuid != obj2.mesh.uuid )
+        return;
+
+    setTimeout( function( obj, payload ) { obj.hits -= payload }, 400, obj2, this.hits );//cripple target
+    this.hits = 0;//explode missile
+}
 
 function Celestial (pos, radius, color) {
 

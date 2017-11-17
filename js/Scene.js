@@ -403,6 +403,9 @@ var Scene = (function () {
                             obj: matObj,
                             v: matObj.bounce( matObj2 )
                         });
+
+                        //process collision - explode, heat, damage here
+                        matObj.processCollision && matObj.processCollision( matObj2 );
                     }
                 });
             });
@@ -510,16 +513,12 @@ var Scene = (function () {
             raycaster.setFromCamera( v2MousePoint, camera );
 
             v3MousePoint = raycaster.ray.intersectPlane( eclipticPlane );
+
+            iPlayer().getVesselFromList().obj.steer = MathHelper.clamp( -v2MousePoint.x, -1, 1 );
             //v3MousePoint = raycaster.ray.intersectSphere( new THREE.Sphere( V3_ZERO.clone(), R_WORLD ) );
 
             //if ( v3MousePoint )
               //  cursor.position.copy( v3MousePoint );
-        }
-
-        function updateTarget() {
-
-            //iPlayer().fleet.update( v3MousePoint );
-            iPlayer().getVesselFromList().obj.steer = MathHelper.clamp( -v2MousePoint.x, -1, 1 );
         }
 
         function updateBots() {
@@ -558,8 +557,6 @@ var Scene = (function () {
         updateBots();//update bots decsisions
 
         updateMouse();//get mouse position
-
-        updateTarget();//update vessels movement direction
 
         updateCollision();//check and process MatObj collisions*/
 
