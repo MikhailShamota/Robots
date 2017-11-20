@@ -649,14 +649,15 @@ function Missile( pos, mass, color ) {
 
     const brightness = 2;
 
-    this.fJet = 1800000;//this.mass * 80000;
-    this.sTurn = 1.75;//radians per sec
+    this.fJet = 12000000;//this.mass * 80000;
+    this.sTurn = 12.75;//radians per sec
     this.trailWidth = 4;
     this.trailColor.multiplyScalar( brightness );
 
     this.toughness = 3;//toughness = kill potential
 
     var size = 25;
+    var boundingRadius = 35;
 
 
 
@@ -674,7 +675,8 @@ function Missile( pos, mass, color ) {
     this.mesh.add( sprite );
     this.mesh.visible = false;
 
-
+    this.mesh.geometry.computeBoundingSphere();
+    this.mesh.geometry.boundingSphere.radius = boundingRadius;
 
     this.ptJet = [ new THREE.Vector3( 0, 0, 0 ) ];
 }
@@ -687,7 +689,7 @@ Missile.prototype.processCollision = function( obj2 ) {
     if ( this.target.mesh.uuid != obj2.mesh.uuid )
         return;
 
-    setTimeout( function( obj, payload ) { obj.hits -= payload }, 400, obj2, this.hits );//cripple target
+    setTimeout( function( obj, payload ) { obj.hits -= payload }, 100, obj2, this.hits );//cripple target
     this.hits = 0;//explode missile
 }
 

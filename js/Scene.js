@@ -42,7 +42,7 @@ var Scene = (function () {
             "lasers": new LoopedArray( 100, 1150 ),//100 qty, 30 ms to live
             "hits": new LoopedArray( 100, 40 ),
             "shotFlare": new LoopedArray( 100, 20 ),
-            "explosions": new LoopedArray( 10, 50 ),
+            "explosions": new LoopedArray( 20, 100 ),
             "radar": new LoopedArray( 25, SCAN_SEC_MAX * 1000 * 2 )// x 2 because of delayed start
         }
     };
@@ -130,7 +130,7 @@ var Scene = (function () {
         loopedArrays.add2scene(
 
             "explosions",
-            Flare( pt, 400, 0xffbb11, 'res/blue_particle.jpg' )
+            Flare( pt, 500, 0xffbb11, 'res/blue_particle.jpg' )
         );
     }
 
@@ -515,6 +515,7 @@ var Scene = (function () {
             v3MousePoint = raycaster.ray.intersectPlane( eclipticPlane );
 
             iPlayer().getVesselFromList().obj.steer = MathHelper.clamp( -v2MousePoint.x, -1, 1 );
+
             //v3MousePoint = raycaster.ray.intersectSphere( new THREE.Sphere( V3_ZERO.clone(), R_WORLD ) );
 
             //if ( v3MousePoint )
@@ -648,12 +649,18 @@ var Scene = (function () {
     function launch( vesselItem, targetObj ) {
 
         var missiles = vesselItem.missiles;
-        missiles && missiles.forEach( function ( missile ) {
+        for ( var i = 0; i < missiles.length; i++ ) { //missiles && missiles.forEach( function ( missile ) {
 
-            missile.init( vesselItem.obj.pos.clone().add( missile.pt ) );
-            missile.target = targetObj;
-            missile.v = vesselItem.obj.v.clone();
-        });
+            var missile = missiles[i];
+            if (!missile.mesh.visible) {
+
+                missile.init(vesselItem.obj.pos.clone().add(missile.pt));
+                missile.target = targetObj;
+                missile.v = vesselItem.obj.v.clone();
+
+                return;
+            }
+        }
     }
 
     function rayIntersect( raycaster, fMap ) {
@@ -685,7 +692,7 @@ var Scene = (function () {
            if ( raycaster.ray.intersectSphere( boundingSphere ) )  {
 
                ret = mesh;
-               console.log ( mesh );
+               //console.log ( mesh );
            }
         } );
 
@@ -854,6 +861,8 @@ var Scene = (function () {
     function initMeshes( meshes_arr ) {
 
         meshes_arr && meshes_arr.forEach( function( mesh ) {
+
+            mesh.geometry && !mesh.geometry.boundingSphere && mesh.geometry.computeBoundingSphere();
 
             scene.add( mesh );
 
