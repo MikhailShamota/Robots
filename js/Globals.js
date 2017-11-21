@@ -1,6 +1,9 @@
 const R_GALAXY = 4000;
 const R_START_DROP = 2500;
-const C_BACKGROUND = 0x181818;//( 0x020E1F );2A2C2B
+//const C_BACKGROUND = 0x181818;//( 0x020E1F );2A2C2B
+const C_BACKGROUND = 0x282828;//( 0x020E1F );2A2C2B
+const FOG_FAR = 10000;//set 0 to off
+const FOG_NEAR = 800;
 
 const CAMERA_V = 2;//camera speed
 const CAMERA_V_LIMIT = 1000;//camera speed limit

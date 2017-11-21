@@ -344,6 +344,8 @@ var Scene = (function () {
                 //var obj = mesh.userData;//mesh.userData => MatObj
                 var obj = octreeObj.object.userData;//octree -> object -> mesh -> userData => MatObj
 
+                obj && obj.updateTrail && obj.updateTrail( dt );
+
                 if ( !obj.mesh.visible )
                     return;
 
@@ -368,8 +370,6 @@ var Scene = (function () {
                 obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > ( SHOT_MIN_MSEC + ( obj.canonHeat || 0 ) ) || ! obj.lastFired ) && fire( obj );//do not calc damage from my vessels, only on my vessel
 
                 obj.canonHeat = Math.max( obj.canonHeat - dt * SHOT_COOL_MSEC_PER_SEC, SHOT_MIN_MSEC );
-
-                obj && obj.updateTrail && obj.updateTrail( dt );
             });
         }
 
@@ -458,10 +458,12 @@ var Scene = (function () {
             camera.lookAt( vessel.fwd().multiplyScalar( CAMERA_LOOK_AT_FWD ).add( vessel.pos ) );
             camera.up = new THREE.Vector3( 0, 1, 0 );
 
+
             skyBox.forEach( function( mesh ) {
 
                 mesh.position.copy( camera.position );
             });
+
 
             //skySprite.position.copy( camera.position.clone().sub( V3_UNIT_Y.clone().setY( 5000 ) ) );
         }
@@ -654,9 +656,14 @@ var Scene = (function () {
             var missile = missiles[i];
             if (!missile.mesh.visible) {
 
-                missile.init(vesselItem.obj.pos.clone().add(missile.pt));
-                missile.target = targetObj;
-                missile.v = vesselItem.obj.v.clone();
+                missile
+                    .init(vesselItem.obj.pos.clone().add(missile.pt))
+                    .timeout()
+                    .setTarget( targetObj )
+                    .setV( vesselItem.obj.v );
+                //missile.target = targetObj;
+                //missile.v = vesselItem.obj.v.clone();
+
 
                 return;
             }
@@ -721,6 +728,8 @@ var Scene = (function () {
         camera.up = new THREE.Vector3( 0, 0, 1 );
         camera.lookAt( new THREE.Vector3( 0, 0 ,0 ) );
 
+        if ( FOG_FAR )
+            scene.fog = new THREE.Fog( C_BACKGROUND, FOG_NEAR, FOG_FAR );
         /*cameraFix = new THREE.OrthographicCamera( WIDTH / - 2, WIDTH / 2, HEIGHT / 2, HEIGHT / - 2, -100, 100000 );
         cameraFix.aspect = WIDTH / HEIGHT;
         cameraFix.updateProjectionMatrix();
@@ -737,8 +746,8 @@ var Scene = (function () {
 
             camera.aspect = WIDTH / HEIGHT;
             camera.updateProjectionMatrix();
-            cameraFix.aspect = WIDTH / HEIGHT;
-            cameraFix.updateProjectionMatrix();
+            //cameraFix.aspect = WIDTH / HEIGHT;
+            //cameraFix.updateProjectionMatrix();
             V2_RESOLUTION.set( renderer.context.canvas.width, renderer.context.canvas.height );
         });
 
@@ -981,11 +990,13 @@ var Scene = (function () {
         initOctree();
 
         /**star system*/
+
         starSystem = new StarSystem( starSystemId );
         initMeshes( starSystem.initMeshes() );
 
         skyBox = starSystem.initSkybox();
         initMeshes( skyBox );
+
 
         //initSkySprite();
 
@@ -1013,7 +1024,9 @@ var Scene = (function () {
         requestAnimationFrame(paintScene);
 
         //renderer.autoClear = false;
-        renderer.clear();
+
+        //renderer.clear();
+
         //renderer.render(sceneFix, cameraFix);
         //renderer.clearDepth();
         renderer.render(scene, camera);

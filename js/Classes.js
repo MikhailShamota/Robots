@@ -308,6 +308,12 @@ MatObj.prototype.processCollision = function( obj2 ) {
 
 };
 
+MatObj.prototype.setV = function( v ) {
+
+    this.v.copy( v );
+    return this;
+};
+
 MatObj.prototype.updateMesh = function() {
 
     /*движение по сфере-->
@@ -376,7 +382,7 @@ function Vessel( pos, mass, color ) {
     this.colorPlane = this.color.clone().setHSL( this.colorHue, 1, 0.2);
 
     this.trailWidth = 6;
-    this.trailColor = this.colorEdge;
+    this.trailColor = this.colorEdge.clone().multiplyScalar(2);
 
     this.isFiring = false;
 
@@ -397,6 +403,14 @@ Vessel.prototype.init = function( pos ) {
     this.mesh.visible = true;
 
     this.resetTrail();
+
+    return this;
+};
+
+Vessel.prototype.setTarget = function( t ) {
+
+    this.target = t;
+    return this;
 };
 
 Vessel.prototype.pack = function() {
@@ -609,7 +623,7 @@ function Fighter(pos, mass, color) {
 
     this.fJet = 900000;//this.mass * 80000;
     this.sTurn = 0.75;//radians per sec
-    this.trailWidth = 6;
+    this.trailWidth = 8;
     //this.hits = 3;//toughness
     this.toughness = 3;//toughness
 
@@ -679,6 +693,8 @@ function Missile( pos, mass, color ) {
     this.mesh.geometry.boundingSphere.radius = boundingRadius;
 
     this.ptJet = [ new THREE.Vector3( 0, 0, 0 ) ];
+
+    this.timeout = function() { setTimeout( function( m ) { m.hits = 0; }, 8000, this ); return this; };
 }
 
 extend ( Missile, Vessel );
@@ -689,7 +705,8 @@ Missile.prototype.processCollision = function( obj2 ) {
     if ( this.target.mesh.uuid != obj2.mesh.uuid )
         return;
 
-    setTimeout( function( obj, payload ) { obj.hits -= payload }, 100, obj2, this.hits );//cripple target
+    setTimeout( function( obj, payload ) { obj.hits -= payload }, 150, obj2, this.hits );//cripple target
+
     this.hits = 0;//explode missile
 }
 
@@ -958,9 +975,9 @@ StarSystem.prototype.initSkybox = function() {
     var ret = [];
 
     const P_STARS = [
-        { size: 1.0, minQty: 1000,  maxQty: 2000, dist: 4000, color: 0xf0f0ff },
-        { size: 2.0, minQty: 1000,  maxQty: 2000, dist: 10000, color: 0xd0d0df },
-        { size: 8.0, minQty: 1000,  maxQty: 2000, dist: 14000, color:  0xa0a0af }
+        { size: 30.0, minQty: 200,  maxQty: 500, dist: 8000, color: 0xf0f0f0 },
+        { size: 40.0, minQty: 200,  maxQty: 500, dist: 8000, color: 0xf0f0f0 },
+        { size: 50.0, minQty: 200,  maxQty: 500, dist: 8000, color:  0xf0f0f0 }
     ];
 
     //STARS!
@@ -1085,10 +1102,11 @@ StarSystem.prototype.initMeshes = function( camera ) {
         add( asteroid ).setV( this.randV3( this.rand( 0, V_ASTEROID_MAX ) ) );//.setAxis( rotationUp ).setParent( planet );
     }
 
+
     //dust
     const P_DUST = [
-        { size: 2, minQty: 1000,  maxQty: 2000, dist: 0, color: 0xf0f0f0 },
-        { size: 1.8, minQty: 1000,  maxQty: 2000, dist: -2000, color: 0xd0d0d0 },
+        { size: 2, minQty: 1000,  maxQty: 2000, dist: 0, color: 0xa0a0a0 },
+        { size: 3, minQty: 500,  maxQty: 1000, dist: -2000, color: 0x808080 },
     //    { size: 1.4, minQty: 1000,  maxQty: 2000, dist: -4000, color: 0xbfbfbf },
   //      { size: 1.2, minQty: 1000,  maxQty: 2000, dist: -8000, color: 0xa0a0a0 },
 //        { size: 1, minQty: 1000,  maxQty: 2000, dist: -16000, color: 0x888888 }
