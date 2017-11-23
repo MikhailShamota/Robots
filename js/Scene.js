@@ -344,32 +344,34 @@ var Scene = (function () {
                 //var obj = mesh.userData;//mesh.userData => MatObj
                 var obj = octreeObj.object.userData;//octree -> object -> mesh -> userData => MatObj
 
-                obj && obj.updateTrail && obj.updateTrail( dt );
+                //obj && obj.updateTrail && obj.updateTrail( dt );
 
-                if ( !obj.mesh.visible )
-                    return;
+                if ( obj.mesh.visible ) {
 
-                //CHECK & KILL & REMOVE
-                obj.hits <= 0 && killObject( obj );
+                    //CHECK & KILL & REMOVE
+                    obj.hits <= 0 && killObject(obj);
 
-                //TURN
-                if ( obj.turn ) {
+                    //TURN
+                    if (obj.turn) {
 
-                    var turn_f = (obj.turnVec && obj.turnVec() || V3_ZERO).y;
-                    var turn_rad = obj.sTurn * dt;
-                    obj.turn.y += turn_f * turn_rad;
-                    obj.turn.z = MathHelper.lerp( obj.turn.z, -turn_f, turn_rad * 2 );//roll faster 2 times!
+                        var turn_f = (obj.turnVec && obj.turnVec() || V3_ZERO).y;
+                        var turn_rad = obj.sTurn * dt;
+                        obj.turn.y += turn_f * turn_rad;
+                        obj.turn.z = MathHelper.lerp(obj.turn.z, -turn_f, turn_rad * 2);//roll faster 2 times!
+                    }
+
+                    //VELOCITY & POSITION
+                    obj.v && obj.pos && obj.v.add(obj.velocityDelta(obj.jetVec && getForces(obj) || V3_ZERO.clone(), dt).clampLength(0, VELOCITY_LIMIT_PER_SEC * dt)) && obj.pos.copy(obj.newPos(dt)) /*&& !obj.axisUp*/ && goEcliptic(obj);
+
+                    obj.updateMesh();
+                    obj.updateSpec();
+
+                    obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > ( SHOT_MIN_MSEC + ( obj.canonHeat || 0 ) ) || !obj.lastFired ) && fire(obj);//do not calc damage from my vessels, only on my vessel
+
+                    obj.canonHeat = Math.max(obj.canonHeat - dt * SHOT_COOL_MSEC_PER_SEC, SHOT_MIN_MSEC);
                 }
 
-                //VELOCITY & POSITION
-                obj.v && obj.pos && obj.v.add( obj.velocityDelta( obj.jetVec && getForces( obj ) || V3_ZERO.clone(), dt ).clampLength( 0, VELOCITY_LIMIT_PER_SEC * dt ) ) && obj.pos.copy( obj.newPos( dt ) ) /*&& !obj.axisUp*/ && goEcliptic( obj );
-
-                obj.updateMesh();
-                obj.updateSpec();
-
-                obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > ( SHOT_MIN_MSEC + ( obj.canonHeat || 0 ) ) || ! obj.lastFired ) && fire( obj );//do not calc damage from my vessels, only on my vessel
-
-                obj.canonHeat = Math.max( obj.canonHeat - dt * SHOT_COOL_MSEC_PER_SEC, SHOT_MIN_MSEC );
+                obj && obj.updateTrail && obj.updateTrail( dt );
             });
         }
 
@@ -983,7 +985,7 @@ var Scene = (function () {
 
     function initScene( starSystemId ) {
 
-        Textures.add( ['res/blue_particle.jpg','res/grad.png'] );
+        Textures.add( ['res/blue_particle.jpg','res/grad.png','res/glow.png'] );
 
         initStats();
         //initControls();

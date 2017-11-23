@@ -382,7 +382,7 @@ function Vessel( pos, mass, color ) {
     this.colorPlane = this.color.clone().setHSL( this.colorHue, 1, 0.2);
 
     this.trailWidth = 6;
-    this.trailColor = this.colorEdge.clone().multiplyScalar(2);
+    this.trailColor = this.colorEdge.clone().multiplyScalar(4);
 
     this.isFiring = false;
 
@@ -526,16 +526,25 @@ Vessel.prototype.updateTrail = function(dt) {
     var matrix = new THREE.Matrix4();
     matrix.extractRotation( self.mesh.matrix );
 
-    this.dtJet += dt;
+    /*var line = self.trailLines[i];
+     var positions = line.attributes.position.array;
+     var len = positions.length;
+     positions[ len - 3 ] = pt.x;
+     positions[ len - 2 ] = pt.y;
+     positions[ len - 1 ] = pt.z;
+     line.attributes.position.needsUpdate = true;*/
+
+    /*this.dtJet += dt;
     if ( this.dtJet < 0.02 )
         return;
 
-    this.dtJet = 0;
+    this.dtJet = 0;*/
 
     this.ptJet.forEach( function( item, i ) {
 
         var pt = item.clone().applyMatrix4( matrix );
         self.trailLines[i].advance( pt.add( pos ) );
+
     });
 };
 
@@ -575,7 +584,7 @@ Vessel.prototype.initTrail = function () {
     //var trailWidth = 6;
     var material = new THREE.MeshLineMaterial( {
         color: new THREE.Color( this.trailColor ),
-        opacity:0.5,
+        opacity:1,
         resolution: V2_RESOLUTION,
         sizeAttenuation: true,
         lineWidth: this.trailWidth,//see bellow override thickness
@@ -584,9 +593,9 @@ Vessel.prototype.initTrail = function () {
         depthTest: true,
         blending: THREE.AdditiveBlending,
         transparent: true,
-        side: THREE.DoubleSide,
+        side: THREE.DoubleSide/*,
         map: Textures.get( 'res/grad.png' ),
-        useMap : 1
+        useMap : 1*/
     });
 
     var self = this;
@@ -651,8 +660,30 @@ function Fighter(pos, mass, color) {
 
     this.mesh.add( wireframe );
 
+    this.ptJet = [ new THREE.Vector3( -size * 0.5 , 0, -size * 1.5 - 8), new THREE.Vector3( size * 0.5, 0, -size * 1.5 - 8) ];
 
-    this.ptJet = [ new THREE.Vector3( -size * 0.5 , 0, -size * 1.5), new THREE.Vector3( size * 0.5, 0, -size * 1.5) ];
+    var spriteMat = new THREE.SpriteMaterial( {
+
+        map: Textures.get( 'res/blue_particle.jpg' ),
+        //map: Textures.get( 'res/glow.png' ),
+        color : color.clone().multiplyScalar( 2 ),
+        blending : THREE.AdditiveBlending,
+        opacity: 1,
+        depthWrite: false
+    } );
+
+    var self = this;
+    var size = 40;
+    this.ptJet.forEach( function( pt ) {
+
+        var sprite	= new THREE.Sprite( spriteMat );
+
+        sprite.scale.set( size, size, size );
+        sprite.position.copy( pt );
+
+        self.mesh.add( sprite );
+    });
+
 }
 
 extend ( Fighter, Vessel );
@@ -1104,12 +1135,12 @@ StarSystem.prototype.initMeshes = function( camera ) {
 
 
     //dust
+
     const P_DUST = [
         { size: 2, minQty: 1000,  maxQty: 2000, dist: 0, color: 0xa0a0a0 },
-        { size: 3, minQty: 500,  maxQty: 1000, dist: -2000, color: 0x808080 },
-    //    { size: 1.4, minQty: 1000,  maxQty: 2000, dist: -4000, color: 0xbfbfbf },
-  //      { size: 1.2, minQty: 1000,  maxQty: 2000, dist: -8000, color: 0xa0a0a0 },
-//        { size: 1, minQty: 1000,  maxQty: 2000, dist: -16000, color: 0x888888 }
+        { size: 3, minQty: 500,  maxQty: 1000, dist: -2000, color: 0xa0a0a0 },
+        { size: 4, minQty: 1000,  maxQty: 2000, dist: -3000, color: 0xa0a0a0 },
+        { size: 5, minQty: 500,  maxQty: 1000, dist: -4000, color: 0xa0a0a0 },
     ];
     P_DUST.forEach( function( item ) {
 
