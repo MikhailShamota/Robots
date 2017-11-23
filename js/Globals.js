@@ -19,7 +19,7 @@ const K_SPACE_RESIST = 3;
 const VELOCITY_LIMIT_PER_SEC = 1000;
 const K_CENTER_FORCE = 20;//force pulling to ecliptic plane
 
-const Q_TRAIL_LEN = 40;//mesh line trail segments
+const Q_TRAIL_LEN = 100;//mesh line trail segments
 
 const MULTIPLAYER_OPEN_SEC = 120;//multiplayer game open period for join players
 const MULTIPLAYER_PLAYERS_MAX = 10;//max players in multiplayer

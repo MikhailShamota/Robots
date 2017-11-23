@@ -1138,9 +1138,9 @@ StarSystem.prototype.initMeshes = function( camera ) {
 
     const P_DUST = [
         { size: 2, minQty: 1000,  maxQty: 2000, dist: 0, color: 0xa0a0a0 },
-        { size: 3, minQty: 500,  maxQty: 1000, dist: -2000, color: 0xa0a0a0 },
-        { size: 4, minQty: 1000,  maxQty: 2000, dist: -3000, color: 0xa0a0a0 },
-        { size: 5, minQty: 500,  maxQty: 1000, dist: -4000, color: 0xa0a0a0 },
+        { size: 2.5, minQty: 500,  maxQty: 1000, dist: -2000, color: 0xa0a0a0 },
+        { size: 3, minQty: 1000,  maxQty: 2000, dist: -3000, color: 0xa0a0a0 },
+        { size: 3.5, minQty: 500,  maxQty: 1000, dist: -4000, color: 0xa0a0a0 },
     ];
     P_DUST.forEach( function( item ) {
 

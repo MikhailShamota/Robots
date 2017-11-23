@@ -4,7 +4,7 @@
     <list default="true" id="510eed05-ed6a-4361-9ef3-ef26ad0cd624" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Classes.js" afterPath="$PROJECT_DIR$/js/Classes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Scene.js" afterPath="$PROJECT_DIR$/js/Scene.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/Globals.js" afterPath="$PROJECT_DIR$/js/Globals.js" />
     </list>
     <ignored path="Robots.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,11 +25,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Globals.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Globals.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/Globals.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="406" column="2" selection-start-line="406" selection-start-column="2" selection-end-line="406" selection-end-column="2" />
+            <state vertical-scroll-proportion="0.40660593">
+              <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
               <folding />
             </state>
           </provider>
@@ -84,11 +84,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Classes.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Classes.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/Classes.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.67425966">
-              <caret line="675" column="16" selection-start-line="675" selection-start-column="16" selection-end-line="675" selection-end-column="16" />
+            <state vertical-scroll-proportion="-24.965517">
+              <caret line="594" column="26" selection-start-line="594" selection-start-column="26" selection-end-line="594" selection-end-column="26" />
               <folding>
                 <element signature="n#!!block;n#selectAny#0;n#!!block;n#Fleet#0;n#!!block;n#Player#0" expanded="false" />
                 <element signature="n#!!block;n#selectEasiest#0;n#!!block;n#Fleet#0;n#!!block;n#Player#0" expanded="false" />
@@ -119,7 +119,6 @@
                 <element signature="e#12388#13125#0" expanded="false" />
                 <element signature="e#13207#14082#0" expanded="false" />
                 <element signature="n#!!block;n#Celestial#0" expanded="false" />
-                <element signature="e#19751#20374#0" expanded="false" />
                 <element signature="n#!!block;n#StarSystem#0" expanded="false" />
                 <element signature="e#21434#21677#0" expanded="false" />
                 <element signature="e#21730#21925#0" expanded="false" />
@@ -183,9 +182,9 @@
         <option value="$PROJECT_DIR$/LICENSE.txt" />
         <option value="$PROJECT_DIR$/main.css" />
         <option value="$PROJECT_DIR$/main.html" />
-        <option value="$PROJECT_DIR$/js/Globals.js" />
         <option value="$PROJECT_DIR$/js/Scene.js" />
         <option value="$PROJECT_DIR$/js/Classes.js" />
+        <option value="$PROJECT_DIR$/js/Globals.js" />
       </list>
     </option>
   </component>
@@ -396,12 +395,6 @@
       <workItem from="1483040499861" duration="204000" />
       <workItem from="1483808321278" duration="830000" />
       <workItem from="1483883140725" duration="7448000" />
-    </task>
-    <task id="LOCAL-00088" summary="camera smooth movement">
-      <created>1503495997179</created>
-      <option name="number" value="00088" />
-      <option name="project" value="LOCAL" />
-      <updated>1503495997179</updated>
     </task>
     <task id="LOCAL-00089" summary="camera and stars experiments">
       <created>1503935772352</created>
@@ -691,7 +684,13 @@
       <option name="project" value="LOCAL" />
       <updated>1511286834821</updated>
     </task>
-    <option name="localTasksCounter" value="137" />
+    <task id="LOCAL-00137" summary="engine glow fix">
+      <created>1511448763658</created>
+      <option name="number" value="00137" />
+      <option name="project" value="LOCAL" />
+      <updated>1511448763658</updated>
+    </task>
+    <option name="localTasksCounter" value="138" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -710,7 +709,7 @@
     <frame x="1" y="1" width="1918" height="1038" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289183" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3290461" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
@@ -765,7 +764,6 @@
     <option name="PERFORM_EDIT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="false" />
     <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="false" />
-    <MESSAGE value="best camera of the World!" />
     <MESSAGE value="LICENCE.txt" />
     <MESSAGE value="LICENSE.txt" />
     <MESSAGE value="main page design&#10;shot by two touches&#10;no more cursor" />
@@ -790,7 +788,8 @@
     <MESSAGE value="kill missile" />
     <MESSAGE value="missiles" />
     <MESSAGE value="missiles timeout&#10;fog&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="missiles timeout&#10;fog&#10;" />
+    <MESSAGE value="engine glow fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="engine glow fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1318,13 +1317,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/threex.atmospherematerial.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.11617312">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/jquery-3.2.1.min.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.34837544">
@@ -1392,14 +1384,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/Globals.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="406" column="2" selection-start-line="406" selection-start-column="2" selection-end-line="406" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/main.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-96.0">
@@ -1450,10 +1434,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/threex.atmospherematerial.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.46469247">
+          <caret line="24" column="14" selection-start-line="24" selection-start-column="12" selection-end-line="24" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/Classes.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.67425966">
-          <caret line="675" column="16" selection-start-line="675" selection-start-column="16" selection-end-line="675" selection-end-column="16" />
+        <state vertical-scroll-proportion="-24.965517">
+          <caret line="594" column="26" selection-start-line="594" selection-start-column="26" selection-end-line="594" selection-end-column="26" />
           <folding>
             <element signature="n#!!block;n#selectAny#0;n#!!block;n#Fleet#0;n#!!block;n#Player#0" expanded="false" />
             <element signature="n#!!block;n#selectEasiest#0;n#!!block;n#Fleet#0;n#!!block;n#Player#0" expanded="false" />
@@ -1484,7 +1476,6 @@
             <element signature="e#12388#13125#0" expanded="false" />
             <element signature="e#13207#14082#0" expanded="false" />
             <element signature="n#!!block;n#Celestial#0" expanded="false" />
-            <element signature="e#19751#20374#0" expanded="false" />
             <element signature="n#!!block;n#StarSystem#0" expanded="false" />
             <element signature="e#21434#21677#0" expanded="false" />
             <element signature="e#21730#21925#0" expanded="false" />
@@ -1494,6 +1485,14 @@
             <element signature="e#27437#27532#0" expanded="false" />
             <element signature="e#28532#28920#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/Globals.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.40660593">
+          <caret line="21" column="22" selection-start-line="21" selection-start-column="22" selection-end-line="21" selection-end-column="22" />
+          <folding />
         </state>
       </provider>
     </entry>
