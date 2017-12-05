@@ -801,7 +801,7 @@ Planet.prototype.addAtmosphere = function( starSystem ) {
         var meshHalo = new THREE.Mesh(geometry, material2);
 
         material2.uniforms.glowColor.value = this.color.multiplyScalar( 5 );//starSystem.randColor().multiplyScalar( 5 );
-        material2.uniforms.coeficient.value = 1.2;
+        material2.uniforms.coeficient.value = starSystem.rand( 1.1, 1.4 );
         material2.uniforms.power.value = starSystem.rand( 0.9, 5.0 );
 
         this.mesh.add( meshHalo );
@@ -1006,9 +1006,9 @@ StarSystem.prototype.initSkybox = function() {
     var ret = [];
 
     const P_STARS = [
-        { size: 30.0, minQty: 200,  maxQty: 500, dist: 8000, color: 0xf0f0f0 },
-        { size: 40.0, minQty: 200,  maxQty: 500, dist: 8000, color: 0xf0f0f0 },
-        { size: 50.0, minQty: 200,  maxQty: 500, dist: 8000, color:  0xf0f0f0 }
+        { size: 30.0, minQty: 200,  maxQty: 500, dist: 8000, color: 0x5f5f5f },
+        { size: 40.0, minQty: 200,  maxQty: 500, dist: 8000, color: 0x505050 },
+        { size: 50.0, minQty: 200,  maxQty: 500, dist: 8000, color:  0x404040 }
     ];
 
     //STARS!
@@ -1016,7 +1016,7 @@ StarSystem.prototype.initSkybox = function() {
 
          var qty = self.rand( item.minQty, item.maxQty );
 
-         var dotMaterial = new THREE.PointsMaterial( { color: item.color, size: item.size, sizeAttenuation: true } );
+         var dotMaterial = new THREE.PointsMaterial( { color: item.color, size: item.size, sizeAttenuation: true, fog:false } );
          var dotGeometry = new THREE.Geometry();
 
          for (var s = 0; s < qty; s++) {
@@ -1040,6 +1040,7 @@ StarSystem.prototype.initMeshes = function( camera ) {
     const Q_PLANETS_MAX = 8;
     const R_PLANET_MIN = 70;
     const R_PLANET_MAX = 100;
+    const K_PLANETS_SPARSE = 2;
     const V3_SUN = new THREE.Vector3( R_GALAXY, R_GALAXY, 0 );
     const Q_MOONS_MAX = 4;
     const R_MOON_MIN = 10;
@@ -1107,7 +1108,7 @@ StarSystem.prototype.initMeshes = function( camera ) {
     for ( var j = 0; j < qPlanets; j++ ) {
 
         var radius = this.rand( R_PLANET_MIN, R_PLANET_MAX );
-        var planet = new Planet( this.randV3( R_GALAXY ).setY( 0 ), radius, this.randColor() ).addAtmosphere( this );
+        var planet = new Planet( this.randV3( R_GALAXY ).setY( 0 ).normalize().multiplyScalar( K_PLANETS_SPARSE * j * R_GALAXY / qPlanets ), radius, this.randColor() ).addAtmosphere( this );
         add( planet ).setG();
 
         /**Mooons*/
@@ -1137,10 +1138,10 @@ StarSystem.prototype.initMeshes = function( camera ) {
     //dust
 
     const P_DUST = [
-        { size: 2, minQty: 1000,  maxQty: 2000, dist: 0, color: 0xa0a0a0 },
-        { size: 2.5, minQty: 500,  maxQty: 1000, dist: -2000, color: 0xa0a0a0 },
-        { size: 3, minQty: 1000,  maxQty: 2000, dist: -3000, color: 0xa0a0a0 },
-        { size: 3.5, minQty: 500,  maxQty: 1000, dist: -4000, color: 0xa0a0a0 },
+        { size: 2, minQty: 1000,  maxQty: 2000, dist: [-500,200], color: 0x909090 },
+        { size: 2.5, minQty: 1000,  maxQty: 2000, dist: [-2500,-1500], color: 0xa0a0a0 },
+        { size: 3, minQty: 1000,  maxQty: 2000, dist: [-3500,-2500], color: 0xffffff },
+        { size: 3.5, minQty: 1000,  maxQty: 2000, dist: [-4500,-3500], color: 0xffffff },
     ];
     P_DUST.forEach( function( item ) {
 
@@ -1152,7 +1153,7 @@ StarSystem.prototype.initMeshes = function( camera ) {
         for (var s = 0; s < qty; s++) {
 
             //dotGeometry.vertices.push( self.randV3( item.dist ) );//like a sphere
-            dotGeometry.vertices.push( self.randX0Z( self.rand( R_GALAXY * 10 ) ).setY( item.dist ) );//like a sheet
+            dotGeometry.vertices.push( self.randX0Z( self.rand( R_GALAXY * 10 ) ).setY( self.rand( item.dist[ 0 ], item.dist[ 1 ] ) ) );//like a sheet
         }
 
         var dot = new THREE.Points( dotGeometry, dotMaterial );

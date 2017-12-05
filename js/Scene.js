@@ -41,6 +41,7 @@ var Scene = (function () {
 
             "lasers": new LoopedArray( 100, 1150 ),//100 qty, 30 ms to live
             "hits": new LoopedArray( 100, 40 ),
+            "collision": new LoopedArray( 100, 40 ),
             "shotFlare": new LoopedArray( 100, 20 ),
             "explosions": new LoopedArray( 20, 100 ),
             "radar": new LoopedArray( 25, SCAN_SEC_MAX * 1000 * 2 )// x 2 because of delayed start
@@ -76,14 +77,15 @@ var Scene = (function () {
 
     //var cursor = new THREE.Mesh( new THREE.PlaneGeometry( 50, 50 ) );
 
-    function Flare( pos, size, color, texture ) {
+    function Flare( pos, size, color, texture, opacity ) {
 
         var material	= new THREE.SpriteMaterial( {
 
             map: texture && Textures.get( texture ),
             color : color,
             blending : THREE.AdditiveBlending,
-            transparent: true
+            transparent: true,
+            opacity: opacity || 1
         } );
 
         var sprite	= new THREE.Sprite( material );
@@ -113,6 +115,15 @@ var Scene = (function () {
 
             "hits",
             Flare( pt, 100, 0xffff00, 'res/blue_particle.jpg' )
+        );
+    }
+
+    function addCollision( pt ) {
+
+        loopedArrays.add2scene(
+
+            "collision",
+            Flare( pt, 200, 0xffffff, 'res/blue_particle.jpg', 0.5 )
         );
     }
 
@@ -399,6 +410,8 @@ var Scene = (function () {
 
                     if ( depth > 0 ) {//bounce
 
+                        var pt = mesh2.position.clone().sub( mesh.position ).setLength( octreeObj.radius ).add( mesh.position );
+
                         matObj.pos.add( matObj.dive( matObj2, depth ) );
 
                         setter.push({
@@ -408,6 +421,8 @@ var Scene = (function () {
 
                         //process collision - explode, heat, damage here
                         matObj.processCollision && matObj.processCollision( matObj2 );
+
+                        addCollision( pt );
                     }
                 });
             });
@@ -985,7 +1000,10 @@ var Scene = (function () {
 
     function initScene( starSystemId ) {
 
-        Textures.add( ['res/blue_particle.jpg','res/grad.png','res/glow.png'] );
+        Textures.add( [
+            'res/blue_particle.jpg',
+            'res/grad.png',
+            'res/glow.png'] );
 
         initStats();
         //initControls();
