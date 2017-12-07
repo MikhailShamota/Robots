@@ -14,7 +14,7 @@ const CAMERA_Z = 1.6;
 const CAMERA_START_Y = R_GALAXY * 3;//start camera pos Y
 const CAMERA_LOOK_AT_FWD = 300;//смотреть перед кораблем
 
-const K_GRAVITY = 2;
+const K_GRAVITY = 0.05;
 const K_SPACE_RESIST = 3;
 const VELOCITY_LIMIT_PER_SEC = 1000;
 const K_CENTER_FORCE = 20;//force pulling to ecliptic plane

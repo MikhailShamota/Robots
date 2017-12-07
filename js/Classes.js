@@ -775,6 +775,25 @@ extend( Celestial, MatObj );
 function Asteroid(pos, radius, color) {
 
     Celestial.apply( this, arguments );
+
+    this.mesh.geometry = new THREE.SphereGeometry(radius, 8, 9);
+
+    this.mesh.geometry.vertices.forEach( function( vertex ) {
+
+        vertex.multiplyScalar( MathHelper.rand( 0.7, 1.3 ) );
+    });
+    this.mesh.geometry.verticesNeedUpdate = true;
+
+    this.mesh.material = new THREE.MeshToonMaterial( {
+        map: null,
+        bumpMap: null,
+        bumpScale: 1,
+        color: this.color,
+        specular: null,
+        reflectivity: 0,
+        shininess: 0,
+        envMap: null
+    } );
 }
 
 extend( Asteroid, Celestial );
@@ -1038,19 +1057,19 @@ StarSystem.prototype.initMeshes = function( camera ) {
     const Q_CELESTIALS_LIMIT = 90;
     const Q_PLANETS_MIN = 3;
     const Q_PLANETS_MAX = 8;
-    const R_PLANET_MIN = 70;
-    const R_PLANET_MAX = 100;
+    const R_PLANET_MIN = 105;
+    const R_PLANET_MAX = 150;
     const K_PLANETS_SPARSE = 2;
     const V3_SUN = new THREE.Vector3( R_GALAXY, R_GALAXY, 0 );
     const Q_MOONS_MAX = 4;
-    const R_MOON_MIN = 10;
-    const R_MOON_MAX = 20;
+    const R_MOON_MIN = 25;
+    const R_MOON_MAX = 40;
     const K_MOON_SPARSE_MIN = 3;
     const K_MOON_SPARSE_MAX = 4;
     const AXIS_MOON_MAX = 0.8;//rad
     //const Q_ASTEROIDS_MAX = 30;
-    const R_ASTEROID_MIN = 3;
-    const R_ASTEROID_MAX = 5;
+    const R_ASTEROID_MIN = 20;
+    const R_ASTEROID_MAX = 35;
     const V_ASTEROID_MAX = 20;//per sec
 
     var self = this;
@@ -1130,7 +1149,7 @@ StarSystem.prototype.initMeshes = function( camera ) {
 
         //var pos = randOrbit( orbit ).applyEuler( asteroidEuler ).add( this.randV3( R_ASTEROID_SPARSE ) );
 
-        var asteroid = new Asteroid( this.randV3( this.rand( orbit, R_GALAXY ) ), this.rand( R_ASTEROID_MIN, R_ASTEROID_MAX ), this.randColor() );
+        var asteroid = new Asteroid( this.randV3( this.rand( 0, R_GALAXY ) ), this.rand( R_ASTEROID_MIN, R_ASTEROID_MAX ), this.randColor() );
         add( asteroid ).setV( this.randV3( this.rand( 0, V_ASTEROID_MAX ) ) );//.setAxis( rotationUp ).setParent( planet );
     }
 
