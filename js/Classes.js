@@ -776,6 +776,10 @@ function Asteroid(pos, radius, color) {
 
     Celestial.apply( this, arguments );
 
+    this.mass *= 0.1;//пористый
+
+    this.color = new THREE.Color( 0xAB936C );
+
     this.mesh.geometry = new THREE.SphereGeometry(radius, 8, 9);
 
     this.mesh.geometry.vertices.forEach( function( vertex ) {
@@ -1068,7 +1072,7 @@ StarSystem.prototype.initMeshes = function( camera ) {
     const K_MOON_SPARSE_MAX = 4;
     const AXIS_MOON_MAX = 0.8;//rad
     //const Q_ASTEROIDS_MAX = 30;
-    const R_ASTEROID_MIN = 20;
+    const R_ASTEROID_MIN = 10;
     const R_ASTEROID_MAX = 35;
     const V_ASTEROID_MAX = 20;//per sec
 

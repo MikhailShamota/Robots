@@ -41,7 +41,7 @@ var Scene = (function () {
 
             "lasers": new LoopedArray( 100, 1150 ),//100 qty, 30 ms to live
             "hits": new LoopedArray( 100, 40 ),
-            "collision": new LoopedArray( 100, 40 ),
+            "collision": new LoopedArray( 20, 30 ),
             "shotFlare": new LoopedArray( 100, 20 ),
             "explosions": new LoopedArray( 20, 100 ),
             "radar": new LoopedArray( 25, SCAN_SEC_MAX * 1000 * 2 )// x 2 because of delayed start
