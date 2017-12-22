@@ -35,11 +35,13 @@ var Scene = (function () {
         this.lastPeerSent = nowTime;
     }
 
+    var lasers;
+
     var loopedArrays = {
 
         collection : {
 
-            "lasers": new LoopedArray( 100, 1150 ),//100 qty, 30 ms to live
+            "lasers": new LoopedArray( 1000, 1150 ),//100 qty, 30 ms to live
             "hits": new LoopedArray( 100, 40 ),
             "collision": new LoopedArray( 20, 30 ),
             "shotFlare": new LoopedArray( 100, 20 ),
@@ -145,9 +147,9 @@ var Scene = (function () {
         );
     }
 
-    function addShot( ray, dist ) {
+    function addShot( ray, dist, w, liveMS ) {
 
-        function Beam( ray, length ) {
+        /*function Beam( ray, length ) {
 
             var color = new THREE.Color( SHOT_COLOR );
 
@@ -166,21 +168,6 @@ var Scene = (function () {
                 side: THREE.DoubleSide
             } );
 
-            /*var material2 = new THREE.MeshLineMaterial( {
-
-                color: color,
-                opacity: 0.75,
-                resolution: V2_RESOLUTION,
-                sizeAttenuation: 1,
-                lineWidth: 4,
-                near: 1,
-                far: 100000,
-                depthTest: true,
-                blending: THREE.AdditiveBlending,
-                transparent: true,
-                side: THREE.DoubleSide
-            } );*/
-
             const beamLen = 40;
             var geom = new THREE.Geometry( );
 
@@ -197,13 +184,17 @@ var Scene = (function () {
             mesh.source_length = length - beamLen;
 
             return mesh;
-        }
+        }*/
 
-        loopedArrays.add2scene(
+       /* loopedArrays.add2scene(
 
             "lasers",
-            Beam( ray, dist )
-        );
+            w( ray, dist )
+        );*/
+
+        var mesh = w( ray, dist );
+        scene.add( mesh );
+        setTimeout( function( m ) { scene.remove( m ); }, liveMS, mesh );
     }
 
     function addRadar( ray, dist ) {
@@ -377,9 +368,9 @@ var Scene = (function () {
                     obj.updateMesh();
                     obj.updateSpec();
 
-                    obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > ( SHOT_MIN_MSEC + ( obj.canonHeat || 0 ) ) || !obj.lastFired ) && fire(obj);//do not calc damage from my vessels, only on my vessel
+                    obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > obj.item.w.delay || !obj.lastFired ) && fire(obj);//do not calc damage from my vessels, only on my vessel
 
-                    obj.canonHeat = Math.max(obj.canonHeat - dt * SHOT_COOL_MSEC_PER_SEC, SHOT_MIN_MSEC);
+                    //obj.canonHeat = Math.max(obj.canonHeat - dt * SHOT_COOL_MSEC_PER_SEC, SHOT_MIN_MSEC);
                 }
 
                 obj && obj.updateTrail && obj.updateTrail( dt );
@@ -489,7 +480,10 @@ var Scene = (function () {
 
             loopedArrays.collection[ "lasers" ].mapAll( function( mesh ) {
 
-                    const speed = 100;
+                    if ( !mesh.source_dir || !mesh.source_length )
+                        return;
+
+                    const speed = mesh.source_speed;
                     var add = mesh.source_dir.clone().multiplyScalar( speed );
 
                     mesh.source_length -= speed;
@@ -642,9 +636,9 @@ var Scene = (function () {
         //});
 
         addShotFlare( from.fwd().multiplyScalar( 25 ).add( from.pos ) );
-        addShot( raycaster.ray, dist );
+        from.item.w && addShot( raycaster.ray, dist, from.item.w.f, from.item.w.t );
         from.lastFired = nowTime;
-        from.canonHeat = ( from.canonHeat || 0 ) + SHOT_HEAT_MSEC;
+        //from.canonHeat = ( from.canonHeat || 0 ) + from.item.w.heat;
     }
 
     function scan( from ) {

@@ -24,7 +24,10 @@ function Player( id, isProxy ) {
             {
                 f: smallFighter,
                 target: selectEasiest,
-                m: [ {f:smallMissile,p:new THREE.Vector3(-15,0,0)}, {f:smallMissile,p:new THREE.Vector3(+15,0,0)} ]
+                m: [ {f:smallMissile,p:new THREE.Vector3(-15,0,0)}, {f:smallMissile,p:new THREE.Vector3(+15,0,0)} ],
+                //w: { f: beam, t: SHOT_LIVES, /*heat: SHOT_HEAT_MSEC,*/ delay:SHOT_MIN_MSEC}
+                w: { f: vulcan, t: VULCAN_LIVES, /*heat: VULCAN_HEAT_MSEC,*/ delay: SHOT_MIN_MSEC }
+
                 //wa:autoTurret
                 //w1:[laser,laser]
             }/*,
@@ -46,7 +49,85 @@ function Player( id, isProxy ) {
 
         function smallMissile( p, color ) {
 
-            return new Missile( p, 5, color );
+            var missile = new Missile( p, 55, color );
+            missile.fJet = 6200000;//this.mass * 80000;
+            missile.sTurn = 12.75;//radians per sec
+
+            return missile;
+        }
+
+        function beam( ray, length ) {
+
+            var color = new THREE.Color( SHOT_COLOR );
+
+            var material = new THREE.MeshLineMaterial( {
+
+                color: color,
+                opacity: 1.0,
+                resolution: V2_RESOLUTION,
+                sizeAttenuation: 1,
+                lineWidth: 7,
+                near: 1,
+                far: 100000,
+                depthTest: true,
+                blending: THREE.AdditiveBlending,
+                transparent: false,
+                side: THREE.DoubleSide
+            } );
+
+            const beamLen = 40;
+            var geom = new THREE.Geometry( );
+
+            geom.vertices.push( ray.origin.clone( ) );
+            geom.vertices.push( ray.origin.clone( ).add( ray.direction.clone( ).multiplyScalar( beamLen ) ) );
+
+            var line = new THREE.MeshLine( );
+            line.setGeometry( geom );
+            var mesh = new THREE.Mesh( line.geometry, material );
+
+            //mesh.add( new THREE.Mesh( line.geometry.clone(), material2 ) );
+
+            mesh.source_dir = ray.direction.clone();
+            mesh.source_length = length - beamLen;
+            mesh.source_speed = 100;
+
+            return mesh;
+        }
+
+        function vulcan( ray, length ) {
+
+            var color = new THREE.Color( SHOT_COLOR );
+
+            var material = new THREE.MeshLineMaterial( {
+
+                color: color,
+                opacity: 0.5,
+                resolution: V2_RESOLUTION,
+                sizeAttenuation: 1,
+                lineWidth: 8,
+                near: 1,
+                far: 100000,
+                depthTest: true,
+                blending: THREE.AdditiveBlending,
+                transparent: true,
+                side: THREE.DoubleSide
+            } );
+
+            const beamLen = length;
+            var geom = new THREE.Geometry( );
+
+            geom.vertices.push( ray.origin.clone( ) );
+            geom.vertices.push( ray.origin.clone( ).add( ray.direction.clone( ).multiplyScalar( beamLen ) ) );
+
+            var line = new THREE.MeshLine( );
+            line.setGeometry( geom );
+            var mesh = new THREE.Mesh( line.geometry, material );
+
+            //mesh.source_dir = ray.direction.clone();
+            //mesh.source_length = length - beamLen;
+            //mesh.source_speed = 100;
+
+            return mesh;
         }
 
         function selectAny( all_vessels ) {
@@ -135,6 +216,7 @@ function Player( id, isProxy ) {
 
             obj.selectTarget = item.target;
             item.obj = obj;//a link to vessel*/
+            obj.item = item;
             item.missiles = [];
 
             //missiles loop
@@ -694,7 +776,7 @@ function Missile( pos, mass, color ) {
 
     const brightness = 2;
 
-    this.fJet = 12000000;//this.mass * 80000;
+    this.fJet = 6200000;//this.mass * 80000;
     this.sTurn = 12.75;//radians per sec
     this.trailWidth = 4;
     this.trailColor.multiplyScalar( brightness );
@@ -739,7 +821,7 @@ Missile.prototype.processCollision = function( obj2 ) {
     setTimeout( function( obj, payload ) { obj.hits -= payload }, 150, obj2, this.hits );//cripple target
 
     this.hits = 0;//explode missile
-}
+};
 
 function Celestial (pos, radius, color) {
 
