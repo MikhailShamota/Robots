@@ -25,17 +25,79 @@ function Player( id, isProxy ) {
                 f: smallFighter,
                 target: selectEasiest,
                 m: [ {f:smallMissile,p:new THREE.Vector3(-15,0,0)}, {f:smallMissile,p:new THREE.Vector3(+15,0,0)} ],
-                //w: { f: beam, t: SHOT_LIVES, /*heat: SHOT_HEAT_MSEC,*/ delay:SHOT_MIN_MSEC}
-                w: { f: vulcan, t: VULCAN_LIVES, /*heat: VULCAN_HEAT_MSEC,*/ delay: SHOT_MIN_MSEC }
-
-                //wa:autoTurret
-                //w1:[laser,laser]
+                //w: canonVulcan()
+                w: canonLaser()
             }/*,
              {
              f: bigFighter,
              to: toZero
              }*/
         ];
+
+        function canonVulcan() {
+
+            return {
+
+                f: function ( ray, length, obj ) {
+
+                    var color = new THREE.Color( SHOT_COLOR );
+
+                    var material = new THREE.MeshLineMaterial( {
+
+                        color: color,
+                        opacity: 1.0,
+                        resolution: V2_RESOLUTION,
+                        sizeAttenuation: 1,
+                        lineWidth: 7,
+                        near: 1,
+                        far: 100000,
+                        depthTest: true,
+                        blending: THREE.AdditiveBlending,
+                        transparent: false,
+                        side: THREE.DoubleSide
+                    } );
+
+                    const beamLen = 40;
+                    var geom = new THREE.Geometry( );
+
+                    geom.vertices.push( ray.origin.clone( ) );
+                    geom.vertices.push( ray.origin.clone( ).add( ray.direction.clone( ).multiplyScalar( beamLen ) ) );
+
+                    var line = new THREE.MeshLine( );
+                    line.setGeometry( geom );
+                    var mesh = new THREE.Mesh( line.geometry, material );
+
+                    //mesh.add( new THREE.Mesh( line.geometry.clone(), material2 ) );
+
+                    mesh.source_dir = ray.direction.clone();
+                    mesh.source_length = length - beamLen;
+                    mesh.source_speed = 100;
+                    mesh.time = nowTime;
+                    mesh.fUpd = function() {
+
+                        var mesh = this;
+                        const speed = 100;
+                        var add = mesh.source_dir.clone().multiplyScalar( speed );
+
+                        mesh.source_length -= speed;
+
+                        //impact
+                        if ( mesh.source_length <= 0 || mesh.time - nowTime > SHOT_LIVES ) {
+
+                            mesh.position.x = undefined;//hide
+                            return;
+                        }
+
+                        mesh.position.add( add );//move
+                    };
+
+                    return mesh;
+                },
+                //t: SHOT_LIVES, /*heat: SHOT_HEAT_MSEC,*/
+                delay:SHOT_MIN_MSEC
+
+            }
+        }
 
         function smallFighter( p, color ) {
 
@@ -56,78 +118,63 @@ function Player( id, isProxy ) {
             return missile;
         }
 
-        function beam( ray, length ) {
+        function canonLaser() {
 
-            var color = new THREE.Color( SHOT_COLOR );
+            return {
 
-            var material = new THREE.MeshLineMaterial( {
+                f: function (ray, length, obj) {
+                    var color = new THREE.Color(SHOT_COLOR);
 
-                color: color,
-                opacity: 1.0,
-                resolution: V2_RESOLUTION,
-                sizeAttenuation: 1,
-                lineWidth: 7,
-                near: 1,
-                far: 100000,
-                depthTest: true,
-                blending: THREE.AdditiveBlending,
-                transparent: false,
-                side: THREE.DoubleSide
-            } );
+                    var material = new THREE.MeshLineMaterial({
 
-            const beamLen = 40;
-            var geom = new THREE.Geometry( );
+                        color: color,
+                        opacity: 0.5,
+                        resolution: V2_RESOLUTION,
+                        sizeAttenuation: 1,
+                        lineWidth: 8,
+                        near: 1,
+                        far: 100000,
+                        depthTest: true,
+                        blending: THREE.AdditiveBlending,
+                        transparent: true,
+                        side: THREE.DoubleSide
+                    });
 
-            geom.vertices.push( ray.origin.clone( ) );
-            geom.vertices.push( ray.origin.clone( ).add( ray.direction.clone( ).multiplyScalar( beamLen ) ) );
+                    const beamLen = length;
+                    var geom = new THREE.Geometry();
 
-            var line = new THREE.MeshLine( );
-            line.setGeometry( geom );
-            var mesh = new THREE.Mesh( line.geometry, material );
+                    geom.vertices.push(ray.origin.clone());
+                    geom.vertices.push(ray.origin.clone().add(ray.direction.clone().multiplyScalar(beamLen)));
 
-            //mesh.add( new THREE.Mesh( line.geometry.clone(), material2 ) );
+                    var line = new THREE.MeshLine();
+                    line.setGeometry(geom);
+                    var mesh = new THREE.Mesh(line.geometry, material);
 
-            mesh.source_dir = ray.direction.clone();
-            mesh.source_length = length - beamLen;
-            mesh.source_speed = 100;
+                    //mesh.source_dir = ray.direction.clone();
+                    //mesh.source_length = length - beamLen;
+                    //mesh.source_speed = 100;
+                    mesh.parentObj = obj;
+                    mesh.time = nowTime;
+                    mesh.fUpd = function () {
 
-            return mesh;
-        }
+                        var mesh = this;
 
-        function vulcan( ray, length ) {
+                        //impact
+                        if (mesh.source_length <= 0 || mesh.time - nowTime > SHOT_LIVES) {
 
-            var color = new THREE.Color( SHOT_COLOR );
+                            mesh.position.x = undefined;//hide
+                            return;
+                        }
 
-            var material = new THREE.MeshLineMaterial( {
+                        mesh.position.copy( mesh.parentObj.pos );//move
+                    };
 
-                color: color,
-                opacity: 0.5,
-                resolution: V2_RESOLUTION,
-                sizeAttenuation: 1,
-                lineWidth: 8,
-                near: 1,
-                far: 100000,
-                depthTest: true,
-                blending: THREE.AdditiveBlending,
-                transparent: true,
-                side: THREE.DoubleSide
-            } );
-
-            const beamLen = length;
-            var geom = new THREE.Geometry( );
-
-            geom.vertices.push( ray.origin.clone( ) );
-            geom.vertices.push( ray.origin.clone( ).add( ray.direction.clone( ).multiplyScalar( beamLen ) ) );
-
-            var line = new THREE.MeshLine( );
-            line.setGeometry( geom );
-            var mesh = new THREE.Mesh( line.geometry, material );
-
-            //mesh.source_dir = ray.direction.clone();
-            //mesh.source_length = length - beamLen;
-            //mesh.source_speed = 100;
-
-            return mesh;
+                    return mesh;
+                }
+                ,
+                //t: SHOT_LIVES, /*heat: SHOT_HEAT_MSEC,*/
+                delay:SHOT_MIN_MSEC
+            }
         }
 
         function selectAny( all_vessels ) {

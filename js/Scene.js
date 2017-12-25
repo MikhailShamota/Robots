@@ -60,7 +60,12 @@ var Scene = (function () {
         for ( var arr in this.collection ) {
 
             var old = this.collection[ arr ].pullLastOutOfTime();
-            old && scene.remove( old );
+            while ( old ) {
+
+                scene.remove( old );
+                old = this.collection[ arr ].pullLastOutOfTime();
+            }
+
         }
     };
 
@@ -147,7 +152,7 @@ var Scene = (function () {
         );
     }
 
-    function addShot( ray, dist, w, liveMS ) {
+    function addShot( ray, dist, obj ) {
 
         /*function Beam( ray, length ) {
 
@@ -186,15 +191,15 @@ var Scene = (function () {
             return mesh;
         }*/
 
-       /* loopedArrays.add2scene(
+        obj.item.w && loopedArrays.add2scene(
 
             "lasers",
-            w( ray, dist )
-        );*/
+            obj.item.w.f( ray, dist, obj )
+        );
 
-        var mesh = w( ray, dist );
-        scene.add( mesh );
-        setTimeout( function( m ) { scene.remove( m ); }, liveMS, mesh );
+        //var mesh = f( ray, dist );
+        //scene.add( mesh );
+        //setTimeout( function( m ) { scene.remove( m ); }, liveMS, mesh );
     }
 
     function addRadar( ray, dist ) {
@@ -480,7 +485,7 @@ var Scene = (function () {
 
             loopedArrays.collection[ "lasers" ].mapAll( function( mesh ) {
 
-                    if ( !mesh.source_dir || !mesh.source_length )
+                    /*if ( !mesh.source_dir || !mesh.source_length )
                         return;
 
                     const speed = mesh.source_speed;
@@ -495,8 +500,10 @@ var Scene = (function () {
                         return;
                     }
 
-                    mesh.position.add( add );//move
-                } );
+                    mesh.position.add( add );//move*/
+
+                    mesh.fUpd();
+            } );
         }
 
         function updateRadarMove( origin, dt ) {
@@ -636,7 +643,7 @@ var Scene = (function () {
         //});
 
         addShotFlare( from.fwd().multiplyScalar( 25 ).add( from.pos ) );
-        from.item.w && addShot( raycaster.ray, dist, from.item.w.f, from.item.w.t );
+        addShot( raycaster.ray, dist, from );
         from.lastFired = nowTime;
         //from.canonHeat = ( from.canonHeat || 0 ) + from.item.w.heat;
     }
