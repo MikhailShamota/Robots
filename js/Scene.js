@@ -373,7 +373,7 @@ var Scene = (function () {
                     obj.updateMesh();
                     obj.updateSpec();
 
-                    obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > obj.item.w.delay || !obj.lastFired ) && fire(obj);//do not calc damage from my vessels, only on my vessel
+                    obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > obj.item.w.delay || !obj.lastFired ) && fire( obj );//do not calc damage from my vessels, only on my vessel
 
                     //obj.canonHeat = Math.max(obj.canonHeat - dt * SHOT_COOL_MSEC_PER_SEC, SHOT_MIN_MSEC);
                 }

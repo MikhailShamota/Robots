@@ -36,10 +36,13 @@ const SCAN_SEC_MAX = 1.5;
 const BOT_FIND_TARGET_PERIOD_MSEC = 1000;
 
 const VULCAN_HEAT_MSEC = 0;//add duration reload per shot
-const VULCAN_LIVES = 200;//add duration reload per shot
-const VULCAN_MIN_MSEC = 0;//default duration reload
+const CANON_VULCAN_LIVES = 200;
+const CANON_LASER_LIVES = 200;
 //const SHOT_HEAT_MSEC = 15;//add duration reload per shot
-const SHOT_MIN_MSEC = 60;//default duration reload
+
+const CANON_VULCAN_DELAY_MSEC = 120;//default duration reload
+const CANON_LASER_DELAY_MSEC = 1200;//default duration reload
+
 //const SHOT_COOL_MSEC_PER_SEC = 60;//cooling canon heat msec per sec
 const SHOT_COLOR = "rgb( 241, 255, 133 )";
 const SHOT_LIVES = 1150;

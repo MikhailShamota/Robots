@@ -82,7 +82,7 @@ function Player( id, isProxy ) {
                         mesh.source_length -= speed;
 
                         //impact
-                        if ( mesh.source_length <= 0 || mesh.time - nowTime > SHOT_LIVES ) {
+                        if ( mesh.source_length <= 0 || nowTime - mesh.time > CANON_VULCAN_LIVES ) {
 
                             mesh.position.x = undefined;//hide
                             return;
@@ -94,7 +94,7 @@ function Player( id, isProxy ) {
                     return mesh;
                 },
                 //t: SHOT_LIVES, /*heat: SHOT_HEAT_MSEC,*/
-                delay:SHOT_MIN_MSEC
+                delay: CANON_VULCAN_DELAY_MSEC
 
             }
         }
@@ -140,7 +140,7 @@ function Player( id, isProxy ) {
                         side: THREE.DoubleSide
                     });
 
-                    const beam_half_len = length;
+                    const beam_half_len = length * 0.5;
                     var geom = new THREE.Geometry();
 
                     geom.vertices.push( V3_UNIT_Z.clone().multiplyScalar( -beam_half_len ) );
@@ -163,7 +163,7 @@ function Player( id, isProxy ) {
                         var mesh = this;
 
                         //impact
-                        if (mesh.source_length <= 0 || mesh.time - nowTime > SHOT_LIVES) {
+                        if (mesh.source_length <= 0 || nowTime - mesh.time > CANON_LASER_LIVES) {
 
                             mesh.position.x = undefined;//hide
                             return;
@@ -177,7 +177,7 @@ function Player( id, isProxy ) {
                 }
                 ,
                 //t: SHOT_LIVES, /*heat: SHOT_HEAT_MSEC,*/
-                delay:SHOT_MIN_MSEC
+                delay: CANON_LASER_DELAY_MSEC
             }
         }
 
