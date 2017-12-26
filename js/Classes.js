@@ -122,8 +122,8 @@ function Player( id, isProxy ) {
 
             return {
 
-                f: function (ray, length, obj) {
-                    var color = new THREE.Color(SHOT_COLOR);
+                f: function ( ray, length, obj ) {
+                    var color = new THREE.Color( SHOT_COLOR );
 
                     var material = new THREE.MeshLineMaterial({
 
@@ -140,15 +140,18 @@ function Player( id, isProxy ) {
                         side: THREE.DoubleSide
                     });
 
-                    const beamLen = length;
+                    const beam_half_len = length;
                     var geom = new THREE.Geometry();
 
-                    geom.vertices.push(ray.origin.clone());
-                    geom.vertices.push(ray.origin.clone().add(ray.direction.clone().multiplyScalar(beamLen)));
+                    geom.vertices.push( V3_UNIT_Z.clone().multiplyScalar( -beam_half_len ) );
+                    geom.vertices.push( V3_UNIT_Z.clone().multiplyScalar( beam_half_len ) );
+                    geom.translate( 0, 0, beam_half_len );
 
                     var line = new THREE.MeshLine();
                     line.setGeometry(geom);
                     var mesh = new THREE.Mesh(line.geometry, material);
+
+                    mesh.position.copy( obj.pos );//move
 
                     //mesh.source_dir = ray.direction.clone();
                     //mesh.source_length = length - beamLen;
@@ -167,6 +170,7 @@ function Player( id, isProxy ) {
                         }
 
                         mesh.position.copy( mesh.parentObj.pos );//move
+                        mesh.rotation.copy( mesh.parentObj.mesh.rotation );//rotate
                     };
 
                     return mesh;
