@@ -373,7 +373,7 @@ var Scene = (function () {
                     obj.updateMesh();
                     obj.updateSpec();
 
-                    obj.hits > 0 && obj.isFiring && ( nowTime - obj.lastFired > obj.item.w.delay || !obj.lastFired ) && fire( obj );//do not calc damage from my vessels, only on my vessel
+                    obj.hits > 0 && obj.isFiring && fire( obj );//do not calc damage from my vessels, only on my vessel
 
                     //obj.canonHeat = Math.max(obj.canonHeat - dt * SHOT_COOL_MSEC_PER_SEC, SHOT_MIN_MSEC);
                 }
@@ -606,6 +606,12 @@ var Scene = (function () {
 
     function fire( from ) {
 
+        //( nowTime - obj.lastFired > obj.item.w.delay || !obj.lastFired )
+        if ( !from.item.w.canFire() )
+            return;
+
+
+
         var raycaster = new THREE.Raycaster( from.pos, from.fwd() );
 
         //var octreeObjects = octree.search(
@@ -644,8 +650,9 @@ var Scene = (function () {
 
         addShotFlare( from.fwd().multiplyScalar( 25 ).add( from.pos ) );
         addShot( raycaster.ray, dist, from );
-        from.lastFired = nowTime;
-        //from.canonHeat = ( from.canonHeat || 0 ) + from.item.w.heat;
+        //from.lastFired = nowTime;
+        from.item.w.shots++;
+        from.item.w.lastFired = nowTime;
     }
 
     function scan( from ) {
@@ -724,14 +731,6 @@ var Scene = (function () {
         return ret && ret.userData;
     }
 
-    //dblClick
-    function clickDbl( event ) {
-
-        var vesselItem = iPlayer().getVesselFromList();
-        var target = pickObject( v2MousePoint );
-        target && launch( vesselItem, target );
-    }
-
     function initializeGL() {
 
         scene = new THREE.Scene();
@@ -789,6 +788,14 @@ var Scene = (function () {
                 initSkySprite();
             }
         );*/
+
+        //dblClick
+        function clickDbl( event ) {
+
+            var vesselItem = iPlayer().getVesselFromList();
+            var target = pickObject( v2MousePoint );
+            target && launch( vesselItem, target );
+        }
 
         var dom = renderer.domElement;
 

@@ -25,8 +25,8 @@ function Player( id, isProxy ) {
                 f: smallFighter,
                 target: selectEasiest,
                 m: [ {f:smallMissile,p:new THREE.Vector3(-15,0,0)}, {f:smallMissile,p:new THREE.Vector3(+15,0,0)} ],
-                //w: canonVulcan()
-                w: canonLaser()
+                w: canonVulcan()
+                //w: canonLaser()
             }/*,
              {
              f: bigFighter,
@@ -76,7 +76,7 @@ function Player( id, isProxy ) {
                     mesh.fUpd = function() {
 
                         var mesh = this;
-                        const speed = 100;
+                        const speed = 200;
                         var add = mesh.source_dir.clone().multiplyScalar( speed );
 
                         mesh.source_length -= speed;
@@ -93,8 +93,27 @@ function Player( id, isProxy ) {
 
                     return mesh;
                 },
-                //t: SHOT_LIVES, /*heat: SHOT_HEAT_MSEC,*/
-                delay: CANON_VULCAN_DELAY_MSEC
+                delay: CANON_VULCAN_DELAY_MSEC,
+                shots: 0,
+                lastFired: 0,
+
+                canFire: function() {
+
+                    if ( nowTime - this.lastFired < this.delay )
+                        return false;
+
+                    if ( this.shots > CANON_VULCAN_AMMO ) {
+
+                        if ( this.shots < 88888 )
+                            setTimeout( function ( w ) { w.shots = 0; }, CANON_VULCAN_RELOAD_MSEC, this );
+
+                        this.shots = 9999999;
+
+                        return false;
+                    }
+
+                    return true;
+                }
 
             }
         }
@@ -176,8 +195,28 @@ function Player( id, isProxy ) {
                     return mesh;
                 }
                 ,
-                //t: SHOT_LIVES, /*heat: SHOT_HEAT_MSEC,*/
-                delay: CANON_LASER_DELAY_MSEC
+                delay: CANON_LASER_DELAY_MSEC,
+                shots: 0,
+                lastFired: 0,
+
+                canFire: function() {
+
+                    if ( nowTime - this.lastFired < this.delay )
+                        return false;
+
+                    if ( this.shots > CANON_LASER_AMMO ) {
+
+                        if ( this.shots < 88888 )
+                            setTimeout( function ( w ) { w.shots = 0; }, CANON_LASER_RELOAD_MSEC, this );
+
+                        this.shots = 9999999;
+
+                        return false;
+                    }
+
+                    return true;
+                }
+
             }
         }
 
