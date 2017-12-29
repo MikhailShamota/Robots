@@ -308,21 +308,35 @@ var Scene = (function () {
 
             function killObject( obj ) {
 
+                if ( obj.hits < -99 )
+                    return obj;
+
                 //obj.kill();
 
-                addExplosion( obj.pos );
+
+
+                obj.hits = -1000;
 
                 //scene.remove( obj.mesh );
                 //octree.remove( obj.mesh );
-                obj.mesh.visible = false;
+                //obj.mesh.visible = false;
+
+                setTimeout( function( obj ) {
+
+                    obj.mesh.visible = false;
+                    addExplosion( obj.pos );
+                    !obj.player.isProxy && obj.player.fleet.totalHits() < 1 && setTimeout( function() { obj.player.fleet.start(); }, MSEC_RESPAWN_DELAY );
+                }, 100, obj );
+
 
                 obj.lastHitBy && players[ obj.lastHitBy ].score++;
                 updateScore();
 
                 //if my last was killed respawn me at 2 sec
-                !obj.player.isProxy && obj.player.fleet.totalHits() < 1 && setTimeout( function() { obj.player.fleet.start(); }, MSEC_RESPAWN_DELAY );
+
                 //iPlayer().fleet.totalHits() < 1 && //initFleet( player );//respawn
                 //iPlayer().fleet.start();
+                return obj;
             }
 
             function getForces( obj ) {

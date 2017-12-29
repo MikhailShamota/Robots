@@ -25,8 +25,8 @@ function Player( id, isProxy ) {
                 f: smallFighter,
                 target: selectEasiest,
                 m: [ {f:smallMissile,p:new THREE.Vector3(-15,0,0)}, {f:smallMissile,p:new THREE.Vector3(+15,0,0)} ],
-                w: canonVulcan()
-                //w: canonLaser()
+                //w: canonVulcan()
+                w: canonLaser()
             }/*,
              {
              f: bigFighter,
@@ -164,7 +164,7 @@ function Player( id, isProxy ) {
 
                     geom.vertices.push( V3_UNIT_Z.clone().multiplyScalar( -beam_half_len ) );
                     geom.vertices.push( V3_UNIT_Z.clone().multiplyScalar( beam_half_len ) );
-                    geom.translate( 0, 0, beam_half_len );
+                    geom.translate( MathHelper.rand( -2, 2 ) , 0, beam_half_len );
 
                     var line = new THREE.MeshLine();
                     line.setGeometry(geom);
