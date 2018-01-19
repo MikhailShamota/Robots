@@ -24,7 +24,7 @@ function Player( id, isProxy ) {
             {
                 f: smallFighter,
                 target: selectEasiest,
-                m: [ {f:smallMissile,p:new THREE.Vector3(-15,0,0)}, {f:smallMissile,p:new THREE.Vector3(+15,0,0)} ],
+                m: [ smallMissile, smallMissile ],
                 //w: canonVulcan()
                 w: canonLaser()
             }/*,
@@ -57,6 +57,7 @@ function Player( id, isProxy ) {
                         side: THREE.DoubleSide
                     } );
 
+                    length = length > 0 ? length : R_GALAXY;
                     const beamLen = 40;
                     var geom = new THREE.Geometry( );
 
@@ -147,10 +148,10 @@ function Player( id, isProxy ) {
                     var material = new THREE.MeshLineMaterial({
 
                         color: color,
-                        opacity: 0.5,
+                        opacity: 0.65,
                         resolution: V2_RESOLUTION,
                         sizeAttenuation: 1,
-                        lineWidth: 8,
+                        lineWidth: 6,
                         near: 1,
                         far: 100000,
                         depthTest: true,
@@ -159,7 +160,7 @@ function Player( id, isProxy ) {
                         side: THREE.DoubleSide
                     });
 
-                    const beam_half_len = length * 0.5;
+                    const beam_half_len = length > 0 ? length * 0.5 : R_GALAXY*100;
                     var geom = new THREE.Geometry();
 
                     geom.vertices.push( V3_UNIT_Z.clone().multiplyScalar( -beam_half_len ) );
@@ -300,6 +301,7 @@ function Player( id, isProxy ) {
 
             var obj = item.f( V3_ZERO, color );
 
+            var box = new THREE.Box3().setFromObject( obj.mesh );
 
             addMesh( obj, meshes );///<----
 
@@ -312,13 +314,11 @@ function Player( id, isProxy ) {
             //missiles loop
             item.m && item.m.forEach( function( m ) {
 
-                var missile = m.f( V3_ZERO, color );
+                var missile = m( V3_ZERO, color );
 
                 item.missiles.push( missile );
 
-                missile.pt = m.p;//point of connection
-                ///missile.init();
-                ///missile.pos.copy( p );
+                missile.pt = new THREE.Vector3( ( box.max.x - box.min.x ) * Math.random(), 0, 0 ) ;//point of connection
 
                 addMesh( missile, meshes );
             });

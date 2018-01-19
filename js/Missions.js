@@ -1,0 +1,11 @@
+function Missions() {
+
+    this.list = [
+
+        {
+
+        },
+        {},
+        {}
+    ];
+}

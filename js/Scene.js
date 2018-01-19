@@ -635,7 +635,7 @@ var Scene = (function () {
     //        raycaster.ray.direction );
 
         var hits = 0;
-        var dist = R_GALAXY;
+        var dist = -1;//infinite///R_GALAXY;
 
         //octreeObjects && octreeObjects.forEach( function( item ) {
 
