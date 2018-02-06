@@ -1,3 +1,248 @@
+function Catalog() {
+
+    function canonVulcan() {
+
+        return {
+
+            f: function (ray, length, obj) {
+
+                var color = new THREE.Color(SHOT_COLOR);
+
+                var material = new THREE.MeshLineMaterial({
+
+                    color: color,
+                    opacity: 1.0,
+                    resolution: V2_RESOLUTION,
+                    sizeAttenuation: 1,
+                    lineWidth: 7,
+                    near: 1,
+                    far: 100000,
+                    depthTest: true,
+                    blending: THREE.AdditiveBlending,
+                    transparent: false,
+                    side: THREE.DoubleSide
+                });
+
+                length = length > 0 ? length : R_GALAXY;
+                const beamLen = 40;
+                var geom = new THREE.Geometry();
+
+                geom.vertices.push(ray.origin.clone());
+                geom.vertices.push(ray.origin.clone().add(ray.direction.clone().multiplyScalar(beamLen)));
+
+                var line = new THREE.MeshLine();
+                line.setGeometry(geom);
+                var mesh = new THREE.Mesh(line.geometry, material);
+
+                //mesh.add( new THREE.Mesh( line.geometry.clone(), material2 ) );
+
+                mesh.source_dir = ray.direction.clone();
+                mesh.source_length = length - beamLen;
+                mesh.source_speed = 100;
+                mesh.time = nowTime;
+                mesh.fUpd = function () {
+
+                    var mesh = this;
+                    const speed = 200;
+                    var add = mesh.source_dir.clone().multiplyScalar(speed);
+
+                    mesh.source_length -= speed;
+
+                    //impact
+                    if (mesh.source_length <= 0 || nowTime - mesh.time > CANON_VULCAN_LIVES) {
+
+                        mesh.position.x = undefined;//hide
+                        return;
+                    }
+
+                    mesh.position.add(add);//move
+                };
+
+                return mesh;
+            },
+            delay: CANON_VULCAN_DELAY_MSEC,
+            shots: 0,
+            lastFired: 0,
+
+            canFire: function () {
+
+                if (nowTime - this.lastFired < this.delay)
+                    return false;
+
+                if (this.shots > CANON_VULCAN_AMMO) {
+
+                    if (this.shots < 88888)
+                        setTimeout(function (w) {
+                            w.shots = 0;
+                        }, CANON_VULCAN_RELOAD_MSEC, this);
+
+                    this.shots = 9999999;
+
+                    return false;
+                }
+
+                return true;
+            }
+
+        }
+    }
+
+    function smallFighter(p, color) {
+
+        return new Fighter(p, 3000, color);
+    }
+
+    function bigFighter(p, color) {
+
+        return new Fighter(p, 5000, color);
+    }
+
+    function smallMissile(p, color) {
+
+        var missile = new Missile(p, 55, color);
+        missile.fJet = 6200000;//this.mass * 80000;
+        missile.sTurn = 12.75;//radians per sec
+
+        return missile;
+    }
+
+    function canonLaser() {
+
+        return {
+
+            f: function (ray, length, obj) {
+                var color = new THREE.Color(SHOT_COLOR);
+
+                var material = new THREE.MeshLineMaterial({
+
+                    color: color,
+                    opacity: 0.65,
+                    resolution: V2_RESOLUTION,
+                    sizeAttenuation: 1,
+                    lineWidth: 6,
+                    near: 1,
+                    far: 100000,
+                    depthTest: true,
+                    blending: THREE.AdditiveBlending,
+                    transparent: true,
+                    side: THREE.DoubleSide
+                });
+
+                const beam_half_len = length > 0 ? length * 0.5 : R_GALAXY * 100;
+                var geom = new THREE.Geometry();
+
+                geom.vertices.push(V3_UNIT_Z.clone().multiplyScalar(-beam_half_len));
+                geom.vertices.push(V3_UNIT_Z.clone().multiplyScalar(beam_half_len));
+                geom.translate(MathHelper.rand(-2, 2), 0, beam_half_len);
+
+                var line = new THREE.MeshLine();
+                line.setGeometry(geom);
+                var mesh = new THREE.Mesh(line.geometry, material);
+
+                mesh.position.copy(obj.pos);//move
+
+                //mesh.source_dir = ray.direction.clone();
+                //mesh.source_length = length - beamLen;
+                //mesh.source_speed = 100;
+                mesh.parentObj = obj;
+                mesh.time = nowTime;
+                mesh.fUpd = function () {
+
+                    var mesh = this;
+
+                    //impact
+                    if (mesh.source_length <= 0 || nowTime - mesh.time > CANON_LASER_LIVES) {
+
+                        mesh.position.x = undefined;//hide
+                        return;
+                    }
+
+                    mesh.position.copy(mesh.parentObj.pos);//move
+                    mesh.rotation.copy(mesh.parentObj.mesh.rotation);//rotate
+                };
+
+                return mesh;
+            }
+            ,
+            delay: CANON_LASER_DELAY_MSEC,
+            shots: 0,
+            lastFired: 0,
+
+            canFire: function () {
+
+                if (nowTime - this.lastFired < this.delay)
+                    return false;
+
+                if (this.shots > CANON_LASER_AMMO) {
+
+                    if (this.shots < 88888)
+                        setTimeout(function (w) {
+                            w.shots = 0;
+                        }, CANON_LASER_RELOAD_MSEC, this);
+
+                    this.shots = 9999999;
+
+                    return false;
+                }
+
+                return true;
+            }
+
+        }
+    }
+
+    function selectAny(all_vessels) {
+
+        var any = all_vessels[Math.floor(Math.random() * all_vessels.length)];
+        return any.obj.player.id == this.obj.player.id ? null : any;
+    }
+
+    function selectEasiest(all_vessels) {
+
+        var selected = null;
+        var minAngle = 99;
+        var my = this;
+
+        all_vessels.forEach(function (vessel) {
+
+            var target = vessel.obj;
+            if (my.player.id == target.player.id)
+                return;
+
+            var angle = Math.abs(my.angleToTarget(target));
+
+            if (angle < minAngle) {
+
+                minAngle = angle;
+                selected = target;
+            }
+        });
+
+        return selected;
+    }
+
+    return {
+
+        fighter: {
+            f: smallFighter,
+            target: selectEasiest,
+            w: canonVulcan()
+        },
+
+        bomber: {
+            f: smallFighter,
+            target: selectEasiest,
+            m: [smallMissile, smallMissile]
+        },
+
+        interceptor: {
+            f: smallFighter,
+            target: selectEasiest,
+            w: canonLaser()
+        }
+    };
+}
+
 function Player( id, isProxy ) {
 
     this.id = id;
@@ -10,354 +255,78 @@ function Player( id, isProxy ) {
 
     this.isProxy = isProxy;
 
-    this.fleet = new Fleet( this );
-
     this.score = 0;
 
-    function Fleet( player ) {
+    this.vessel = {};
 
-        this.player = player;
+    this.parameters = {
 
-        //TODO:campaign mission
-        this.vesselsList = [
-
-            {
-                f: smallFighter,
-                target: selectEasiest,
-                m: [ smallMissile, smallMissile ],
-                //w: canonVulcan()
-                w: canonLaser()
-            }/*,
-             {
-             f: bigFighter,
-             to: toZero
-             }*/
-        ];
-
-        function canonVulcan() {
-
-            return {
-
-                f: function ( ray, length, obj ) {
-
-                    var color = new THREE.Color( SHOT_COLOR );
-
-                    var material = new THREE.MeshLineMaterial( {
-
-                        color: color,
-                        opacity: 1.0,
-                        resolution: V2_RESOLUTION,
-                        sizeAttenuation: 1,
-                        lineWidth: 7,
-                        near: 1,
-                        far: 100000,
-                        depthTest: true,
-                        blending: THREE.AdditiveBlending,
-                        transparent: false,
-                        side: THREE.DoubleSide
-                    } );
-
-                    length = length > 0 ? length : R_GALAXY;
-                    const beamLen = 40;
-                    var geom = new THREE.Geometry( );
-
-                    geom.vertices.push( ray.origin.clone( ) );
-                    geom.vertices.push( ray.origin.clone( ).add( ray.direction.clone( ).multiplyScalar( beamLen ) ) );
-
-                    var line = new THREE.MeshLine( );
-                    line.setGeometry( geom );
-                    var mesh = new THREE.Mesh( line.geometry, material );
-
-                    //mesh.add( new THREE.Mesh( line.geometry.clone(), material2 ) );
-
-                    mesh.source_dir = ray.direction.clone();
-                    mesh.source_length = length - beamLen;
-                    mesh.source_speed = 100;
-                    mesh.time = nowTime;
-                    mesh.fUpd = function() {
-
-                        var mesh = this;
-                        const speed = 200;
-                        var add = mesh.source_dir.clone().multiplyScalar( speed );
-
-                        mesh.source_length -= speed;
-
-                        //impact
-                        if ( mesh.source_length <= 0 || nowTime - mesh.time > CANON_VULCAN_LIVES ) {
-
-                            mesh.position.x = undefined;//hide
-                            return;
-                        }
-
-                        mesh.position.add( add );//move
-                    };
-
-                    return mesh;
-                },
-                delay: CANON_VULCAN_DELAY_MSEC,
-                shots: 0,
-                lastFired: 0,
-
-                canFire: function() {
-
-                    if ( nowTime - this.lastFired < this.delay )
-                        return false;
-
-                    if ( this.shots > CANON_VULCAN_AMMO ) {
-
-                        if ( this.shots < 88888 )
-                            setTimeout( function ( w ) { w.shots = 0; }, CANON_VULCAN_RELOAD_MSEC, this );
-
-                        this.shots = 9999999;
-
-                        return false;
-                    }
-
-                    return true;
-                }
-
-            }
-        }
-
-        function smallFighter( p, color ) {
-
-            return new Fighter( p, 3000, color );
-        }
-
-        function bigFighter( p, color ) {
-
-            return new Fighter( p, 5000, color );
-        }
-
-        function smallMissile( p, color ) {
-
-            var missile = new Missile( p, 55, color );
-            missile.fJet = 6200000;//this.mass * 80000;
-            missile.sTurn = 12.75;//radians per sec
-
-            return missile;
-        }
-
-        function canonLaser() {
-
-            return {
-
-                f: function ( ray, length, obj ) {
-                    var color = new THREE.Color( SHOT_COLOR );
-
-                    var material = new THREE.MeshLineMaterial({
-
-                        color: color,
-                        opacity: 0.65,
-                        resolution: V2_RESOLUTION,
-                        sizeAttenuation: 1,
-                        lineWidth: 6,
-                        near: 1,
-                        far: 100000,
-                        depthTest: true,
-                        blending: THREE.AdditiveBlending,
-                        transparent: true,
-                        side: THREE.DoubleSide
-                    });
-
-                    const beam_half_len = length > 0 ? length * 0.5 : R_GALAXY*100;
-                    var geom = new THREE.Geometry();
-
-                    geom.vertices.push( V3_UNIT_Z.clone().multiplyScalar( -beam_half_len ) );
-                    geom.vertices.push( V3_UNIT_Z.clone().multiplyScalar( beam_half_len ) );
-                    geom.translate( MathHelper.rand( -2, 2 ) , 0, beam_half_len );
-
-                    var line = new THREE.MeshLine();
-                    line.setGeometry(geom);
-                    var mesh = new THREE.Mesh(line.geometry, material);
-
-                    mesh.position.copy( obj.pos );//move
-
-                    //mesh.source_dir = ray.direction.clone();
-                    //mesh.source_length = length - beamLen;
-                    //mesh.source_speed = 100;
-                    mesh.parentObj = obj;
-                    mesh.time = nowTime;
-                    mesh.fUpd = function () {
-
-                        var mesh = this;
-
-                        //impact
-                        if (mesh.source_length <= 0 || nowTime - mesh.time > CANON_LASER_LIVES) {
-
-                            mesh.position.x = undefined;//hide
-                            return;
-                        }
-
-                        mesh.position.copy( mesh.parentObj.pos );//move
-                        mesh.rotation.copy( mesh.parentObj.mesh.rotation );//rotate
-                    };
-
-                    return mesh;
-                }
-                ,
-                delay: CANON_LASER_DELAY_MSEC,
-                shots: 0,
-                lastFired: 0,
-
-                canFire: function() {
-
-                    if ( nowTime - this.lastFired < this.delay )
-                        return false;
-
-                    if ( this.shots > CANON_LASER_AMMO ) {
-
-                        if ( this.shots < 88888 )
-                            setTimeout( function ( w ) { w.shots = 0; }, CANON_LASER_RELOAD_MSEC, this );
-
-                        this.shots = 9999999;
-
-                        return false;
-                    }
-
-                    return true;
-                }
-
-            }
-        }
-
-        function selectAny( all_vessels ) {
-
-            var any = all_vessels[ Math.floor( Math.random() * all_vessels.length ) ];
-            return any.obj.player.id == this.obj.player.id ? null : any;
-        }
-
-        function selectEasiest( all_vessels ) {
-
-            var selected = null;
-            var minAngle = 99;
-            var my = this;
-
-            all_vessels.forEach( function( vessel ) {
-
-                var target = vessel.obj;
-                if ( my.player.id == target.player.id )
-                    return;
-
-                var angle = Math.abs( my.angleToTarget( target ) );
-
-                if ( angle < minAngle ) {
-
-                    minAngle = angle;
-                    selected = target;
-                }
-            });
-
-            return selected;
-        }
-    }
-
-    Fleet.prototype.start = function() {
-
-        this.vesselsList.forEach( function( item ) {
-
-            var obj = item.obj;
-
-            obj.init( MathHelper.v3Random( R_START_DROP ).setY( 0 ) );
-        });
-    };
-
-    Fleet.prototype.totalHits = function() {
-
-        var hits = 0;
-
-        this.vesselsList.forEach( function( item ) {
-
-            hits += item.obj.hits;
-        });
-
-        return hits;
-    };
-
-    Fleet.prototype.initMeshes = function( color ) {
-
-        var meshes = [];
-        var self = this;
-
-        function addMesh( obj, meshes ) {
-
-            obj.mesh.setToOctree = true;
-
-            meshes.push( obj.mesh );
-
-            //trail
-            obj.initTrail();
-            obj.player = self.player;
-
-            obj.trailMeshes.forEach( function( item ) {
-
-                meshes.push( item );
-            });
-
-            return meshes;
-        }
-
-        this.vesselsList.forEach( (item ) => {
-
-            var obj = item.f( V3_ZERO, color );
-
-            var box = new THREE.Box3().setFromObject( obj.mesh );
-
-            addMesh( obj, meshes );///<----
-
-
-            obj.selectTarget = item.target;
-            item.obj = obj;//a link to vessel*/
-            obj.item = item;
-            item.missiles = [];
-
-            //missiles loop
-            item.m && item.m.forEach( function( m ) {
-
-                var missile = m( V3_ZERO, color );
-
-                item.missiles.push( missile );
-
-                missile.pt = new THREE.Vector3( ( box.max.x - box.min.x ) * Math.random(), 0, 0 ) ;//point of connection
-
-                addMesh( missile, meshes );
-            });
-
-
-            /*obj.mesh.setToOctree = true;
-
-            meshes.push( obj.mesh );
-
-            //trail
-            obj.initTrail();
-            obj.player = self.player;
-
-            obj.trailMeshes.forEach( function(item) {
-
-                //scene.add( item );
-                meshes.push( item );
-            });
-
-            obj.w2 = function() { item.w2( this.pos, this.color ) };
-            obj.selectTarget = item.target;
-
-            item.obj = obj;//a link to vessel*/
-        });
-
-        return meshes;
+        vessel: Catalog().fighter
     };
 }
 
-Player.prototype.initMeshes = function() {
+Player.prototype.start = function() {
 
-    //this.fleet.init( scene, octree, this.color );
-    return this.fleet.initMeshes( this.color );
+    this.vessel.obj.init( MathHelper.v3Random( R_START_DROP ).setY( 0 ) );
 };
 
-//TODO:remove!!
-Player.prototype.getVesselFromList = function() {
+Player.prototype.initMeshes = function() {
 
-    return this.fleet.vesselsList[0];
+    var meshes = [];
+    var self = this;
+
+    function addMesh( obj, meshes ) {
+
+        obj.mesh.setToOctree = true;
+
+        meshes.push( obj.mesh );
+
+        //trail
+        obj.initTrail();
+        obj.player = self.player;
+
+        obj.trailMeshes.forEach( function( item ) {
+
+            meshes.push( item );
+        });
+
+        return meshes;
+    }
+
+    var item = this.parameters.vessel;
+
+    var element = {};
+    Object.assign( element, item );
+
+    var obj = item.f( V3_ZERO, this.color );
+
+    var box = new THREE.Box3().setFromObject( obj.mesh );
+
+    addMesh( obj, meshes );///<----
+
+
+    obj.selectTarget = item.target;
+    element.obj = obj;
+    obj.item = element;
+    element.missiles = [];
+    obj.player = this;
+
+    //missiles loop
+    item.m && item.m.forEach( function( m ) {
+
+        var missile = m( V3_ZERO, color );
+
+        //item.missiles.push( missile );
+        element.missiles.push( missile );
+
+        missile.pt = new THREE.Vector3( ( box.max.x - box.min.x ) * Math.random(), 0, 0 ) ;//point of connection
+
+        addMesh( missile, meshes );
+    });
+
+    self.vessel = element;
+
+    return meshes;
 };
 
 Player.prototype.setMouseDown = function() {
@@ -376,7 +345,7 @@ Player.prototype.setMouseUp = function() {
 
 Player.prototype.pack = function() {
 
-    var data = this.getVesselFromList().obj.pack();
+    var data = this.vessel.obj.pack();
 
     data.id = this.id;
 
@@ -385,7 +354,7 @@ Player.prototype.pack = function() {
 
 Player.prototype.unpack = function( data ) {
 
-    data.id && data.id == this.id && this.getVesselFromList().obj.unpack( data );
+    data.id && data.id == this.id && this.vessel.obj.unpack( data );
 };
 
 Player.prototype.change = function() {

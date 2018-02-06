@@ -20,7 +20,7 @@ var Scene = (function () {
     iPlayer.lastPeerSent = 0;
     iPlayer.onChange = function() {
 
-        this.getVesselFromList().obj.isFiring = this.isMouseDown;
+        this.vessel.obj.isFiring = this.isMouseDown;
 
         send();
     };
@@ -325,7 +325,7 @@ var Scene = (function () {
 
                     obj.mesh.visible = false;
                     addExplosion( obj.pos );
-                    !obj.player.isProxy && obj.player.fleet.totalHits() < 1 && setTimeout( function() { obj.player.fleet.start(); }, MSEC_RESPAWN_DELAY );
+                    !obj.player.isProxy && obj.player.vessel.obj.hits < 1 && setTimeout( function() { obj.player.start(); }, MSEC_RESPAWN_DELAY );
                 }, 100, obj );
 
 
@@ -445,12 +445,21 @@ var Scene = (function () {
 
         function updateCamera(dt) {
 
-            var vessel = iPlayer().getVesselFromList().obj;
+            var vessel = iPlayer().vessel.obj;
 
             var dist = Number.MAX_SAFE_INTEGER;
             var i = vessel.getCameraPos( camera );
 
-            for ( var playerId in players ) {
+            vessels.forEach( function( vessel2 ) {
+
+                if ( vessel.id == vessel2.id )
+                    return;
+
+                var obj = vessel2.obj;
+                var p = obj.getCameraPos( camera );
+                dist = Math.min( dist, p.distanceTo( i ) );
+            });
+            /*for ( var playerId in players ) {
 
                 playerId != iPlayer.id && players[ playerId ].fleet.vesselsList.forEach( function( vessel ) {
 
@@ -458,7 +467,15 @@ var Scene = (function () {
                     var p = obj.getCameraPos( camera );
                     dist = Math.min( dist, p.distanceTo( i ) );
                 });
-            }
+
+                var vessel2 = players[ playerId ].fleet.vessel;
+                if ( playerId == iPlayer.id || !vessel2 )
+                    return;
+
+                 var obj = vessel2.obj;
+                 var p = obj.getCameraPos( camera );
+                 dist = Math.min( dist, p.distanceTo( i ) );
+            }*/
 
             function getDist( d ) {
 
@@ -548,7 +565,7 @@ var Scene = (function () {
 
             v3MousePoint = raycaster.ray.intersectPlane( eclipticPlane );
 
-            iPlayer().getVesselFromList().obj.steer = MathHelper.clamp( -v2MousePoint.x, -1, 1 );
+            iPlayer().vessel.obj.steer = MathHelper.clamp( -v2MousePoint.x, -1, 1 );
 
             //v3MousePoint = raycaster.ray.intersectSphere( new THREE.Sphere( V3_ZERO.clone(), R_WORLD ) );
 
@@ -560,9 +577,10 @@ var Scene = (function () {
 
             bot_players.forEach( function( player ) {
 
-                player.fleet.vesselsList.forEach( function( item ) {
+                //player.fleet.vesselsList.forEach( function( item ) {
 
-                    var obj = item.obj;
+                    //var obj = item.obj;
+                    var obj = player.vessel.obj;
 
                     if ( nowTime > obj.targetNewSearchAt || !obj.target ) {
 
@@ -571,7 +589,7 @@ var Scene = (function () {
                     }
 
                     obj.isFiring = obj.target && obj.target.hits > 0 && obj.angleToTarget( obj.target ) < 0.1;
-                });
+                //});
             });
         }
 
@@ -609,9 +627,9 @@ var Scene = (function () {
 
         updateLasersMove();
 
-        updateRadarMove( iPlayer().getVesselFromList().obj.pos, dt );
+        updateRadarMove( iPlayer().vessel.obj.pos, dt );
 
-        updateScan( iPlayer().getVesselFromList().obj );
+        updateScan( iPlayer().vessel.obj );
 
         iPlayer.id != 0 && send();//Zero if offline
 
@@ -673,17 +691,20 @@ var Scene = (function () {
 
         for ( var playerId in players ) {
 
-            from.player.id != playerId && players[ playerId ].fleet.vesselsList.forEach( function( vessel ) {
+            if ( from.player.id == playerId )
+                return;
+            //from.player.id != playerId && players[ playerId ].fleet.vesselsList.forEach( function( vessel ) {
+            var vessel = players[ playerId ].vessel;
 
-                if ( !vessel.obj.pos )
-                    return;
+            if ( !vessel.obj.pos )
+                return;
 
-                var v3to = vessel.obj.pos.clone().sub( from.pos );
-                var dist = v3to.length();
+            var v3to = vessel.obj.pos.clone().sub( from.pos );
+            var dist = v3to.length();
 
-                addRadar( new THREE.Ray( from.pos, v3to.normalize() ), MathHelper.spectre( dist, SCAN_DIST_MIN, SCAN_DIST_MAX ) );
-                from.lastScan = nowTime;
-            });
+            addRadar( new THREE.Ray( from.pos, v3to.normalize() ), MathHelper.spectre( dist, SCAN_DIST_MIN, SCAN_DIST_MAX ) );
+            from.lastScan = nowTime;
+            //});
         }
     }
 
@@ -806,7 +827,7 @@ var Scene = (function () {
         //dblClick
         function clickDbl( event ) {
 
-            var vesselItem = iPlayer().getVesselFromList();
+            var vesselItem = iPlayer().vessel;
             var target = pickObject( v2MousePoint );
             target && launch( vesselItem, target );
         }
@@ -979,19 +1000,21 @@ var Scene = (function () {
     }
     */
 
-    function initFleet( player ) {
+    function initVessel( player ) {
 
         initMeshes( player.initMeshes() );
-        !player.isProxy && player.fleet.start();//start my fleet from new random pos
+        !player.isProxy && player.start();//start my vessel from new random pos
 
-        vessels = vessels.concat( player.fleet.vesselsList );
+        //vessels = vessels.concat( player.fleet.vesselsList );
+        vessels.push( player.vessel );
     }
 
     function initPlayer( id, isProxy ) {
 
         var player = new Player( id, isProxy );
+        //player.mission = missions_parameters.missions[0];
 
-        initFleet( player );
+        initVessel( player );
         //initMeshes( player.initMeshes() );
         //!isProxy && player.fleet.start();//start my fleet from new random pos
 
