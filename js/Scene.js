@@ -326,7 +326,7 @@ var Scene = (function () {
                     obj.mesh.visible = false;
                     addExplosion( obj.pos );
                     !obj.player.isProxy && obj.player.vessel.obj.hits < 1 && setTimeout( function() { obj.player.start(); }, MSEC_RESPAWN_DELAY );
-                }, 100, obj );
+                }, obj.explosionTimeout, obj );
 
 
                 obj.lastHitBy && players[ obj.lastHitBy ].score++;
@@ -639,9 +639,8 @@ var Scene = (function () {
     function fire( from ) {
 
         //( nowTime - obj.lastFired > obj.item.w.delay || !obj.lastFired )
-        if ( !from.item.w.canFire() )
+        if ( !from.item.w || !from.item.w.canFire() )
             return;
-
 
 
         var raycaster = new THREE.Raycaster( from.pos, from.fwd() );
@@ -1000,23 +999,21 @@ var Scene = (function () {
     }
     */
 
-    function initVessel( player ) {
-
-        initMeshes( player.initMeshes() );
-        !player.isProxy && player.start();//start my vessel from new random pos
-
-        //vessels = vessels.concat( player.fleet.vesselsList );
-        vessels.push( player.vessel );
-    }
-
     function initPlayer( id, isProxy ) {
 
         var player = new Player( id, isProxy );
-        //player.mission = missions_parameters.missions[0];
 
-        initVessel( player );
-        //initMeshes( player.initMeshes() );
-        //!isProxy && player.fleet.start();//start my fleet from new random pos
+        initMeshes(
+
+            player.init( {
+
+                vessel: Catalog().bomber
+            })
+        );
+
+        !player.isProxy && player.start();//start my vessel from new random pos
+
+        vessels.push( player.vessel );
 
         players[ id ] = player;
 

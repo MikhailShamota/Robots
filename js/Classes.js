@@ -258,11 +258,6 @@ function Player( id, isProxy ) {
     this.score = 0;
 
     this.vessel = {};
-
-    this.parameters = {
-
-        vessel: Catalog().fighter
-    };
 }
 
 Player.prototype.start = function() {
@@ -270,7 +265,7 @@ Player.prototype.start = function() {
     this.vessel.obj.init( MathHelper.v3Random( R_START_DROP ).setY( 0 ) );
 };
 
-Player.prototype.initMeshes = function() {
+Player.prototype.init = function( params ) {
 
     var meshes = [];
     var self = this;
@@ -293,7 +288,7 @@ Player.prototype.initMeshes = function() {
         return meshes;
     }
 
-    var item = this.parameters.vessel;
+    var item = params.vessel;
 
     var element = {};
     Object.assign( element, item );
@@ -314,7 +309,8 @@ Player.prototype.initMeshes = function() {
     //missiles loop
     item.m && item.m.forEach( function( m ) {
 
-        var missile = m( V3_ZERO, color );
+        var missile = m( V3_ZERO, self.color );
+        missile.player = self;
 
         //item.missiles.push( missile );
         element.missiles.push( missile );
@@ -374,6 +370,8 @@ function MatObj(pos, mass) {
     this.mesh = new THREE.Mesh();
     this.pos && this.mesh.position.copy( this.pos );
     this.mesh.userData = this;//a link from mesh to this object
+
+    this.explosionTimeout = 100;
 }
 
 MatObj.prototype.resistForce = function( v ) {
@@ -742,6 +740,17 @@ Vessel.prototype.initTrail = function () {
     var self = this;
     var pos = this.pos || V3_ZERO;
 
+    var spriteMat = new THREE.SpriteMaterial( {
+
+        map: Textures.get( 'res/blue_particle.jpg' ),
+        //map: Textures.get( 'res/glow.png' ),
+        color : self.color.clone().multiplyScalar( 2 ),
+        blending : THREE.AdditiveBlending,
+        opacity: 1,
+        depthWrite: true
+    } );
+
+    var size = 40;
     this.ptJet.forEach( function( item ) {
 
         var geom = new THREE.Geometry();
@@ -759,7 +768,31 @@ Vessel.prototype.initTrail = function () {
 
         self.trailLines.push( line );
         self.trailMeshes.push( meshTrail );
+
+
+
+
+        var sprite	= new THREE.Sprite( spriteMat );
+
+        sprite.scale.set( size, size, size );
+        sprite.position.copy( item );
+
+        self.mesh.add( sprite );
     });
+
+
+
+    //var self = this;
+    //var size = 40;
+    //this.ptJet.forEach( function( pt ) {
+
+    /*    var sprite	= new THREE.Sprite( spriteMat );
+
+        sprite.scale.set( size, size, size );
+        sprite.position.copy( pt );
+
+        self.mesh.add( sprite );*/
+//    });
 };
 
 /*Vessel.prototype.kill = function () {
@@ -803,27 +836,7 @@ function Fighter(pos, mass, color) {
 
     this.ptJet = [ new THREE.Vector3( -size * 0.5 , 0, -size * 1.5 - 8), new THREE.Vector3( size * 0.5, 0, -size * 1.5 - 8) ];
 
-    var spriteMat = new THREE.SpriteMaterial( {
 
-        map: Textures.get( 'res/blue_particle.jpg' ),
-        //map: Textures.get( 'res/glow.png' ),
-        color : color.clone().multiplyScalar( 2 ),
-        blending : THREE.AdditiveBlending,
-        opacity: 1,
-        depthWrite: false
-    } );
-
-    var self = this;
-    var size = 40;
-    this.ptJet.forEach( function( pt ) {
-
-        var sprite	= new THREE.Sprite( spriteMat );
-
-        sprite.scale.set( size, size, size );
-        sprite.position.copy( pt );
-
-        self.mesh.add( sprite );
-    });
 
 }
 
@@ -847,7 +860,7 @@ function Missile( pos, mass, color ) {
 
 
 
-    var material	= new THREE.SpriteMaterial( {
+/*    var material	= new THREE.SpriteMaterial( {
 
         map: Textures.get( 'res/blue_particle.jpg' ),
         color : color.clone().multiplyScalar( brightness ),
@@ -858,7 +871,7 @@ function Missile( pos, mass, color ) {
     var sprite	= new THREE.Sprite( material );
     sprite.scale.set( size, size, size );
 
-    this.mesh.add( sprite );
+    this.mesh.add( sprite );*/
     this.mesh.visible = false;
 
     this.mesh.geometry.computeBoundingSphere();
@@ -866,6 +879,7 @@ function Missile( pos, mass, color ) {
 
     this.ptJet = [ new THREE.Vector3( 0, 0, 0 ) ];
 
+    this.explosionTimeout = 0;
     this.timeout = function() { setTimeout( function( m ) { m.hits = 0; }, 8000, this ); return this; };
 }
 
